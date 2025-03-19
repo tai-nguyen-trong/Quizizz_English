@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý người dùng</title>
+    <title>Quản lý người dùng Admin</title>
 
     <!-- Bootstrap CSS (Nếu sử dụng Bootstrap, tải về và đặt vào /resources/css) -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap.min.css">
