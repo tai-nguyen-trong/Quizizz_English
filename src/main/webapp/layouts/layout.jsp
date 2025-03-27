@@ -2,7 +2,30 @@
 <%
     // Lấy tham số "currentPage" từ Servlet
     String currentPage = (String) request.getAttribute("currentPage");
-    if (currentPage == null) currentPage = "home";
+
+    if (currentPage == null || currentPage.isEmpty()) {
+        currentPage = "home";
+    } else {
+        switch (currentPage) {
+            case "QuanLyDanhSachChuDe":
+                currentPage = "QuanLyDanhSachChuDe";
+                break;
+            case "QuanLyDanhSachBaiTap":
+                currentPage = "QuanLyDanhSachBaiTap";
+                break;
+            case "QuanLyDanhSachCauHoi":
+                currentPage = "QuanLyDanhSachCauHoi";
+                break;
+            case "QuanLyDanhSachNguoiDung":
+                currentPage = "QuanLyDanhSachNguoiDung";
+                break;
+            default:
+                currentPage = "home"; // Giá trị mặc định nếu không khớp case nào
+                break;
+        }
+    }
+
+    String pagePath = "/views/" + currentPage + ".jsp";
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +36,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://cdn.datatables.net/v/dt/dt-2.2.2/datatables.min.css" rel="stylesheet" integrity="sha384-2vMryTPZxTZDZ3GnMBDVQV8OtmoutdrfJxnDTg0bVam9mZhi7Zr3J1+lkVFRr71f" crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/v/dt/dt-2.2.2/datatables.min.css" rel="stylesheet">
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.datatables.net/v/dt/dt-2.2.2/datatables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <style>
     /* Cấu trúc tổng thể */
     html, body {
@@ -73,23 +101,21 @@
 <div class="header">
     <h2>Quizizz English</h2>
 </div>
-
+<div class="sidebar">
+    <jsp:include page="/layouts/sidebarAdmin.jsp"/>
+</div>
 <!-- Wrapper -->
 <div class="wrapper">
     <!-- Sidebar -->
-    <div class="sidebar">
-        <jsp:include page="/layouts/sidebarAdmin.jsp"/>
-    </div>
+
 
     <!-- Nội dung chính -->
     <div class="content">
-        <jsp:include page="/layouts/content.jsp"/>
+        <jsp:include page="<%= pagePath %>" flush="true"/>
     </div>
 </div>
 </body>
 </html>
 
 
-<script src="https://cdn.datatables.net/v/dt/dt-2.2.2/datatables.min.js" integrity="sha384-2Ul6oqy3mEjM7dBJzKOck1Qb/mzlO+k/0BQv3D3C7u+Ri9+7OBINGa24AeOv5rgu" crossorigin="anonymous"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
