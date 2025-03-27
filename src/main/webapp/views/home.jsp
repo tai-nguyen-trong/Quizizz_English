@@ -1,79 +1,78 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quản lý người dùng Admin</title>
 
-  <!-- Bootstrap CSS (Nếu sử dụng Bootstrap, tải về và đặt vào /resources/css) -->
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap.min.css">
-
-  <!-- DataTables CSS -->
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/DataTable/datatables.min.css">
-</head>
-<body>
-
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<style>
+  .topic-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    cursor: pointer;
+  }
+  .topic-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  .card-img-top {
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+  }
+</style>
 <div class="container mt-4">
-  <h2>Danh sách người dùng</h2>
-  <table id="userTable" class="display table table-striped">
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Tên</th>
-      <th>Email</th>
-      <th>Vai trò</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>1</td>
-      <td>Nguyễn Văn A</td>
-      <td>vana@example.com</td>
-      <td>Admin</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>Trần Thị B</td>
-      <td>thib@example.com</td>
-      <td>Người dùng</td>
-    </tr>
-    </tbody>
-  </table>
+  <!-- Tiêu đề -->
+  <div class="text-center bg-light p-4 rounded shadow-sm">
+    <h1 class="fw-bold">Chào mừng đến với <span class="text-primary">EnglishTest</span></h1>
+  </div>
+
+  <!-- Phần danh sách chủ đề -->
+  <div class="mt-4 text-center bg-light p-3 rounded shadow-sm">
+    <h4 class="fw-semibold">📚 Các chủ đề</h4>
+  </div>
+
+  <!-- Grid hiển thị chủ đề -->
+  <div class="row mt-4" id="topic-container"></div>
 </div>
-
-<!-- jQuery -->
-<script src="${pageContext.request.contextPath}/assets/jquery.js"></script>
-<script src="${pageContext.request.contextPath}/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/bootstrap/js/bootstrap.bundle.js"></script>
-
-<!-- DataTables JS -->
-<script src="${pageContext.request.contextPath}/assets/DataTable/datatables.min.js"></script>
 
 <script>
   $(document).ready(function () {
-    $('#userTable').DataTable({
-      "paging": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "lengthMenu": [5, 10, 25, 50],
-      "language": {
-        "lengthMenu": "Hiển thị _MENU_ dòng",
-        "zeroRecords": "Không tìm thấy dữ liệu",
-        "info": "Hiển thị _START_ đến _END_ của _TOTAL_ dòng",
-        "infoEmpty": "Không có dữ liệu",
-        "search": "Tìm kiếm:",
-        "paginate": {
-          "first": "Đầu",
-          "last": "Cuối",
-          "next": "Tiếp",
-          "previous": "Trước"
+    $.ajax({
+      url: "<%= request.getContextPath() %>/home", // API lấy danh sách chủ đề
+      type: "GET",
+      dataType: "json",
+      success: function (topics) {
+        if (!topics || topics.length === 0) {
+          console.warn("Không có dữ liệu topics.");
+          return;
         }
+
+        $('#topic-container').empty(); // Xóa nội dung cũ
+
+
+        topics.forEach(topic => {
+          let card = $('<div>').addClass('col-md-3 col-sm-6 mb-4');
+
+          let cardInner = $('<div>').addClass('card shadow-sm topic-card');
+
+          let img = $('<img>')
+                  .addClass('card-img-top')
+                  .attr('src', topic.image)
+                  .attr('alt', topic.title)
+                  .on('error', function () {
+                    $(this).attr('src', '<%= request.getContextPath() %>/images/default.jpg');
+                  });
+
+          let cardBody = $('<div>').addClass('card-body text-center');
+          let title = $('<h5>').addClass('card-title').text(topic.title);
+
+          cardBody.append(title);
+          cardInner.append(img).append(cardBody);
+          card.append(cardInner);
+
+          $('#topic-container').append(card);
+        });
+      },
+      error: function () {
+        alert("Lỗi khi tải danh sách chủ đề!");
       }
     });
   });
-</script>
 
-</body>
-</html>
+</script>
