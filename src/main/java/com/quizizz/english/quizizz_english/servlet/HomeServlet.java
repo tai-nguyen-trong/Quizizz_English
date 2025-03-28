@@ -1,4 +1,4 @@
-package com.quizizz.english.quizizz_english.Servlets;
+package com.quizizz.english.quizizz_english.servlet;
 
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
