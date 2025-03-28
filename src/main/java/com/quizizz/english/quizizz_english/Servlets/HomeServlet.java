@@ -1,14 +1,12 @@
-package com.quizizz.english.quizizz_english.servlet;
+package com.quizizz.english.quizizz_english.Servlets;
 
 import com.google.gson.Gson;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.Console;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;

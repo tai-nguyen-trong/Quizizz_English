@@ -1,4 +1,4 @@
-package com.quizizz.english.quizizz_english.servlet;
+package com.quizizz.english.quizizz_english.Servlets;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
