@@ -48,15 +48,11 @@
   }
 </style>
 <div class="container mt-4">
-  <div class="header-section d-flex justify-content-between align-items-center">
-    <h2 class="mb-0">Bài tập</h2>
-    <button class="btn btn-secondary text-dark fw-bold">Thêm bài tập mới</button>
+  <div class="d-flex justify-content-between align-items-center bg-light p-4 rounded shadow-sm mb-3">
+    <h2 class="mb-0">Danh sách người dùng</h2>
   </div>
   <!-- Thanh tìm kiếm và bộ lọc -->
   <div class="row clearfix mb-3">
-
-
-
 <%--    <div class="col-md-3">
       <select id="filter-level-3" class="form-select">
         <option value="">Chọn cấp độ</option>

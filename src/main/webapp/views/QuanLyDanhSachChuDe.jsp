@@ -19,7 +19,7 @@
 <div class="container mt-4">
   <!-- Tiêu đề -->
   <div class="d-flex justify-content-between align-items-center bg-light p-4 rounded shadow-sm">
-    <button id="btn-add-topic" class="btn btn-primary">+ Thêm chủ đề</button>
+    <button id="btn-add-topic" class="btn btn-primary">Thêm chủ đề</button>
   </div>
 
   <!-- Phần danh sách chủ đề -->
@@ -34,8 +34,8 @@
 <script>
   $(document).ready(function () {
     $.ajax({
-      url: "<%= request.getContextPath() %>/home", // API lấy danh sách chủ đề
-      type: "POST",
+      url: "<%= request.getContextPath() %>/ChuDe", // API lấy danh sách chủ đề
+      type: "GET",
       dataType: "json",
       success: function (topics) {
         if (!topics || topics.length === 0) {

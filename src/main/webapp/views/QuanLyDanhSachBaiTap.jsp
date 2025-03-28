@@ -48,9 +48,9 @@
   }
 </style>
 <div class="container mt-4">
-  <div class="header-section d-flex justify-content-between align-items-center">
+  <div class="d-flex justify-content-between align-items-center bg-light p-4 rounded shadow-sm mb-3">
     <h2 class="mb-0">Bài tập</h2>
-    <button class="btn btn-secondary text-dark fw-bold">Thêm bài tập mới</button>
+    <button class="btn btn-success text-white fw-bold">Thêm bài tập mới</button>
   </div>
   <!-- Thanh tìm kiếm và bộ lọc -->
   <div class="row clearfix mb-3">
@@ -84,8 +84,8 @@
         <th>Mã bài tập</th>
         <th>Tên bài tập</th>
         <th>Chủ đề</th>
-        <th>Thời gian làm bài</th>
         <th>Cấp độ</th>
+        <th>Thời gian làm bài</th>
         <th style="text-align: center;">Chỉnh sửa</th>
         <th style="text-align: center;">Danh sách câu hỏi</th>
         <th style="text-align: center;">Xóa</th>
@@ -105,7 +105,54 @@
       "searching": true,
       "ordering": true,
       "info": true,
-      "lengthMenu": [5, 10, 20, 50]
+      "lengthMenu": [5, 10, 20, 50],
+      "pagingType": "full_numbers", // Kiểu phân trang đầy đủ
+      "language": {
+        "processing": "Đang xử lý ..."
+      },
+      "ajax":
+              {
+                "url": "<%= request.getContextPath() %>/BaiTap",
+                "type": "GET",
+                "dataType": "JSON",
+                "dataSrc": ""
+              },
+      "aoColumns": [
+        { "mDataProp": "ID" },
+        { "mDataProp": "MaBaiTap" },
+        { "mDataProp": "TenBaiTap" },
+        { "mDataProp": "ChuDe" },
+        { "mDataProp": "CapDo" },
+        { "mDataProp": "ThoiGianLamBai" },
+        {
+          "data": null,
+          "render": function (data, type, full, meta) {
+            return "<div class='d-flex justify-content-center align-items-center'>" +
+                    "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center'>" +
+                    "<i class='material-icons'>edit</i>" +
+                    "</button></div>";
+          },
+        },
+        {
+          "data": null,
+          "render": function (data, type, full, meta) {
+            return "<div class='d-flex justify-content-center align-items-center'>" +
+                    "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center'>" +
+                    "<i class='material-icons'>visibility</i>" +
+                    "</button></div>";
+          },
+        },
+        {
+          "data": null,
+          "render": function (data, type, full, meta) {
+            return "<div class='d-flex justify-content-center align-items-center'>" +
+                    "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center'>" +
+                    "<i class='material-icons'>delete</i>" +
+                    "</button></div>";
+          },
+        },
+
+      ]
     });
 
     // Bộ lọc theo chủ đề

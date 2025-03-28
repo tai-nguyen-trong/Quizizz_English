@@ -48,9 +48,9 @@
   }
 </style>
 <div class="container mt-4">
-  <div class="header-section d-flex justify-content-between align-items-center">
+  <div class="d-flex justify-content-between align-items-center bg-light p-4 rounded shadow-sm mb-3" >
     <h2 class="mb-0">DANH SÁCH CÂU HỎI</h2>
-    <button class="btn btn-secondary text-dark fw-bold">Thêm câu hỏi mới</button>
+    <button class="btn btn-success text-white fw-bold">Thêm câu hỏi mới</button>
   </div>
   <!-- Thanh tìm kiếm và bộ lọc -->
   <div class="row clearfix mb-3">
