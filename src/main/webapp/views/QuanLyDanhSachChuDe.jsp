@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <style>
   .topic-card {
@@ -16,10 +15,11 @@
     border-radius: 10px 10px 0 0;
   }
 </style>
+
 <div class="container mt-4">
   <!-- Tiêu đề -->
-  <div class="text-center bg-light p-4 rounded shadow-sm">
-    <h1 class="fw-bold">Chào mừng đến với <span class="text-primary">EnglishTest</span></h1>
+  <div class="d-flex justify-content-between align-items-center bg-light p-4 rounded shadow-sm">
+    <button id="btn-add-topic" class="btn btn-primary">+ Thêm chủ đề</button>
   </div>
 
   <!-- Phần danh sách chủ đề -->
@@ -45,14 +45,13 @@
 
         $('#topic-container').empty(); // Xóa nội dung cũ
 
-
         topics.forEach(topic => {
           let card = $('<div>').addClass('col-md-3 col-sm-6 mb-4');
 
           let cardInner = $('<div>').addClass('card shadow-sm topic-card')
                   .css('cursor', 'pointer') // Đổi con trỏ chuột để hiển thị có thể click
                   .click(function () {
-                    window.location.href = "home?action=denDanhSachBaiTap&title=" + encodeURIComponent(topic.title);
+                    alert("Bạn đã chọn chủ đề: " + topic.title);
                   });
 
           let img = $('<img>')
@@ -77,6 +76,10 @@
         alert("Lỗi khi tải danh sách chủ đề!");
       }
     });
-  });
 
+    // Xử lý sự kiện khi nhấn nút "Thêm chủ đề"
+    $("#btn-add-topic").click(function () {
+      alert("Chức năng thêm chủ đề sẽ được phát triển!");
+    });
+  });
 </script>

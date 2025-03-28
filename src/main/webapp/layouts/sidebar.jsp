@@ -9,7 +9,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="Topic">
+        <a class="nav-link" href="">
           <i class="fas fa-folder"></i> Quản lý Chủ đề
         </a>
       </li>
