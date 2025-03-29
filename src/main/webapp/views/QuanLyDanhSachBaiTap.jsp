@@ -102,11 +102,14 @@
     // Kích hoạt DataTables
     const table = $('#exerciseTable').DataTable({
       "paging": true,
-      "searching": true,
       "ordering": true,
-      "info": true,
-      "lengthMenu": [5, 10, 20, 50],
-      "pagingType": "full_numbers", // Kiểu phân trang đầy đủ
+      "filter": true,
+      "destroy": true,
+      "orderMulti": false,
+      "serverSide": true,
+      "processing": true,
+      "bLengthChange": false,
+      "draw": true,
       "language": {
         "processing": "Đang xử lý ..."
       },
@@ -138,7 +141,7 @@
           "render": function (data, type, full, meta) {
             return "<div class='d-flex justify-content-center align-items-center'>" +
                     "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center'>" +
-                    "<i class='material-icons'>visibility</i>" +
+                    "<i class='material-icons'>details</i>" +
                     "</button></div>";
           },
         },

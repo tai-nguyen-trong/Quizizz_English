@@ -18,18 +18,51 @@
 
 <div class="container mt-4">
   <!-- Tiêu đề -->
-  <div class="d-flex justify-content-between align-items-center bg-light p-4 rounded shadow-sm">
-    <button id="btn-add-topic" class="btn btn-primary">Thêm chủ đề</button>
-  </div>
-
-  <!-- Phần danh sách chủ đề -->
-  <div class="mt-4 text-center bg-light p-3 rounded shadow-sm">
-    <h4 class="fw-semibold">📚 Các chủ đề</h4>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4><i class="fas fa-book"></i> Các chủ đề</h4>
+    <button id="btnThemChuDe" class="btn btn-primary">Thêm chủ đề</button>
   </div>
 
   <!-- Grid hiển thị chủ đề -->
   <div class="row mt-4" id="topic-container"></div>
 </div>
+
+<!-- Modal Thêm Chủ Đề -->
+<div class="modal fade" id="modalThemChuDe" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Thêm Chủ Đề Mới</h5>
+      </div>
+      <div class="modal-body">
+          <!-- Nhập Tên Chủ Đề -->
+          <div class="form-group">
+            <label for="tenChuDe">Tên Chủ Đề</label>
+            <input type="text" class="form-control" id="tenChuDe" placeholder="Nhập tên chủ đề" required>
+          </div>
+
+          <!-- Nhập Mô Tả -->
+          <div class="form-group">
+            <label for="moTaChuDe">Mô Tả</label>
+            <textarea class="form-control" id="moTaChuDe" rows="3" placeholder="Nhập mô tả chủ đề"></textarea>
+          </div>
+
+          <!-- Chọn Hình Ảnh -->
+          <div class="form-group mt-3">
+            <label for="anhChuDe">Hình ảnh</label>
+            <input type="file" class="form-control-file" id="anhChuDe">
+          </div>
+      </div>
+
+      <!-- Footer có 2 nút: Lưu thông tin và Đóng -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="submit" class="btn btn-success" id="btnLuuChuDe">Lưu thông tin</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
   $(document).ready(function () {
@@ -78,8 +111,8 @@
     });
 
     // Xử lý sự kiện khi nhấn nút "Thêm chủ đề"
-    $("#btn-add-topic").click(function () {
-      alert("Chức năng thêm chủ đề sẽ được phát triển!");
+    $("#btnThemChuDe").click(function () {
+      $("#modalThemChuDe").modal("show");
     });
   });
 </script>
