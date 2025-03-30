@@ -50,7 +50,7 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center bg-light p-4 rounded shadow-sm mb-3" >
     <h2 class="mb-0">DANH SÁCH CÂU HỎI</h2>
-    <button class="btn btn-success text-white fw-bold">Thêm câu hỏi mới</button>
+    <button id="btn-ThemCauHoi" class="btn btn-success text-white fw-bold">Thêm câu hỏi mới</button>
   </div>
   <!-- Thanh tìm kiếm và bộ lọc -->
   <div class="row clearfix mb-3">
@@ -94,6 +94,82 @@
   </div>
 </div>
 
+<!-- Modal Thêm Câu hỏi -->
+<div class="modal fade" id="modalThemCauHoi" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 70%;">
+    <div class="modal-content">
+      <!-- Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="modalLabel">Thêm Câu Hỏi Mới</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+        <div class="container">
+          <div class="row clearfix">
+            <!-- Tên Bài Tập -->
+            <div class="col-md-12">
+              <label class="fw-bold">Tên Câu Hỏi</label>
+              <input id="tenCauHoi" type="text" class="form-control">
+            </div>
+            <!-- Chọn Nhà Sản Xuất -->
+            <div class="col-md-6 mt-3">
+              <label class="fw-bold">Mã Bài Tập</label>
+              <select id="filter-nsx" class="form-select">
+                <option value="">Chọn bài tập</option>
+                <option value="NSX1">Nhà Sản Xuất 1</option>
+                <option value="NSX2">Nhà Sản Xuất 2</option>
+                <option value="NSX3">Nhà Sản Xuất 3</option>
+              </select>
+            </div>
+          </div>
+          <div class="row clearfix">
+            <!-- Tên Bài Tập -->
+            <div class="col-md-12">
+              <label class="fw-bold">Tên đáp án</label>
+              <input id="tenDapAn" type="text" class="form-control">
+            </div>
+
+            <div class="col-md-6 mt-3">
+              <label class="fw-bold">Đáp Án Đúng</label>
+              <div class="form-check">
+                <input id="dapandung" type="checkbox" class="form-check-input">
+                <label for="dapandung" class="form-check-label">Đúng</label>
+              </div>
+            </div>
+            <div class="col-md-6 mt-3">
+              <button type="button" class="btn btn-success">Thêm đáp án</button>
+            </div>
+          </div>
+          <div class="row clearfix mt-3">
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered" id="table-dapan" style="width: 100%">
+                <thead>
+                <tr>
+                  <th style="text-align:center">Stt</th>
+                  <th style="text-align:center">Tên đáp án</th>
+                  <th style="text-align:center">Đáp án đúng</th>
+                  <th style="text-align:center">Xóa</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success">Thêm Bài Tập</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   $(document).ready(function () {
     // Kích hoạt DataTables
@@ -104,14 +180,29 @@
       "info": true,
       "lengthMenu": [5, 10, 20, 50]
     });
+    var tableDapAn = $("#table-dapan").DataTable(
+            {
+              "processing": true,
+              dom: 'Bfrtip',
+              columnDefs: [
+              ],
+              buttons: [
+                {
+                  extend: 'pdfHtml5',
+                  title: 'Chi tiết đề nghị thanh toán'
+                },
+                {
+                  extend: 'excelHtml5',
+                  title: 'Chi tiết đề nghị thanh toán'
+                },
+                'print'
+              ]
+            }
+    );
 
     // Bộ lọc theo chủ đề
-    $('#filter-topic').on('change', function () {
-
-    });
-
-    // Bộ lọc theo cấp độ
-    $('#filter-level').on('change', function () {
+    $("#btn-ThemCauHoi").click(function () {
+      $("#modalThemCauHoi").modal("show");
     });
   });
 </script>

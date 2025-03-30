@@ -56,8 +56,8 @@
 
       <!-- Footer có 2 nút: Lưu thông tin và Đóng -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
         <button type="submit" class="btn btn-success" id="btnLuuChuDe">Lưu thông tin</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
       </div>
     </div>
   </div>
@@ -78,32 +78,95 @@
 
         $('#topic-container').empty(); // Xóa nội dung cũ
 
-        topics.forEach(topic => {
-          let card = $('<div>').addClass('col-md-3 col-sm-6 mb-4');
+          topics.forEach(topic => {
+              let card = $('<div>').addClass('col-md-3 col-sm-6 mb-4');
 
-          let cardInner = $('<div>').addClass('card shadow-sm topic-card')
-                  .css('cursor', 'pointer') // Đổi con trỏ chuột để hiển thị có thể click
+              let cardInner = $('<div>').addClass('card shadow-sm topic-card position-relative overflow-hidden')
+                  .css({
+                      'cursor': 'pointer',
+                      'border-radius': '12px',
+                      'transition': 'all 0.3s ease-in-out'
+                  })
                   .click(function () {
-                    alert("Bạn đã chọn chủ đề: " + topic.title);
+                      alert("Bạn đã chọn chủ đề: " + topic.title);
                   });
 
-          let img = $('<img>')
+              // Nút Sửa & Xóa (Luôn hiển thị)
+              let actionButtons = $('<div>')
+                  .addClass('action-buttons position-absolute top-0 end-0 p-2')
+                  .css({
+                      'background': 'rgba(0, 0, 0, 0.6)',
+                      'border-radius': '8px',
+                      'padding': '4px'
+                  });
+
+              let editBtn = $('<button>')
+                  .addClass('btn btn-sm btn-warning me-1 rounded-circle')
+                  .html('<i class="material-icons">edit</i>')
+                  .css({
+                      'width': '32px', 'height': '32px', 'display': 'flex',
+                      'align-items': 'center', 'justify-content': 'center'
+                  })
+                  .click(function (e) {
+                      e.stopPropagation();
+                      $("#modalThemChuDe").modal("show");
+                      $("#tenChuDe").val(topic.title);
+                      console.log(topic.image);
+                  });
+
+              let deleteBtn = $('<button>')
+                  .addClass('btn btn-sm btn-danger rounded-circle')
+                  .html('<i class="material-icons">delete</i>')
+                  .css({
+                      'width': '32px', 'height': '32px', 'display': 'flex',
+                      'align-items': 'center', 'justify-content': 'center'
+                  })
+                  .click(function (e) {
+                      e.stopPropagation();
+                      if (confirm("Bạn có chắc chắn muốn xóa " + topic.title + " không?")) {
+                          $(card).fadeOut(300, function() { $(this).remove(); });
+                      }
+                  });
+
+              actionButtons.append(editBtn).append(deleteBtn);
+
+              let img = $('<img>')
                   .addClass('card-img-top')
                   .attr('src', topic.image)
                   .attr('alt', topic.title)
+                  .css({
+                      'border-top-left-radius': '12px',
+                      'border-top-right-radius': '12px'
+                  })
                   .on('error', function () {
-                    $(this).attr('src', '<%= request.getContextPath() %>/images/default.jpg');
+                      $(this).attr('src', '<%= request.getContextPath() %>/images/default.jpg');
                   });
 
-          let cardBody = $('<div>').addClass('card-body text-center');
-          let title = $('<h5>').addClass('card-title').text(topic.title);
+              let cardBody = $('<div>').addClass('card-body text-center bg-white')
+                  .css({
+                      'border-bottom-left-radius': '12px',
+                      'border-bottom-right-radius': '12px',
+                      'padding': '15px'
+                  });
 
-          cardBody.append(title);
-          cardInner.append(img).append(cardBody);
-          card.append(cardInner);
+              let title = $('<h5>').addClass('card-title').text(topic.title)
+                  .css({ 'font-weight': 'bold', 'margin-bottom': '5px' });
 
-          $('#topic-container').append(card);
-        });
+              let description = $('<p>').addClass('text-muted')
+                  .text(topic.description)
+                  .css({
+                      'font-size': '14px',
+                      'min-height': '40px'
+                  });
+
+              cardBody.append(title).append(description);
+              cardInner.append(actionButtons).append(img).append(cardBody);
+              card.append(cardInner);
+
+              $('#topic-container').append(card);
+          });
+
+
       },
       error: function () {
         alert("Lỗi khi tải danh sách chủ đề!");

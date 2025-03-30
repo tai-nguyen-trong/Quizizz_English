@@ -50,7 +50,7 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center bg-light p-4 rounded shadow-sm mb-3">
     <h2 class="mb-0">Bài tập</h2>
-    <button class="btn btn-success text-white fw-bold">Thêm bài tập mới</button>
+    <button id="btn-ThemBaiTap" class="btn btn-success text-white fw-bold">Thêm bài tập mới</button>
   </div>
   <!-- Thanh tìm kiếm và bộ lọc -->
   <div class="row clearfix mb-3">
@@ -96,6 +96,68 @@
     </table>
   </div>
 </div>
+<!-- Modal Thêm Chủ Đề -->
+<div class="modal fade" id="modalThemBaiTap" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 70%;">
+    <div class="modal-content">
+      <!-- Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="modalLabel">Thêm Bài Tập Mới</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <!-- Tên Bài Tập -->
+            <div class="col-md-12">
+              <label class="fw-bold">Tên Bài Tập</label>
+              <input id="tenBaiTap" type="text" class="form-control">
+            </div>
+
+            <!-- Mã Bài Tập & Thời Gian Làm Bài -->
+            <div class="col-md-6 mt-3">
+              <label class="fw-bold">Mã Bài Tập</label>
+              <input id="maBaiTap" type="text" class="form-control">
+            </div>
+            <div class="col-md-6 mt-3">
+              <label class="fw-bold">Thời Gian Làm Bài</label>
+              <input id="thoigianlambai" type="text" class="form-control">
+            </div>
+
+            <!-- Chọn Nhà Sản Xuất -->
+            <div class="col-md-6 mt-3">
+              <label class="fw-bold">Chủ đề</label>
+              <select id="filter-nsx" class="form-select">
+                <option value="">Chọn chủ đề</option>
+                <option value="NSX1">Nhà Sản Xuất 1</option>
+                <option value="NSX2">Nhà Sản Xuất 2</option>
+                <option value="NSX3">Nhà Sản Xuất 3</option>
+              </select>
+            </div>
+            <div class="col-md-6 mt-3">
+              <label class="fw-bold">Chủ đề</label>
+              <select id="select-capdo" class="form-select">
+                <option value="">Chọn chủ đề</option>
+                <option value="NSX1">Nhà Sản Xuất 1</option>
+                <option value="NSX2">Nhà Sản Xuất 2</option>
+                <option value="NSX3">Nhà Sản Xuất 3</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success">Thêm Bài Tập</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
   $(document).ready(function () {
@@ -131,7 +193,7 @@
           "data": null,
           "render": function (data, type, full, meta) {
             return "<div class='d-flex justify-content-center align-items-center'>" +
-                    "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center'>" +
+                    "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center btnEdit'>" +
                     "<i class='material-icons'>edit</i>" +
                     "</button></div>";
           },
@@ -140,7 +202,7 @@
           "data": null,
           "render": function (data, type, full, meta) {
             return "<div class='d-flex justify-content-center align-items-center'>" +
-                    "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center'>" +
+                    "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center btnDetails'>" +
                     "<i class='material-icons'>details</i>" +
                     "</button></div>";
           },
@@ -149,7 +211,7 @@
           "data": null,
           "render": function (data, type, full, meta) {
             return "<div class='d-flex justify-content-center align-items-center'>" +
-                    "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center'>" +
+                    "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center btnDelete'>" +
                     "<i class='material-icons'>delete</i>" +
                     "</button></div>";
           },
@@ -158,13 +220,48 @@
       ]
     });
 
-    // Bộ lọc theo chủ đề
-    $('#filter-topic').on('change', function () {
 
+    // Xử lý sự kiện khi nhấn nút "Thêm chủ đề"
+    $("#btn-ThemBaiTap").click(function () {
+      $("#modalThemBaiTap").modal("show");
+    });
+    // Sự kiện Click vào Nút Chỉnh Sửa
+    $('#exerciseTable tbody').on('click', '.btnEdit', function () {
+      let rowData = table.row($(this).parents('tr')).data(); // Lấy dữ liệu hàng
+      alert("Chỉnh sửa bài tập:\n" +
+              "ID: " + rowData.ID + "\n" +
+              "Tên bài tập: " + rowData.TenBaiTap + "\n" +
+              "Chủ đề: " + rowData.ChuDe);
+
+      // Hiển thị Modal chỉnh sửa ở đây
+      // Ví dụ: $('#modalEdit').modal('show');
     });
 
-    // Bộ lọc theo cấp độ
-    $('#filter-level').on('change', function () {
+    // Sự kiện Click vào Nút Xem Chi Tiết
+    $('#exerciseTable tbody').on('click', '.btnDetails', function () {
+      let rowData = table.row($(this).parents('tr')).data();
+      alert("Xem chi tiết bài tập:\n" +
+              "Mã bài tập: " + rowData.MaBaiTap + "\n" +
+              "Mô tả: " + rowData.ThoiGianLamBai);
+    });
+
+    // Sự kiện Click vào Nút Xóa
+    $('#exerciseTable tbody').on('click', '.btnDelete', function () {
+      let rowData = table.row($(this).parents('tr')).data();
+      if (confirm("Bạn có chắc chắn muốn xóa bài tập: " + rowData.TenBaiTap + " không?")) {
+        // Gửi Ajax Request để xóa trên server
+        $.ajax({
+          url: "<%= request.getContextPath() %>/BaiTap?id=" + rowData.ID,
+          type: "DELETE",
+          success: function (response) {
+            alert("Đã xóa thành công!");
+            table.ajax.reload(); // Tải lại bảng sau khi xóa
+          },
+          error: function () {
+            alert("Xóa thất bại!");
+          }
+        });
+      }
     });
   });
 </script>
