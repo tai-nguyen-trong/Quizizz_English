@@ -1,6 +1,12 @@
 package com.quizizz.english.quizizz_english.Servlets;
 
 import com.google.gson.Gson;
+import com.quizizz.english.quizizz_english.model.ChuDe;
+import com.quizizz.english.quizizz_english.repositoryImpl.ChuDeRepositoryImpl;
+import com.quizizz.english.quizizz_english.service.IChuDeService;
+import com.quizizz.english.quizizz_english.serviceImpl.ChuDeServiceImpl;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,6 +23,13 @@ import java.util.Map;
 
 @WebServlet({"/","/home"})
 public class HomeServlet extends HttpServlet {
+    private IChuDeService chuDeService;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        chuDeService = new ChuDeServiceImpl(new ChuDeRepositoryImpl());
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getServletPath();
@@ -55,18 +68,20 @@ public class HomeServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        // Tạo danh sách chủ đề dưới dạng List<Map>
-        List<Map<String, String>> topics = new ArrayList<>();
 
-        topics.add(createTopic("Động vật", "https://media.wired.com/photos/593261cab8eb31692072f129/master/w_1920,c_limit/85120553.jpg"));
+        // Tạo danh sách chủ đề dưới dạng List<Map>
+        List<ChuDe> chuDes = new ArrayList<>();
+        chuDes = chuDeService.getAllChuDe();
+
+       /* topics.add(createTopic("Động vật", "https://media.wired.com/photos/593261cab8eb31692072f129/master/w_1920,c_limit/85120553.jpg"));
         topics.add(createTopic("Thực vật", "https://www.cactusoutlet.com/cdn/shop/files/20231020_CactiProduct2ndShoot_KathleenDreierPhotography_KMDP0583-Edit_2048x.jpg"));
         topics.add(createTopic("Thể thao", "https://ieltsxuanphi.edu.vn/wp-content/uploads/2021/06/sports-New-Brunswick.jpg"));
         topics.add(createTopic("Công nghệ", "https://sgs.upm.edu.my/summer-uploads/20230608140907blobid0.jpg"));
         topics.add(createTopic("Chính trị", "https://m.media-amazon.com/images/I/81wZUou4F7L._AC_UF894,1000_QL80_.jpg"));
-        topics.add(createTopic("Du lịch", "https://smartcom.vn/blog/wp-content/uploads/2024/03/2_1.jpg"));
+        topics.add(createTopic("Du lịch", "https://smartcom.vn/blog/wp-content/uploads/2024/03/2_1.jpg"));*/
 
         // Convert danh sách thành JSON
-        String json = new Gson().toJson(topics);
+        String json = new Gson().toJson(chuDes);
 
         // Gửi JSON về client
         response.getWriter().write(json);
@@ -83,7 +98,7 @@ public class HomeServlet extends HttpServlet {
             String currentPage = path == null ? "home" : path;
             // Kiểm tra file JSP có tồn tại không (tránh lỗi 404)
             String pagePath = "/views/" + currentPage + ".jsp";
-            if (getServletContext().getResource(pagePath) == null) {
+            if (req.getServletContext().getResource(pagePath) == null) {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Page not found!");
                 return;
             }
