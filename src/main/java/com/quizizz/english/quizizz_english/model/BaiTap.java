@@ -19,11 +19,11 @@ public class BaiTap {
     public BaiTap() {
     }
 
-    public BaiTap(String maBaiTap, int id, double thoiGianLamBai, String tenBaiTap, int idChuDe, int idCapDo) {
-        this.maBaiTap = maBaiTap;
+    public BaiTap(int id, String maBaiTap, String tenBaiTap, double thoiGianLamBai, int idChuDe, int idCapDo) {
         this.id = id;
-        this.thoiGianLamBai = thoiGianLamBai;
+        this.maBaiTap = maBaiTap;
         this.tenBaiTap = tenBaiTap;
+        this.thoiGianLamBai = thoiGianLamBai;
         this.idChuDe = idChuDe;
         this.idCapDo = idCapDo;
     }

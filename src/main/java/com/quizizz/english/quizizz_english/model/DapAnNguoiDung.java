@@ -2,7 +2,7 @@ package com.quizizz.english.quizizz_english.model;
 
 public class DapAnNguoiDung {
     private int id;
-    private boolean CauDung;
+    private boolean cauDung;
     private int idBaiTap;
     private int idCauHoi;
     private int idDapAn;
@@ -16,7 +16,7 @@ public class DapAnNguoiDung {
 
     public DapAnNguoiDung(int id, boolean cauDung, int idBaiTap, int idCauHoi, int idDapAn) {
         this.id = id;
-        CauDung = cauDung;
+        this.cauDung = cauDung;
         this.idBaiTap = idBaiTap;
         this.idCauHoi = idCauHoi;
         this.idDapAn = idDapAn;
@@ -30,12 +30,12 @@ public class DapAnNguoiDung {
         this.id = id;
     }
 
-    public boolean isCauDung() {
-        return CauDung;
+    public boolean getCauDung() {
+        return cauDung;
     }
 
     public void setCauDung(boolean cauDung) {
-        CauDung = cauDung;
+        cauDung = cauDung;
     }
 
     public int getIdBaiTap() {
