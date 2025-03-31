@@ -2,7 +2,6 @@ package com.quizizz.english.quizizz_english.model;
 
 public class DapAn {
     private int id;
-    private String maDapAn;
     private String tenDapAn;
     private boolean dapAnDung;
     private int idCauHoi;
@@ -13,9 +12,8 @@ public class DapAn {
     public DapAn() {
     }
 
-    public DapAn(int id, String maDapAn, String tenDapAn, boolean dapAnDung, int idCauHoi) {
+    public DapAn(int id, String tenDapAn, boolean dapAnDung, int idCauHoi) {
         this.id = id;
-        this.maDapAn = maDapAn;
         this.tenDapAn = tenDapAn;
         this.dapAnDung = dapAnDung;
         this.idCauHoi = idCauHoi;
@@ -29,14 +27,6 @@ public class DapAn {
         this.id = id;
     }
 
-    public String getMaDapAn() {
-        return maDapAn;
-    }
-
-    public void setMaDapAn(String maDapAn) {
-        this.maDapAn = maDapAn;
-    }
-
     public String getTenDapAn() {
         return tenDapAn;
     }
@@ -45,7 +35,7 @@ public class DapAn {
         this.tenDapAn = tenDapAn;
     }
 
-    public boolean isDapAnDung() {
+    public boolean getDapAnDung() {
         return dapAnDung;
     }
 
