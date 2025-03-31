@@ -1,5 +1,7 @@
 package com.quizizz.english.quizizz_english.repository;
 
+import com.quizizz.english.quizizz_english.dto.BaiTapDTO;
+
 import java.util.List;
 
 public interface IRepository<T> {

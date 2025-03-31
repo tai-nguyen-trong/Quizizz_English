@@ -1,5 +1,6 @@
 package com.quizizz.english.quizizz_english.serviceImpl;
 
+import com.quizizz.english.quizizz_english.dto.BaiTapDTO;
 import com.quizizz.english.quizizz_english.model.BaiTap;
 import com.quizizz.english.quizizz_english.repository.IBaiTapRepository;
 import com.quizizz.english.quizizz_english.service.IBaiTapService;
@@ -14,27 +15,30 @@ public class BaiTapServiceImpl implements IBaiTapService {
     }
 
     @Override
-    public void addBaiTap(BaiTap item) {
-        baiTapRepository.insert(item);
+    public boolean addBaiTap(BaiTap item) {
+        baiTapRepository.addBaiTap(item);
+        return true;
     }
 
     @Override
-    public void updateBaiTap(BaiTap item) {
-        baiTapRepository.update(item);
+    public boolean updateBaiTap(BaiTap item) {
+        baiTapRepository.updateBaiTap(item);
+        return true;
     }
 
     @Override
-    public void deleteBaiTap(BaiTap item) {
-        baiTapRepository.delete(item);
+    public boolean deleteBaiTap(int item) {
+        baiTapRepository.deleteBaiTap(item);
+        return true;
     }
 
     @Override
-    public List<BaiTap> getAllBaiTap() {
-        return baiTapRepository.getAll();
+    public List<BaiTapDTO> getAllBaiTap() {
+        return baiTapRepository.getAllBaiTap();
     }
 
     @Override
     public BaiTap getBaiTapById(int id) {
-        return baiTapRepository.getById(id);
+        return baiTapRepository.getBaiTapById(id);
     }
 }

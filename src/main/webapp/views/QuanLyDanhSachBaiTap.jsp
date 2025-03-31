@@ -183,12 +183,12 @@
                 "dataSrc": ""
               },
       "aoColumns": [
-        { "mDataProp": "ID" },
-        { "mDataProp": "MaBaiTap" },
-        { "mDataProp": "TenBaiTap" },
-        { "mDataProp": "ChuDe" },
-        { "mDataProp": "CapDo" },
-        { "mDataProp": "ThoiGianLamBai" },
+        { "mDataProp": "id" },
+        { "mDataProp": "maBaiTap" },
+        { "mDataProp": "tenBaiTap" },
+        { "mDataProp": "tenChuDe" },
+        { "mDataProp": "tenCapDo" },
+        { "mDataProp": "thoiGianLamBai" },
         {
           "data": null,
           "render": function (data, type, full, meta) {

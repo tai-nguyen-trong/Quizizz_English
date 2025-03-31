@@ -1,5 +1,7 @@
 package com.quizizz.english.quizizz_english.model;
 
+import com.quizizz.english.quizizz_english.dto.BaiTapDTO;
+
 import java.util.List;
 
 public class BaiTap {
