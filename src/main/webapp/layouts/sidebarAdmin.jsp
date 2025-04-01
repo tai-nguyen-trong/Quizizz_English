@@ -22,7 +22,7 @@
       <!-- Quản lý Chủ đề -->
       <li class="nav-item">
         <a class="nav-link ${currentPage == 'QuanLyDanhSachChuDe' ? 'active' : ''}"
-           href="${pageContext.request.contextPath}/QuanLyDanhSachChuDe">
+           href="<%= request.getContextPath() %>/QuanLyDanhSachChuDe">
           <i class="material-icons">folder</i> Quản lý Chủ đề
         </a>
       </li>

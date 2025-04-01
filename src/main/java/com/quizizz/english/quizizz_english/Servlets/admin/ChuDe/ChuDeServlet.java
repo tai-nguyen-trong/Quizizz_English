@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 
-@WebServlet("/ChuDe")
+@WebServlet("/QuanLyDanhSachChuDe")
 public class ChuDeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
