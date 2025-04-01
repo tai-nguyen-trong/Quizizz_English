@@ -51,4 +51,8 @@ public class ChuDe {
     public void setHinhAnh(String hinhAnh) {
         this.hinhAnh = hinhAnh;
     }
+    @Override
+    public String toString() {
+        return "ChuDe{id=" + id + ", name='" + tenChuDe + "', mota='" + moTa + "', hinhanh='" + hinhAnh + "'}";
+    }
 }

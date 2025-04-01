@@ -1,11 +1,12 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: HaiDaiPC
-  Date: 3/26/2025
-  Time: 10:50 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="com.quizizz.english.quizizz_english.model.ChuDe" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.quizizz.english.quizizz_english.model.CapDo" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%
+  List<ChuDe> chudes = (List<ChuDe>) request.getAttribute("chuDes");
+  List<CapDo> capDos = (List<CapDo>) request.getAttribute("capDos");
+%>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -55,20 +56,24 @@
   <!-- Thanh tìm kiếm và bộ lọc -->
   <div class="row clearfix mb-3">
     <div class="col-md-3">
-      <select id="filter-topic" class="form-select">
+      <select id="timkiem-chuDe" class="form-select" data-live-search="true">
         <option value="">Chọn chủ đề</option>
-        <option value="Động vật">Động vật</option>
-        <option value="Màu sắc">Màu sắc</option>
-        <option value="Công nghệ">Công nghệ</option>
+        <% for (ChuDe item : chudes) { %>
+        <option value="<%= item.getId() %>">
+          <%= item.getTenChuDe() %>
+        </option>
+        <% } %>
       </select>
     </div>
 
     <div class="col-md-3">
-      <select id="filter-level-1" class="form-select">
+      <select id="timkiem-capDo" class="form-select" data-live-search="true">
         <option value="">Chọn cấp độ</option>
-        <option value="Dễ">Dễ</option>
-        <option value="Trung bình">Trung bình</option>
-        <option value="Khó">Khó</option>
+        <% for (CapDo item : capDos) { %>
+        <option value="<%= item.getId() %>">
+          <%= item.getTenCapDo() %>
+        </option>
+        <% } %>
       </select>
     </div>
 
@@ -128,21 +133,25 @@
 
             <!-- Chọn Nhà Sản Xuất -->
             <div class="col-md-6 mt-3">
-              <label class="fw-bold">Chủ đề</label>
-              <select id="filter-nsx" class="form-select">
+              <label class="fw-bold"  for="otp-chuDe">Chủ đề</label>
+              <select id="otp-chuDe" class="form-select" data-live-search="true">
                 <option value="">Chọn chủ đề</option>
-                <option value="NSX1">Nhà Sản Xuất 1</option>
-                <option value="NSX2">Nhà Sản Xuất 2</option>
-                <option value="NSX3">Nhà Sản Xuất 3</option>
+                <% for (ChuDe item : chudes) { %>
+                <option value="<%= item.getId() %>">
+                  <%= item.getTenChuDe() %>
+                </option>
+                <% } %>
               </select>
             </div>
             <div class="col-md-6 mt-3">
-              <label class="fw-bold">Chủ đề</label>
-              <select id="select-capdo" class="form-select">
-                <option value="">Chọn chủ đề</option>
-                <option value="NSX1">Nhà Sản Xuất 1</option>
-                <option value="NSX2">Nhà Sản Xuất 2</option>
-                <option value="NSX3">Nhà Sản Xuất 3</option>
+              <label class="fw-bold"  for="otp-capDo">Chọn cấp độ</label>
+              <select id="otp-capDo" class="form-select" data-live-search="true">
+                <option value="">Chọn cấp độ</option>
+                <% for (CapDo item : capDos) { %>
+                <option value="<%= item.getId() %>">
+                  <%= item.getTenCapDo() %>
+                </option>
+                <% } %>
               </select>
             </div>
           </div>
@@ -177,8 +186,8 @@
       },
       "ajax":
               {
-                "url": "<%= request.getContextPath() %>/BaiTap",
-                "type": "GET",
+                "url": "<%= request.getContextPath() %>/QuanLyDanhSachBaiTap",
+                "type": "POST",
                 "dataType": "JSON",
                 "dataSrc": ""
               },
@@ -224,17 +233,17 @@
     // Xử lý sự kiện khi nhấn nút "Thêm chủ đề"
     $("#btn-ThemBaiTap").click(function () {
       $("#modalThemBaiTap").modal("show");
+
     });
     // Sự kiện Click vào Nút Chỉnh Sửa
     $('#exerciseTable tbody').on('click', '.btnEdit', function () {
       let rowData = table.row($(this).parents('tr')).data(); // Lấy dữ liệu hàng
-      alert("Chỉnh sửa bài tập:\n" +
-              "ID: " + rowData.ID + "\n" +
-              "Tên bài tập: " + rowData.TenBaiTap + "\n" +
-              "Chủ đề: " + rowData.ChuDe);
+      $("#modalThemBaiTap").modal("show");
+      $("#maBaiTap").val(rowData.maBaiTap);
+      $("#tenBaiTap").val(rowData.tenBaiTap);
+      $("#thoigianlambai").val(rowData.thoiGianLamBai);
+      debugger;
 
-      // Hiển thị Modal chỉnh sửa ở đây
-      // Ví dụ: $('#modalEdit').modal('show');
     });
 
     // Sự kiện Click vào Nút Xem Chi Tiết

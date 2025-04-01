@@ -13,40 +13,40 @@
     <ul class="nav flex-column">
       <!-- Trang chủ -->
       <li class="nav-item">
-        <a class="nav-link <%= "home".equals(currentPage) ? "active" : "" %>"
-           href="<%= request.getContextPath() %>/viewPage?currentPage=home">
+        <a class="nav-link  ${currentPage == 'home' ? 'active' : ''}"
+           href="<%= request.getContextPath() %>/home">
           <i class="material-icons">home</i> Trang chủ
         </a>
       </li>
 
       <!-- Quản lý Chủ đề -->
       <li class="nav-item">
-        <a class="nav-link <%= "QuanLyDanhSachChuDe".equals(currentPage) ? "active" : "" %>"
-           href="<%= request.getContextPath() %>/viewPage?currentPage=QuanLyDanhSachChuDe">
+        <a class="nav-link ${currentPage == 'QuanLyDanhSachChuDe' ? 'active' : ''}"
+           href="${pageContext.request.contextPath}/QuanLyDanhSachChuDe">
           <i class="material-icons">folder</i> Quản lý Chủ đề
         </a>
       </li>
 
       <!-- Quản lý Bài tập -->
       <li class="nav-item">
-        <a class="nav-link <%= "QuanLyDanhSachBaiTap".equals(currentPage) ? "active" : "" %>"
-           href="<%= request.getContextPath() %>/viewPage?currentPage=QuanLyDanhSachBaiTap">
+        <a class="nav-link ${currentPage == 'QuanLyDanhSachBaiTap' ? 'active' : ''}"
+           href="<%= request.getContextPath() %>/QuanLyDanhSachBaiTap">
           <i class="material-icons">book</i> Quản lý Bài tập
         </a>
       </li>
 
       <!-- Quản lý Câu hỏi -->
       <li class="nav-item">
-        <a class="nav-link <%= "QuanLyDanhSachCauHoi".equals(currentPage) ? "active" : "" %>"
-           href="<%= request.getContextPath() %>/viewPage?currentPage=QuanLyDanhSachCauHoi">
+        <a class="nav-link  ${currentPage == 'QuanLyDanhSachCauHoi' ? 'active' : ''}"
+           href="<%= request.getContextPath() %>/QuanLyDanhSachCauHoi">
           <i class="material-icons">help</i> Quản lý Câu hỏi
         </a>
       </li>
 
       <!-- Quản lý Người dùng -->
       <li class="nav-item">
-        <a class="nav-link <%= "QuanLyDanhSachNguoiDung".equals(currentPage) ? "active" : "" %>"
-           href="<%= request.getContextPath() %>/viewPage?currentPage=QuanLyDanhSachNguoiDung">
+        <a class="nav-link ${currentPage == 'QuanLyDanhSachNguoiDung' ? 'active' : ''}"
+           href="<%= request.getContextPath() %>/QuanLyDanhSachNguoiDung">
           <i class="material-icons">person</i> Quản lý Người dùng
         </a>
       </li>

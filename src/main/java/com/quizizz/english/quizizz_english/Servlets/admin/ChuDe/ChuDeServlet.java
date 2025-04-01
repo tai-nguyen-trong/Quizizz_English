@@ -1,6 +1,8 @@
 package com.quizizz.english.quizizz_english.Servlets.admin.ChuDe;
 
 import com.google.gson.Gson;
+import com.quizizz.english.quizizz_english.model.ChuDe;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,7 +19,18 @@ import java.util.Map;
 @WebServlet("/ChuDe")
 public class ChuDeServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            request.setAttribute("currentPage", "QuanLyDanhSachChuDe");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/layouts/layout.jsp");
+            dispatcher.forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
         // Set kiểu dữ liệu trả về là JSON và mã hóa UTF-8
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -37,11 +50,6 @@ public class ChuDeServlet extends HttpServlet {
 
         // Gửi JSON về client
         response.getWriter().write(json);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
     }
 
     @Override

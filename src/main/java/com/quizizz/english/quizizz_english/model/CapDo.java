@@ -31,4 +31,13 @@ public class CapDo {
     public void setTenCapDo(String tenCapDo) {
         this.tenCapDo = tenCapDo;
     }
+
+    @Override
+    public String toString() {
+        return "CapDo{" +
+                "id=" + id +
+                ", tenCapDo='" + tenCapDo + '\'' +
+                ", baiTap=" + baiTap +
+                '}';
+    }
 }

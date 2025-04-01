@@ -3,9 +3,18 @@ package com.quizizz.english.quizizz_english.Servlets.admin.BaiTap;
 import com.google.gson.Gson;
 import com.quizizz.english.quizizz_english.dto.BaiTapDTO;
 import com.quizizz.english.quizizz_english.model.BaiTap;
+import com.quizizz.english.quizizz_english.model.CapDo;
+import com.quizizz.english.quizizz_english.model.ChuDe;
 import com.quizizz.english.quizizz_english.repositoryImpl.BaiTapRepositoryImpl;
+import com.quizizz.english.quizizz_english.repositoryImpl.CapDoRepositoryImpl;
+import com.quizizz.english.quizizz_english.repositoryImpl.ChuDeRepositoryImpl;
 import com.quizizz.english.quizizz_english.service.IBaiTapService;
+import com.quizizz.english.quizizz_english.service.ICapDoService;
+import com.quizizz.english.quizizz_english.service.IChuDeService;
 import com.quizizz.english.quizizz_english.serviceImpl.BaiTapServiceImpl;
+import com.quizizz.english.quizizz_english.serviceImpl.CapDoServiceImpl;
+import com.quizizz.english.quizizz_english.serviceImpl.ChuDeServiceImpl;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,30 +23,47 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
-@WebServlet("/BaiTap")
+@WebServlet({"/QuanLyDanhSachBaiTap"})
 public class BaiTapServlet extends HttpServlet {
     private IBaiTapService baiTapService;
+    private IChuDeService chuDeService;
+    private ICapDoService capDoService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         baiTapService = new BaiTapServiceImpl(new BaiTapRepositoryImpl());
+        chuDeService = new ChuDeServiceImpl(new ChuDeRepositoryImpl());
+        capDoService = new CapDoServiceImpl(new CapDoRepositoryImpl());
     }
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            // Tạo danh sách chủ đề dưới dạng List<Map>
+            List<ChuDe> chuDes = new ArrayList<>();
+            List<CapDo> capDos = new ArrayList<>();
+            chuDes = chuDeService.getAllChuDe();
+            capDos = capDoService.getAllCapDo();
+            request.setAttribute("chuDes", chuDes); // Gửi danh sách sang JSP
+            request.setAttribute("capDos", capDos);
+            request.setAttribute("currentPage", "QuanLyDanhSachBaiTap");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/layouts/layout.jsp");
+            dispatcher.forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
         // Tạo danh sách chủ đề dưới dạng List<Map>
         List<BaiTapDTO> baitaps = new LinkedList<BaiTapDTO>();
         baitaps = baiTapService.getAllBaiTap();
-        /*baitaps.add(createTopic(1,"Bài tập 1", "BT0001","Động vật","Dễ","10 phút"));
-        baitaps.add(createTopic(2,"Bài tập 2", "BT0002","Động vật","Dễ","10 phút"));
-        baitaps.add(createTopic(3,"Bài tập 3", "BT0003","Động vật","Dễ","10 phút"));
-        baitaps.add(createTopic(4,"Bài tập 4", "BT0004","Động vật","Dễ","10 phút"));
-        baitaps.add(createTopic(5,"Bài tập 5", "BT0005","Động vật","Dễ","10 phút"));*/
-
         // Convert danh sách thành JSON
         String json = new Gson().toJson(baitaps);
 
@@ -46,19 +72,25 @@ public class BaiTapServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-    }
+    protected void doPut(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
 
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+        // Tạo danh sách chủ đề dưới dạng List<Map>
+        List<BaiTapDTO> baitaps = new LinkedList<BaiTapDTO>();
+        baitaps = baiTapService.getAllBaiTap();
+        // Convert danh sách thành JSON
+        String json = new Gson().toJson(baitaps);
+
+        // Gửi JSON về client
+        response.getWriter().write(json);
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doDelete(req, resp);
     }
+
 
     private Map<String, String> createTopic(int id, String tenBaiTap, String maBaiTap, String chuDe, String capDo, String thoiGianLamBai) {
         Map<String, String> topic = new HashMap<>();
@@ -69,5 +101,15 @@ public class BaiTapServlet extends HttpServlet {
         topic.put("CapDo", capDo);
         topic.put("ThoiGianLamBai", thoiGianLamBai);
         return topic;
+    }
+    private void danhSachChuDe(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        // Tạo danh sách chủ đề dưới dạng List<Map>
+        List<ChuDe> chuDes = new ArrayList<>();
+        chuDes = chuDeService.getAllChuDe();
+        request.setAttribute("chuDes", chuDes); // Gửi danh sách sang JSP
+        request.setAttribute("currentPage", "QuanLyDanhSachBaiTap");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/layouts/layout.jsp");
+        dispatcher.forward(request, response);
     }
 }

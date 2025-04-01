@@ -5,6 +5,7 @@ import com.quizizz.english.quizizz_english.model.ChuDe;
 import com.quizizz.english.quizizz_english.repositoryImpl.ChuDeRepositoryImpl;
 import com.quizizz.english.quizizz_english.service.IChuDeService;
 import com.quizizz.english.quizizz_english.serviceImpl.ChuDeServiceImpl;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -31,18 +32,16 @@ public class HomeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getServletPath();
-        //String path = req.getParameter("currentPage");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         try {
-            switch (action) {
-                case "/denDanhSachBaiTap":
-                    danhSachBaiTap(req, resp);
-                    break;
-                default:
-                    DieuHuongChuyenTrang(req, resp);
-                    break;
-            }
+            // Tạo danh sách chủ đề dưới dạng List<Map>
+            List<ChuDe> chuDes = new ArrayList<>();
+            chuDes = chuDeService.getAllChuDe();
+            request.setAttribute("chuDes", chuDes); // Gửi danh sách sang JSP
+            request.setAttribute("currentPage", "home");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/layouts/layout.jsp");
+            dispatcher.forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,24 +71,11 @@ public class HomeServlet extends HttpServlet {
         // Tạo danh sách chủ đề dưới dạng List<Map>
         List<ChuDe> chuDes = new ArrayList<>();
         chuDes = chuDeService.getAllChuDe();
-
-       /* topics.add(createTopic("Động vật", "https://media.wired.com/photos/593261cab8eb31692072f129/master/w_1920,c_limit/85120553.jpg"));
-        topics.add(createTopic("Thực vật", "https://www.cactusoutlet.com/cdn/shop/files/20231020_CactiProduct2ndShoot_KathleenDreierPhotography_KMDP0583-Edit_2048x.jpg"));
-        topics.add(createTopic("Thể thao", "https://ieltsxuanphi.edu.vn/wp-content/uploads/2021/06/sports-New-Brunswick.jpg"));
-        topics.add(createTopic("Công nghệ", "https://sgs.upm.edu.my/summer-uploads/20230608140907blobid0.jpg"));
-        topics.add(createTopic("Chính trị", "https://m.media-amazon.com/images/I/81wZUou4F7L._AC_UF894,1000_QL80_.jpg"));
-        topics.add(createTopic("Du lịch", "https://smartcom.vn/blog/wp-content/uploads/2024/03/2_1.jpg"));*/
-
         // Convert danh sách thành JSON
         String json = new Gson().toJson(chuDes);
 
         // Gửi JSON về client
         response.getWriter().write(json);
-    }
-    protected void danhSachBaiTap(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String title = req.getParameter("title"); // Lấy title từ request
-        req.setAttribute("topicTitle", title); // Đưa vào request attribute
-        req.getRequestDispatcher("new.jsp").forward(req, resp);
     }
     protected void DieuHuongChuyenTrang(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
