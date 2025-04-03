@@ -22,15 +22,17 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
-@WebServlet({"/QuanLyDanhSachBaiTap"})
+@WebServlet({"/QuanLyDanhSachBaiTap","/CapNhatBaiTap","/XoaBaiTap"})
 public class BaiTapServlet extends HttpServlet {
     private IBaiTapService baiTapService;
     private IChuDeService chuDeService;
     private ICapDoService capDoService;
+    private Gson gson = new Gson(); // Khởi tạo Gson
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -57,39 +59,86 @@ public class BaiTapServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            request.setCharacterEncoding("UTF-8");
+            response.setContentType("text/plain;charset=UTF-8");
 
-        // Tạo danh sách chủ đề dưới dạng List<Map>
-        List<BaiTapDTO> baitaps = new LinkedList<BaiTapDTO>();
-        baitaps = baiTapService.getAllBaiTap();
-        // Convert danh sách thành JSON
-        String json = new Gson().toJson(baitaps);
-
-        // Gửi JSON về client
-        response.getWriter().write(json);
+            // Nhận dữ liệu từ AJAX
+            String tenBaiTap = request.getParameter("tenBaiTap");
+            double thoiGianLamBai = Double.parseDouble(request.getParameter("thoiGianLamBai"));
+            int idChuDe = Integer.parseInt(request.getParameter("idChuDe"));
+            int idCapDo = Integer.parseInt(request.getParameter("idCapDo"));
+            BaiTap baiTap = new BaiTap(tenBaiTap,thoiGianLamBai,idChuDe,idCapDo);
+            boolean isSuccess = baiTapService.addBaiTap(baiTap);
+            // Trả về phản hồi
+            if (isSuccess) {
+                response.getWriter().write("Thêm bài tập thành công!");
+            } else {
+                response.getWriter().write("Thêm bài tập thất bại!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Đọc JSON từ request body
+        BufferedReader reader = request.getReader();
+        StringBuilder requestBody = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            requestBody.append(line);
+        }
+        reader.close();
+        try {
+            // Chuyển đổi JSON thành đối tượng Java
+            BaiTap baiTap = gson.fromJson(requestBody.toString(), BaiTap.class);
 
-        // Tạo danh sách chủ đề dưới dạng List<Map>
-        List<BaiTapDTO> baitaps = new LinkedList<BaiTapDTO>();
-        baitaps = baiTapService.getAllBaiTap();
-        // Convert danh sách thành JSON
-        String json = new Gson().toJson(baitaps);
+            // Gọi Service để cập nhật dữ liệu
+            boolean isUpdated = baiTapService.updateBaiTap(baiTap);
 
-        // Gửi JSON về client
-        response.getWriter().write(json);
+            // Trả về kết quả
+            if (isUpdated) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write(gson.toJson("Cập nhật thành công!"));
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write(gson.toJson("Cập nhật thất bại!"));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String idParam = request.getParameter("id");
+        try {
+            int id = Integer.parseInt(idParam);
+            boolean isDeleted = baiTapService.deleteBaiTap(id);
+
+            if (isDeleted) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write("Xóa thành công!");
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Xóa thất bại!");
+            }
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("ID không hợp lệ!");
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Lỗi khi xóa bài tập: " + e.getMessage());
+        }
     }
+    @Override
+    public void destroy() {
+        System.out.println("🔹 Servlet đang bị hủy...");
+    }
+
 
 
     private Map<String, String> createTopic(int id, String tenBaiTap, String maBaiTap, String chuDe, String capDo, String thoiGianLamBai) {

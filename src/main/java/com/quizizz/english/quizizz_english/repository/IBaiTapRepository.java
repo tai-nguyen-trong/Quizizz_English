@@ -11,5 +11,5 @@ public interface IBaiTapRepository {
     boolean addBaiTap(BaiTap baiTap); // Thêm bài tập mới
     boolean updateBaiTap(BaiTap baiTap); // Cập nhật bài tập
     boolean deleteBaiTap(int id);  // Xóa bài tập
-
+    BaiTap getBaiTapMoiNhat();
 }

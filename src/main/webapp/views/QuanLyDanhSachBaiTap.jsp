@@ -101,7 +101,7 @@
     </table>
   </div>
 </div>
-<!-- Modal Thêm Chủ Đề -->
+<!-- Modal Thêm bài tập  -->
 <div class="modal fade" id="modalThemBaiTap" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 70%;">
     <div class="modal-content">
@@ -119,12 +119,6 @@
             <div class="col-md-12">
               <label class="fw-bold">Tên Bài Tập</label>
               <input id="tenBaiTap" type="text" class="form-control">
-            </div>
-
-            <!-- Mã Bài Tập & Thời Gian Làm Bài -->
-            <div class="col-md-6 mt-3">
-              <label class="fw-bold">Mã Bài Tập</label>
-              <input id="maBaiTap" type="text" class="form-control">
             </div>
             <div class="col-md-6 mt-3">
               <label class="fw-bold">Thời Gian Làm Bài</label>
@@ -160,7 +154,8 @@
 
       <!-- Footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-success">Thêm Bài Tập</button>
+        <button id="btn-themThongTin" type="button" class="btn btn-success">Thêm Bài Tập</button>
+        <button id="btn-luuThongTin" type="button" class="btn btn-success">Lưu thông tin</button>
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
       </div>
     </div>
@@ -170,6 +165,8 @@
 
 <script>
   $(document).ready(function () {
+    //biến
+    let idBaiTap = 0;
     // Kích hoạt DataTables
     const table = $('#exerciseTable').DataTable({
       "paging": true,
@@ -186,8 +183,8 @@
       },
       "ajax":
               {
-                "url": "<%= request.getContextPath() %>/QuanLyDanhSachBaiTap",
-                "type": "POST",
+                "url": "<%= request.getContextPath() %>/DanhSachBaiTap",
+                "type": "GET",
                 "dataType": "JSON",
                 "dataSrc": ""
               },
@@ -197,7 +194,7 @@
         { "mDataProp": "tenBaiTap" },
         { "mDataProp": "tenChuDe" },
         { "mDataProp": "tenCapDo" },
-        { "mDataProp": "thoiGianLamBai" },
+        { "mDataProp": "thoiGianLamBai" ,type: "num"},
         {
           "data": null,
           "render": function (data, type, full, meta) {
@@ -233,16 +230,20 @@
     // Xử lý sự kiện khi nhấn nút "Thêm chủ đề"
     $("#btn-ThemBaiTap").click(function () {
       $("#modalThemBaiTap").modal("show");
-
+      $("#btn-luuThongTin").hide();
+      $("#btn-themThongTin").show();
     });
     // Sự kiện Click vào Nút Chỉnh Sửa
     $('#exerciseTable tbody').on('click', '.btnEdit', function () {
       let rowData = table.row($(this).parents('tr')).data(); // Lấy dữ liệu hàng
+      idBaiTap = rowData.id;
       $("#modalThemBaiTap").modal("show");
-      $("#maBaiTap").val(rowData.maBaiTap);
+      $("#btn-themThongTin").hide();
+      $("#btn-luuThongTin").show();
       $("#tenBaiTap").val(rowData.tenBaiTap);
       $("#thoigianlambai").val(rowData.thoiGianLamBai);
-      debugger;
+      $("#otp-chuDe").val(rowData.idChuDe).change();
+      $("#otp-capDo").val(rowData.idCapDo).change();
 
     });
 
@@ -257,10 +258,11 @@
     // Sự kiện Click vào Nút Xóa
     $('#exerciseTable tbody').on('click', '.btnDelete', function () {
       let rowData = table.row($(this).parents('tr')).data();
-      if (confirm("Bạn có chắc chắn muốn xóa bài tập: " + rowData.TenBaiTap + " không?")) {
+      idBaiTap = rowData.id;
+      if (confirm("Bạn có chắc chắn muốn xóa bài tập: " + rowData.tenBaiTap + " không?")) {
         // Gửi Ajax Request để xóa trên server
         $.ajax({
-          url: "<%= request.getContextPath() %>/BaiTap?id=" + rowData.ID,
+          url: "<%= request.getContextPath() %>/XoaBaiTap?id=" + idBaiTap,
           type: "DELETE",
           success: function (response) {
             alert("Đã xóa thành công!");
@@ -271,6 +273,64 @@
           }
         });
       }
+    });
+    // thêm bài tập
+    $('#btn-themThongTin').on('click',function (){
+      $.LoadingOverlay("show");
+      var tenBaiTap = $("#tenBaiTap").val();
+      var thoiGianLamBai = $("#thoigianlambai").val();
+      var idCapDo = $("#otp-capDo").val();
+      var idChuDe = $("#otp-chuDe").val();
+      $.ajax({
+        url: "<%= request.getContextPath() %>/QuanLyDanhSachBaiTap",
+        type: "POST",
+        data: {
+          tenBaiTap: tenBaiTap,
+          thoiGianLamBai: thoiGianLamBai,
+          idCapDo: idCapDo,
+          idChuDe: idChuDe,
+        },
+        success: function (response) {
+          console.log(response);
+          $("#modalThemBaiTap").modal("hide");
+          table.ajax.reload(null, false);
+          $.LoadingOverlay("hide");
+        },
+        error: function () {
+          console.log("them that bai");
+          $.LoadingOverlay("hide");
+        }
+      });
+    });
+
+    // sửa bài tập
+    $('#btn-luuThongTin').on('click',function (){
+      $.LoadingOverlay("show");
+      var tenBaiTap = $("#tenBaiTap").val();
+      var thoiGianLamBai = $("#thoigianlambai").val();
+      var idCapDo = $("#otp-capDo").val();
+      var idChuDe = $("#otp-chuDe").val();
+      $.ajax({
+        url: "<%= request.getContextPath() %>/CapNhatBaiTap",
+        type: "PUT",
+        data:  JSON.stringify({
+          id:idBaiTap,
+          tenBaiTap: tenBaiTap,
+          thoiGianLamBai: thoiGianLamBai,
+          idCapDo: idCapDo,
+          idChuDe: idChuDe
+        }),
+        success: function (response) {
+          console.log(response);
+          $("#modalThemBaiTap").modal("hide");
+          table.ajax.reload(null, false);
+          $.LoadingOverlay("hide");
+        },
+        error: function () {
+          console.log("them that bai");
+          $.LoadingOverlay("hide");
+        }
+      });
     });
   });
 </script>
