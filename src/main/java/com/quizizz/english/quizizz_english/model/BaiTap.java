@@ -33,12 +33,12 @@ public class BaiTap {
         this.idCapDo = idCapDo;
     }
 
-    public BaiTap(String tenBaiTap, double thoiGianLamBai, int idChuDe, int idCapDo) {
+    public BaiTap(int id, String maBaiTap,String tenBaiTap) {
+        this.id = id;
+        this.maBaiTap = maBaiTap;
         this.tenBaiTap = tenBaiTap;
-        this.thoiGianLamBai = thoiGianLamBai;
-        this.idChuDe = idChuDe;
-        this.idCapDo = idCapDo;
     }
+
 
     public int getId() {
         return id;

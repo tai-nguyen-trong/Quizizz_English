@@ -1,4 +1,6 @@
 package com.quizizz.english.quizizz_english.repositoryImpl;
+import com.quizizz.english.quizizz_english.dto.BaiTapDTO;
+import com.quizizz.english.quizizz_english.dto.CauHoiDTO;
 import com.quizizz.english.quizizz_english.model.CauHoi;
 import com.quizizz.english.quizizz_english.repository.ICauHoiRepository;
 import com.quizizz.english.quizizz_english.util.DBConnection;
@@ -25,7 +27,7 @@ public class CauHoiRepositoryImpl implements ICauHoiRepository {
 
     @Override
     public void update(CauHoi item) {
-        String sql = "UPDATE CauHoi SET maCauHoi = ?, tenCauHoi = ?, idBaiTap = ? WHERE id = ?";
+        String sql = "UPDATE CauHoi SET  tenCauHoi = ?, idBaiTap = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, item.getMaCauHoi());
             stmt.setString(2, item.getTenCauHoi());
@@ -48,17 +50,28 @@ public class CauHoiRepositoryImpl implements ICauHoiRepository {
     }
 
     @Override
-    public List<CauHoi> getAll() {
-        List<CauHoi> listBaiTap = new ArrayList<>();
-        String sql = "SELECT * FROM CauHoi";
+    public List<CauHoiDTO> getAll() {
+        List<CauHoiDTO> danhSachCauHoi = new ArrayList<>();
+        String sql = "SELECT cauhoi.id, cauhoi.maCauHoi, cauhoi.tenCauHoi\n" +
+                "               cauhoi.idBaiTap,baitap.maBaiTap, baitap.tenBaiTap\n" +
+                "        FROM CauHoi cauhoi\n" +
+                "        JOIN BaiTap baitap ON cauhoi.idBaiTap = baitap.id";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                listBaiTap.add(mapResultSetToCauHoi(rs));
+                CauHoiDTO cauhoi = new CauHoiDTO(
+                        rs.getInt("id"),
+                        rs.getString("maCauHoi"),
+                        rs.getString("tenCauHoi"),
+                        rs.getInt("idBaiTap"),
+                        rs.getString("maBaiTap"),
+                        rs.getString("tenBaiTap")
+                );
+                danhSachCauHoi.add(cauhoi);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return listBaiTap;
+        return danhSachCauHoi;
     }
 
     @Override

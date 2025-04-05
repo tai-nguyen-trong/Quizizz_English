@@ -186,15 +186,19 @@
                 "url": "<%= request.getContextPath() %>/DanhSachBaiTap",
                 "type": "GET",
                 "dataType": "JSON",
-                "dataSrc": ""
+                "dataSrc":  function (json) {
+                  return json.data;
+                }
               },
+
+      order: [[0, "asc"]], // Sắp xếp mặc định theo ID
       "aoColumns": [
-        { "mDataProp": "id" },
-        { "mDataProp": "maBaiTap" },
-        { "mDataProp": "tenBaiTap" },
-        { "mDataProp": "tenChuDe" },
-        { "mDataProp": "tenCapDo" },
-        { "mDataProp": "thoiGianLamBai" ,type: "num"},
+        { "mDataProp": "id", orderable: true ,type: "num"},
+        { "mDataProp": "maBaiTap", orderable: true },
+        { "mDataProp": "tenBaiTap", orderable: true },
+        { "mDataProp": "tenChuDe", orderable: true },
+        { "mDataProp": "tenCapDo", orderable: true },
+        { "mDataProp": "thoiGianLamBai", orderable: true ,type: "num"},
         {
           "data": null,
           "render": function (data, type, full, meta) {
