@@ -1,12 +1,12 @@
 <Context>
     <Resource
-            name="jdbc/MyAppDB"
+            name="jdbc/quizizz_english_DB"
             auth="Container"
             type="javax.sql.DataSource"
             driverClassName="com.mysql.cj.jdbc.Driver"
-            url="jdbc:mysql://localhost:3306/laptrinhweb?useSSL=false&amp;serverTimezone=UTC"
+            url="jdbc:mysql://localhost:3306/quizizz_english?useSSL=false&amp;serverTimezone=UTC"
             username="root"
-            password="0123456654"
+            password="12345678"
             maxTotal="50"
             maxIdle="20"
             minIdle="5"

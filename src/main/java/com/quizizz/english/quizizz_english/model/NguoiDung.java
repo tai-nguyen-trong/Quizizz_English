@@ -16,6 +16,13 @@ public class NguoiDung {
     public NguoiDung() {
     }
 
+    public NguoiDung(String hoVaTen, int tuoi, String email, String soDienThoai) {
+        this.hoVaTen = hoVaTen;
+        this.tuoi = tuoi;
+        this.email = email;
+        this.soDienThoai = soDienThoai;
+    }
+
     public NguoiDung(int id, String hoVaTen, int tuoi, String email, String matKhau, String soDienThoai, String vaiTro) {
         this.id = id;
         this.hoVaTen = hoVaTen;
