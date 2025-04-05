@@ -14,4 +14,6 @@ public class BaiTapDTO {
     private Double thoiGianLamBai;
     private String tenCapDo;
     private String tenChuDe;
+    private int idChuDe;
+    private int idCapDo;
 }

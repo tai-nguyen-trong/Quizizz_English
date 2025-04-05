@@ -1,6 +1,9 @@
 package com.quizizz.english.quizizz_english.model;
 
 import com.quizizz.english.quizizz_english.dto.BaiTapDTO;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -24,6 +27,13 @@ public class BaiTap {
     public BaiTap(int id, String maBaiTap, String tenBaiTap, double thoiGianLamBai, int idChuDe, int idCapDo) {
         this.id = id;
         this.maBaiTap = maBaiTap;
+        this.tenBaiTap = tenBaiTap;
+        this.thoiGianLamBai = thoiGianLamBai;
+        this.idChuDe = idChuDe;
+        this.idCapDo = idCapDo;
+    }
+
+    public BaiTap(String tenBaiTap, double thoiGianLamBai, int idChuDe, int idCapDo) {
         this.tenBaiTap = tenBaiTap;
         this.thoiGianLamBai = thoiGianLamBai;
         this.idChuDe = idChuDe;

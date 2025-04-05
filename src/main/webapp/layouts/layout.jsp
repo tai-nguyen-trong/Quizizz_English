@@ -2,7 +2,6 @@
 <%
     // Lấy tham số "currentPage" từ Servlet
     String currentPage = (String) request.getAttribute("currentPage");
-
     if (currentPage == null || currentPage.isEmpty()) {
         currentPage = "home";
     } else {
@@ -42,6 +41,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+
     <style>
     /* Cấu trúc tổng thể */
     html, body {

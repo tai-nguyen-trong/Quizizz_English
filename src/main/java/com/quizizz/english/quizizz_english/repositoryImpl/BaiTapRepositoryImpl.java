@@ -13,22 +13,11 @@ import java.util.List;
 public class BaiTapRepositoryImpl implements IBaiTapRepository {
     @Override
     public boolean addBaiTap(BaiTap baiTap) {
-        String sqlBaiTap = "SELECT * FROM BaiTap ORDER BY id DESC LIMIT 1";
-        String insertSQL = "INSERT INTO Book(maBaiTap, tenBaiTap, thoiGianLamBai, idChuDe, idCapDo)" + "VALUES(?, ?, ?, ?, ?)";
+        //String sqlBaiTap = "SELECT * FROM BaiTap ORDER BY id DESC LIMIT 1";
+        String insertSQL = "INSERT INTO baitap(maBaiTap, tenBaiTap, thoiGianLamBai, idChuDe, idCapDo)" + "VALUES(?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection()) {
-            int id = 0;
-
-            try (PreparedStatement selectStmt = conn.prepareStatement(sqlBaiTap)) {
-                try (ResultSet rs = selectStmt.executeQuery()) {
-                    if (rs.next()) {
-                         id = rs.getInt("id");
-                    }
-                }
-            }
             try (PreparedStatement insertStmt = conn.prepareStatement(insertSQL)) {
-                String prefix = "BT";  // Tiền tố "BT"
-                String maBaiTap = prefix + String.format("%04d", id + 1);
-                insertStmt.setString(1, maBaiTap);
+                insertStmt.setString(1, baiTap.getMaBaiTap());
                 insertStmt.setString(2, baiTap.getTenBaiTap());
                 insertStmt.setDouble(3, baiTap.getThoiGianLamBai());
                 insertStmt.setInt(4, baiTap.getIdChuDe());
@@ -46,14 +35,14 @@ public class BaiTapRepositoryImpl implements IBaiTapRepository {
     @Override
     public boolean updateBaiTap(BaiTap item) {
 
-        String sql = "UPDATE Book SET maBaiTap = ?, tenBaiTap = ?, thoiGianLamBai = ?, idChuDe = ?, idCapDo = ?  WHERE id = ?";
+        String sql = "UPDATE baitap SET tenBaiTap = ?, thoiGianLamBai = ?, idChuDe = ?, idCapDo = ?  WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             //stmt.setString(1, item.getMaBaiTap());
-            stmt.setString(2, item.getTenBaiTap());
-            stmt.setDouble(3, item.getThoiGianLamBai());
-            stmt.setInt(4, item.getIdChuDe());
-            stmt.setInt(5, item.getIdCapDo());
-            stmt.setInt(6, item.getId()); // Truyền ID vào WHERE clause
+            stmt.setString(1, item.getTenBaiTap());
+            stmt.setDouble(2, item.getThoiGianLamBai());
+            stmt.setInt(3, item.getIdChuDe());
+            stmt.setInt(4, item.getIdCapDo());
+            stmt.setInt(5, item.getId()); // Truyền ID vào WHERE clause
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -70,15 +59,30 @@ public class BaiTapRepositoryImpl implements IBaiTapRepository {
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
+            e.printStackTrace();
             return  false;
         }
+    }
+
+    @Override
+    public BaiTap getBaiTapMoiNhat() {
+        String sql = "SELECT * FROM BaiTap ORDER BY id DESC LIMIT 1";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapResultSetToBaiTap(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public List<BaiTapDTO> getAllBaiTap() {
         List<BaiTapDTO> danhSachBaiTap = new ArrayList<>();
         String sql = "SELECT bt.id, bt.maBaiTap, bt.tenBaiTap, bt.thoiGianLamBai, \n" +
-                "               cd.tenCapDo, chude.tenChuDe\n" +
+                "               bt.idCapDo,bt.idChuDe,cd.tenCapDo, chude.tenChuDe\n" +
                 "        FROM BaiTap bt\n" +
                 "        JOIN CapDo cd ON bt.idCapDo = cd.id\n" +
                 "        JOIN ChuDe chude ON bt.idChuDe = chude.id";
@@ -90,7 +94,9 @@ public class BaiTapRepositoryImpl implements IBaiTapRepository {
                         rs.getString("tenBaiTap"),
                         rs.getObject("thoiGianLamBai") != null ? rs.getDouble("thoiGianLamBai") : null,
                         rs.getString("tenCapDo"),
-                        rs.getString("tenChuDe")
+                        rs.getString("tenChuDe"),
+                        rs.getInt("idChuDe"),
+                        rs.getInt("idCapDo")
                 );
                 danhSachBaiTap.add(baiTap);
             }

@@ -68,7 +68,7 @@
   $(document).ready(function () {
     $.ajax({
       url: "<%= request.getContextPath() %>/ChuDe", // API lấy danh sách chủ đề
-      type: "GET",
+      type: "POST",
       dataType: "json",
       success: function (topics) {
         if (!topics || topics.length === 0) {
