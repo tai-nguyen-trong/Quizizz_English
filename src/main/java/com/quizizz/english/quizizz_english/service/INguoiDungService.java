@@ -8,4 +8,5 @@ public interface INguoiDungService {
     void deleteNguoiDung(NguoiDung item);
     List<NguoiDung> getAllNguoiDung();
     NguoiDung getNguoiDungById(int id);
+    NguoiDung dangNhap(String email, String matKhau);
 }

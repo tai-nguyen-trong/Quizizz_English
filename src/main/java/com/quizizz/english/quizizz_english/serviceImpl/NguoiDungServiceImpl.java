@@ -37,4 +37,9 @@ public class NguoiDungServiceImpl implements INguoiDungService {
     public NguoiDung getNguoiDungById(int id) {
         return nguoiDungRepository.getById(id);
     }
+
+    @Override
+    public NguoiDung dangNhap(String email, String matKhau) {
+        return nguoiDungRepository.dangNhap(email, matKhau);
+    }
 }

@@ -26,7 +26,7 @@ public class DBConnection {
         logger.info("Initializing database connection pool");
         Context initContext = new InitialContext();
         Context envContext = (Context) initContext.lookup("java:/comp/env");
-        dataSource = (DataSource) envContext.lookup("jdbc/bookDB");
+        dataSource = (DataSource) envContext.lookup("jdbc/quizizz_english_DB");
         logger.info("Database connection pool initialized successfully");
     }
 

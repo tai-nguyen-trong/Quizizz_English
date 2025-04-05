@@ -34,20 +34,24 @@
     </style>
 </head>
 <body>
-<div class="signup-container text-center">
-    <h2>Đăng nhập</h2>
-    <p> Hoặc<a href="./register.jsp"> Đăng kí</a></p>
+<form method="post" action="login">
+    <div class="signup-container text-center">
+        <h2>Đăng nhập</h2>
+        <p> Hoặc<a href="./register.jsp"> Đăng kí</a></p>
         <div class="mb-2">
-            <input type="email" class="form-control" placeholder="demo@gmail.com">
+            <input type="email" class="form-control" placeholder="Demo@gmail.com" name="email">
         </div>
         <div class="mb-2 position-relative">
-            <input type="password" class="form-control" id="password" placeholder="Mật khẩu">
+            <input type="password" class="form-control" id="password" placeholder="Mật khẩu" name="matKhau">
             <span class="position-absolute top-50 end-0 translate-middle-y me-2 eye-icon">
                     <i class="fa-solid fa-eye" id="eye-icon1"></i>
                 </span>
         </div>
         <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
-</div>
+    </div>
+</form>
+
+<p style="color: red;"><%= request.getAttribute("error") != null ? request.getAttribute("error") : "" %></p>
 
 </body>
 </html>
