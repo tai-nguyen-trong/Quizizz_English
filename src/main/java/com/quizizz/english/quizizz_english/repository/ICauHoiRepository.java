@@ -1,12 +1,13 @@
 package com.quizizz.english.quizizz_english.repository;
 
 import com.quizizz.english.quizizz_english.dto.CauHoiDTO;
+import com.quizizz.english.quizizz_english.model.BaiTap;
 import com.quizizz.english.quizizz_english.model.CauHoi;
 
 import java.util.List;
 
 public interface ICauHoiRepository{
-    void insert(CauHoi item);
+    int insert(CauHoi item);
 
     void update(CauHoi item);
 
@@ -18,4 +19,7 @@ public interface ICauHoiRepository{
 
 
     CauHoi getById(int ID);
+
+    List<CauHoiDTO> getAllByIdBaiTap(Integer idBaiTap);
+    CauHoi getCauHoiMoiNhat();
 }

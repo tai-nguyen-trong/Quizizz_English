@@ -1,12 +1,11 @@
 package com.quizizz.english.quizizz_english.serviceImpl;
 
-import com.quizizz.english.quizizz_english.dto.BaiTapDTO;
 import com.quizizz.english.quizizz_english.dto.CauHoiDTO;
 import com.quizizz.english.quizizz_english.model.CauHoi;
 import com.quizizz.english.quizizz_english.repository.ICauHoiRepository;
 import com.quizizz.english.quizizz_english.service.ICauHoiService;
+import jakarta.servlet.http.HttpServletResponse;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,8 +18,17 @@ public class CauHoiServiceImpl implements ICauHoiService {
     }
 
     @Override
-    public void addCauHoi(CauHoi item) {
-        cauHoiRepository.insert(item);
+    public int addCauHoi(CauHoi item) {
+        // Kiểm tra dữ liệu đầu vào
+        if (item.getTenCauHoi() == null || item.getTenCauHoi().isEmpty() || item.getIdBaiTap() <= 0) {
+            return HttpServletResponse.SC_BAD_REQUEST;
+        }
+        var cauHoiOld = cauHoiRepository.getCauHoiMoiNhat();
+        String prefix = "CH";  // Tiền tố "BT"
+        String maBaiTap = prefix + String.format("%04d", cauHoiOld.getId() + 1);
+        item.setMaCauHoi(maBaiTap);
+        int idCauHoi = cauHoiRepository.insert(item);
+        return idCauHoi;
     }
 
     @Override
@@ -34,8 +42,10 @@ public class CauHoiServiceImpl implements ICauHoiService {
     }
 
     @Override
-    public List<CauHoiDTO> getAllCauHoi(int start, int length, String search, String sortColumn, String sortDirection) {
-        List<CauHoiDTO> danhCauHoi = cauHoiRepository.getAll();
+    public List<CauHoiDTO> getAllCauHoi(int start, int length, String search, String sortColumn, String sortDirection,String idBaiTap) {
+        List<CauHoiDTO> danhCauHoi = (idBaiTap != null && !idBaiTap.isEmpty())
+                ? cauHoiRepository.getAllByIdBaiTap(Integer.valueOf(idBaiTap))
+                : cauHoiRepository.getAll();
 // 🔹 Xử lý tìm kiếm (lọc danh sách theo từ khóa)
         if (search != null && !search.isEmpty()) {
             String lowerSearch = search.toLowerCase();
@@ -50,10 +60,10 @@ public class CauHoiServiceImpl implements ICauHoiService {
         if (sortColumn != null && sortDirection != null) {
             Comparator<CauHoiDTO> comparator = switch (sortColumn) {
                 case "id" -> Comparator.comparing(CauHoiDTO::getId);
-                case "maCauHoi" -> Comparator.comparing(CauHoiDTO::getMaCauHoi);
-                case "tenCauHoi" -> Comparator.comparing(CauHoiDTO::getTenCauHoi);
                 case "maBaiTap" -> Comparator.comparing(CauHoiDTO::getMaBaiTap);
                 case "tenBaiTap" -> Comparator.comparing(CauHoiDTO::getTenBaiTap);
+                case "maCauHoi" -> Comparator.comparing(CauHoiDTO::getMaCauHoi);
+                case "tenCauHoi" -> Comparator.comparing(CauHoiDTO::getTenCauHoi);
                 default -> Comparator.comparing(CauHoiDTO::getId);
             };
 

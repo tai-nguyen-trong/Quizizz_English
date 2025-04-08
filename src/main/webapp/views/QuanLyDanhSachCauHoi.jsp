@@ -1,10 +1,13 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: HaiDaiPC
-  Date: 3/26/2025
-  Time: 10:50 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="com.quizizz.english.quizizz_english.model.ChuDe" %>
+<%@ page import="com.quizizz.english.quizizz_english.model.CapDo" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.quizizz.english.quizizz_english.model.BaiTap" %>
+
+
+<%
+  BaiTap baiTap = (BaiTap) request.getAttribute("baiTap");
+  String idBaiTap = (String) request.getAttribute("idBaiTap");
+%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <style>
   body {
@@ -55,19 +58,12 @@
   <!-- Thanh tìm kiếm và bộ lọc -->
   <div class="row clearfix mb-3">
     <div class="col-md-3">
-      <select id="filter-topic" class="form-select">
-        <option value="">Chọn chủ đề</option>
-        <option value="Động vật">Động vật</option>
-        <option value="Màu sắc">Màu sắc</option>
-        <option value="Công nghệ">Công nghệ</option>
+      <select id="timkiem-BaiTap" class="form-select" data-live-search="true">
+        <option value="<%= baiTap.getId() %>"><%= baiTap.getMaBaiTap() %></option>
+
       </select>
     </div>
 
-    <div class="col-md-3">
-      <select id="filter-level-2" class="form-select">
-        <option value="">Chọn mã bài ập</option>
-      </select>
-    </div>
 
 
   </div>
@@ -79,10 +75,10 @@
       <thead>
       <tr>
         <th>Id</th>
+        <th>Mã bài tập</th>
+        <th>Tên bài tập</th>
         <th>Mã câu hỏi</th>
         <th>Tên câu hỏi</th>
-        <th>Mã bài tập</th>
-        <th>Tên chủ đề</th>
         <th style="text-align: center;">Chỉnh sửa</th>
         <th style="text-align: center;">Danh sách câu trả lời</th>
         <th style="text-align: center;">Xóa</th>
@@ -109,18 +105,15 @@
         <div class="container">
           <div class="row clearfix">
             <!-- Tên Bài Tập -->
-            <div class="col-md-12">
+            <div class="col-md-6">
               <label class="fw-bold">Tên Câu Hỏi</label>
               <input id="tenCauHoi" type="text" class="form-control">
             </div>
             <!-- Chọn Nhà Sản Xuất -->
             <div class="col-md-6 mt-3">
               <label class="fw-bold">Mã Bài Tập</label>
-              <select id="filter-nsx" class="form-select">
-                <option value="">Chọn bài tập</option>
-                <option value="NSX1">Nhà Sản Xuất 1</option>
-                <option value="NSX2">Nhà Sản Xuất 2</option>
-                <option value="NSX3">Nhà Sản Xuất 3</option>
+              <select id="otp-BaiTap" class="form-select" data-live-search="true">
+                <option value="<%= baiTap.getId() %>"><%= baiTap.getMaBaiTap() %></option>
               </select>
             </div>
           </div>
@@ -139,7 +132,7 @@
               </div>
             </div>
             <div class="col-md-6 mt-3">
-              <button type="button" class="btn btn-success">Thêm đáp án</button>
+              <button id="btn-themtam" type="button" class="btn btn-success">Thêm đáp án</button>
             </div>
           </div>
           <div class="row clearfix mt-3">
@@ -147,7 +140,6 @@
               <table class="table table-striped table-bordered" id="table-dapan" style="width: 100%">
                 <thead>
                 <tr>
-                  <th style="text-align:center">Stt</th>
                   <th style="text-align:center">Tên đáp án</th>
                   <th style="text-align:center">Đáp án đúng</th>
                   <th style="text-align:center">Xóa</th>
@@ -163,7 +155,7 @@
 
       <!-- Footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-success">Thêm Bài Tập</button>
+        <button id="btn-luuCauHoi" type="button" class="btn btn-success">Thêm Câu Hỏi</button>
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
       </div>
     </div>
@@ -172,13 +164,70 @@
 
 <script>
   $(document).ready(function () {
+    let idCauHoi = 0;
     // Kích hoạt DataTables
     const table = $('#exerciseTable').DataTable({
       "paging": true,
-      "searching": true,
       "ordering": true,
-      "info": true,
-      "lengthMenu": [5, 10, 20, 50]
+      "filter": true,
+      "destroy": true,
+      "orderMulti": false,
+      "serverSide": true,
+      "processing": true,
+      "bLengthChange": false,
+      "draw": true,
+      "language": {
+        "processing": "Đang xử lý ..."
+      },
+      "ajax":
+              {
+                "url": "<%= request.getContextPath() %>/QuanLyDanhSachCauHoi",
+                'data': function(d) {
+                  d.idBaiTap = <%= request.getAttribute("idBaiTap") != null ? request.getAttribute("idBaiTap") : "null" %>;
+                },
+                "type": "POST",
+                "dataType": "JSON",
+                "dataSrc":  function (json) {
+                  return json.data;
+                },
+
+              },
+      "order": [[0, "asc"]], // Sắp xếp mặc định theo ID
+      "aoColumns": [
+        { "mDataProp": "id", orderable: true ,type: "num"},
+        { "mDataProp": "maBaiTap", orderable: true },
+        { "mDataProp": "tenBaiTap", orderable: true },
+        { "mDataProp": "maCauHoi", orderable: true },
+        { "mDataProp": "tenCauHoi", orderable: true },
+        {
+          "data": null,
+          "render": function (data, type, full, meta) {
+            return "<div class='d-flex justify-content-center align-items-center'>" +
+                    "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center btnEdit'>" +
+                    "<i class='material-icons'>edit</i>" +
+                    "</button></div>";
+          },
+        },
+        {
+          "data": null,
+          "render": function (data, type, full, meta) {
+            return "<div class='d-flex justify-content-center align-items-center'>" +
+                    "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center btnDetails'>" +
+                    "<i class='material-icons'>details</i>" +
+                    "</button></div>";
+          },
+        },
+        {
+          "data": null,
+          "render": function (data, type, full, meta) {
+            return "<div class='d-flex justify-content-center align-items-center'>" +
+                    "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center btnDelete'>" +
+                    "<i class='material-icons'>delete</i>" +
+                    "</button></div>";
+          },
+        },
+
+      ]
     });
     var tableDapAn = $("#table-dapan").DataTable(
             {
@@ -199,10 +248,81 @@
               ]
             }
     );
+    $('#exerciseTable tbody').on('click', '.btnDetails', function () {
+      let rowData = table.row($(this).parents('tr')).data();
+      idCauHoi = rowData.id;
+      $("#modalThemCauHoi").modal("show");
+      $("#tenCauHoi").val(rowData.tenCauHoi);
+      $("#otp-BaiTap").val(rowData.idBaiTap).change();
 
+
+    });
     // Bộ lọc theo chủ đề
     $("#btn-ThemCauHoi").click(function () {
       $("#modalThemCauHoi").modal("show");
+    });
+    $("#btn-themtam").click(function () {
+      var tenDapAn = $('#tenDapAn').val().trim();
+      var isDapAnDung = $('#dapandung').is(':checked');
+
+      if (tenDapAn === "") {
+        alert("Vui lòng nhập tên đáp án.");
+        return;
+      }
+
+      // Chuyển giá trị checkbox thành chữ
+      var hienThiDapAnDung = isDapAnDung ? '✔️ Đúng' : '❌ Sai';
+      let btnXoa = "<div class='d-flex justify-content-center align-items-center'>" +
+              "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center xoa'>" +
+              "<i class='material-icons'>delete</i>" +
+              "</button></div>";
+      // Thêm dòng mới vào bảng
+      tableDapAn.row.add([
+        tenDapAn,
+        hienThiDapAnDung,
+        btnXoa
+      ]).draw();
+      // Reset lại input
+      $('#tenDapAn').val('');
+      $('#dapandung').prop('checked', false);
+    });
+    // Sự kiện xoá dòng
+    $('#table-dapan tbody').on('click', '.btn-xoa', function () {
+      tableDapAn.row($(this).parents('tr')).remove().draw();
+    });
+    $("#btn-luuCauHoi").click(function () {
+      $.LoadingOverlay("show");
+      var tenCauHoi = $("#tenCauHoi").val();
+      var idBaiTap = $("#otp-BaiTap").val();
+      var tableData = [];
+
+      // Lấy dữ liệu trong DataTable
+      tableDapAn.rows().every(function () {
+        var data = this.data(); // [tên đáp án, đúng/sai, xóa]
+        tableData.push({
+          tenDapAn: data[0],
+          dapAnDung: data[1]
+        });
+      });
+      $.ajax({
+        url: "<%= request.getContextPath() %>/ThemCauHoi",
+        type: "POST",
+        data: {
+          idBaiTap: idBaiTap,
+          tenCauHoi: tenCauHoi,
+          danhSachDapAn: JSON.stringify(tableData)
+        },
+        success: function (response) {
+          console.log(response);
+          $("#modalThemCauHoi").modal("hide");
+          table.ajax.reload(null, false);
+          $.LoadingOverlay("hide");
+        },
+        error: function () {
+          console.log("them that bai");
+          $.LoadingOverlay("hide");
+        }
+      });
     });
   });
 </script>

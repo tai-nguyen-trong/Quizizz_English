@@ -85,4 +85,9 @@ public class DapAnRepositoryImpl implements IDapAnRepository {
                 rs.getInt("idCauHoi")
         );
     }
+
+    @Override
+    public List<DapAn> getAllByIdBaiTap(Integer idCauHoi) {
+        return List.of();
+    }
 }

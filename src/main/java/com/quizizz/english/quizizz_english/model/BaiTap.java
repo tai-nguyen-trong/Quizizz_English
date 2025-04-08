@@ -39,6 +39,12 @@ public class BaiTap {
         this.tenBaiTap = tenBaiTap;
     }
 
+    public BaiTap(String tenBaiTap, double thoiGianLamBai, int idChuDe, int idCapDo) {
+        this.tenBaiTap = tenBaiTap;
+        this.thoiGianLamBai = thoiGianLamBai;
+        this.idChuDe = idChuDe;
+        this.idCapDo = idCapDo;
+    }
 
     public int getId() {
         return id;

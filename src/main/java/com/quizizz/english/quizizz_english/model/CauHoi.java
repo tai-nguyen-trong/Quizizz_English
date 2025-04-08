@@ -15,6 +15,11 @@ public class CauHoi {
     public CauHoi() {
     }
 
+    public CauHoi(String tenCauHoi, int idBaiTap) {
+        this.tenCauHoi = tenCauHoi;
+        this.idBaiTap = idBaiTap;
+    }
+
     public CauHoi(int id, String maCauHoi, String tenCauHoi, int idBaiTap) {
         this.id = id;
         this.maCauHoi = maCauHoi;

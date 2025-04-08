@@ -254,9 +254,11 @@
     // Sự kiện Click vào Nút Xem Chi Tiết
     $('#exerciseTable tbody').on('click', '.btnDetails', function () {
       let rowData = table.row($(this).parents('tr')).data();
-      alert("Xem chi tiết bài tập:\n" +
-              "Mã bài tập: " + rowData.MaBaiTap + "\n" +
-              "Mô tả: " + rowData.ThoiGianLamBai);
+      let idBaiTap = rowData.id; // hoặc rowData.idBaiTap tùy vào JSON
+
+      // Chuyển sang trang quản lý câu hỏi, gửi id bài tập qua URL
+      window.location.href = "<%= request.getContextPath() %>/QuanLyDanhSachCauHoi?idBaiTap=" + encodeURIComponent(idBaiTap);
+
     });
 
     // Sự kiện Click vào Nút Xóa
