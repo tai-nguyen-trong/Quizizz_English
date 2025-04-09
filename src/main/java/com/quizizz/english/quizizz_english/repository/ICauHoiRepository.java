@@ -9,10 +9,10 @@ import java.util.List;
 public interface ICauHoiRepository{
     int insert(CauHoi item);
 
-    void update(CauHoi item);
+    boolean update(CauHoi item);
 
 
-    void delete(CauHoi item);
+    boolean delete(int idCauHoi);
 
 
     List<CauHoiDTO> getAll();

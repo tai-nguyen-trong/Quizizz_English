@@ -32,13 +32,13 @@ public class CauHoiServiceImpl implements ICauHoiService {
     }
 
     @Override
-    public void updateCauHoi(CauHoi item) {
-        cauHoiRepository.update(item);
+    public boolean updateCauHoi(CauHoi item) {
+        return cauHoiRepository.update(item);
     }
 
     @Override
-    public void deleteCauHoi(CauHoi item) {
-        cauHoiRepository.delete(item);
+    public boolean deleteCauHoi(int idCauHoi) {
+        return cauHoiRepository.delete(idCauHoi);
     }
 
     @Override

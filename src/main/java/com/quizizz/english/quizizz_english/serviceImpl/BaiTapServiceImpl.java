@@ -54,9 +54,20 @@ public class BaiTapServiceImpl implements IBaiTapService {
     }
 
     @Override
-    public List<BaiTapDTO> getAllBaiTap(int start, int length, String search, String sortColumn, String sortDirection) {
+    public List<BaiTapDTO> getAllBaiTap(int start, int length, String search, String sortColumn, String sortDirection,
+                                        int idCapDo, int idChuDe) {
         List<BaiTapDTO> list = baiTapRepository.getAllBaiTap();
-        // 🔹 Xử lý tìm kiếm (lọc danh sách theo từ khóa)
+        if (idCapDo != 0) {
+            list = list.stream()
+                    .filter(bt -> bt.getIdCapDo() == idCapDo)
+                    .collect(Collectors.toList());
+        }
+
+        if (idChuDe != 0) {
+            list = list.stream()
+                    .filter(bt -> bt.getIdChuDe() == idChuDe)
+                    .collect(Collectors.toList());
+        }
         if (search != null && !search.isEmpty()) {
             String lowerSearch = search.toLowerCase();
             list = list.stream()

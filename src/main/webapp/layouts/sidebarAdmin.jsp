@@ -36,12 +36,12 @@
       </li>
 
       <!-- Quản lý Câu hỏi -->
-      <li class="nav-item">
+      <%--<li class="nav-item">
         <a class="nav-link  ${currentPage == 'QuanLyDanhSachCauHoi' ? 'active' : ''}"
            href="<%= request.getContextPath() %>/QuanLyDanhSachCauHoi">
           <i class="material-icons">help</i> Quản lý Câu hỏi
         </a>
-      </li>
+      </li>--%>
 
       <!-- Quản lý Người dùng -->
       <li class="nav-item">

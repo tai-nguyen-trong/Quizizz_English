@@ -63,12 +63,7 @@
 
       </select>
     </div>
-
-
-
   </div>
-
-
   <!-- Bảng danh sách bài tập -->
   <div class="table-responsive">
     <table class="table table-striped table-bordered" id="exerciseTable" style="width: 100%">
@@ -140,8 +135,10 @@
               <table class="table table-striped table-bordered" id="table-dapan" style="width: 100%">
                 <thead>
                 <tr>
+                  <th style="text-align:center">ID</th>
                   <th style="text-align:center">Tên đáp án</th>
                   <th style="text-align:center">Đáp án đúng</th>
+                  <th style="text-align:center">Đáp án đúng (true/false)</th>
                   <th style="text-align:center">Xóa</th>
                 </tr>
                 </thead>
@@ -156,11 +153,13 @@
       <!-- Footer -->
       <div class="modal-footer">
         <button id="btn-luuCauHoi" type="button" class="btn btn-success">Thêm Câu Hỏi</button>
+        <button id="btn-luuThongTin" type="button" class="btn btn-success">Lưu Thông Tin</button>
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
       </div>
     </div>
   </div>
 </div>
+
 
 <script>
   $(document).ready(function () {
@@ -234,6 +233,7 @@
               "processing": true,
               dom: 'Bfrtip',
               columnDefs: [
+                { targets: [0,3] , visible: false },
               ],
               buttons: [
                 {
@@ -248,18 +248,43 @@
               ]
             }
     );
-    $('#exerciseTable tbody').on('click', '.btnDetails', function () {
+    $('#exerciseTable tbody').on('click', '.btnDelete', function () {
+      let rowData = table.row($(this).parents('tr')).data();
+      idCauHoi = rowData.id;
+      if (confirm("Bạn có chắc chắn muốn xóa bài tập: " + rowData.tenCauHoi + " không?")) {
+        // Gửi Ajax Request để xóa trên server
+        $.ajax({
+          url: "<%= request.getContextPath() %>/XoaCauHoi?idCauHoi=" + idCauHoi,
+          type: "DELETE",
+          success: function (response) {
+            alert("Đã xóa thành công!");
+            table.ajax.reload(); // Tải lại bảng sau khi xóa
+          },
+          error: function () {
+            alert("Xóa thất bại!");
+          }
+        });
+      }
+    });
+    $('#exerciseTable tbody').on('click', '.btnEdit', function () {
       let rowData = table.row($(this).parents('tr')).data();
       idCauHoi = rowData.id;
       $("#modalThemCauHoi").modal("show");
-      $("#tenCauHoi").val(rowData.tenCauHoi);
-      $("#otp-BaiTap").val(rowData.idBaiTap).change();
-
-
+      $("#tenCauHoi").val(rowData.tenCauHoi).prop("disabled", true);
+      $("#otp-BaiTap").val(rowData.idBaiTap).prop("disabled", true).change();
+      $("#btn-luuThongTin").show();
+      $("#btn-luuCauHoi").hide();
+      loadDapAnByCauHoi(idCauHoi);
     });
     // Bộ lọc theo chủ đề
     $("#btn-ThemCauHoi").click(function () {
+      tableDapAn.clear().draw();
       $("#modalThemCauHoi").modal("show");
+      $("#tenCauHoi").prop("disabled", false);
+      $("#otp-BaiTap").prop("disabled", false);
+      $("#btn-luuThongTin").hide();
+      $("#btn-luuCauHoi").show();
+
     });
     $("#btn-themtam").click(function () {
       var tenDapAn = $('#tenDapAn').val().trim();
@@ -269,26 +294,59 @@
         alert("Vui lòng nhập tên đáp án.");
         return;
       }
+      let isCheckDapAn = false;
+      tableDapAn.rows().every(function () {
+        var data = this.data();
+        if (data[3] === true) {
+          isCheckDapAn = true;
+          return false; // dừng vòng lặp sớm
+        }
+      });
+      debugger;
+      if((isCheckDapAn && !isDapAnDung) || !isCheckDapAn){
+        // Chuyển giá trị checkbox thành chữ
+        var hienThiDapAnDung = isDapAnDung ? '✔️ Đúng' : '❌ Sai';
+        let btnXoa = "<div class='d-flex justify-content-center align-items-center'>" +
+                "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center btn-xoa'>" +
+                "<i class='material-icons'>delete</i>" +
+                "</button></div>";
+        // Thêm dòng mới vào bảng
+        tableDapAn.row.add([
+          0,
+          tenDapAn,
+          hienThiDapAnDung,
+          isDapAnDung,
+          btnXoa
+        ]).draw();
+        // Reset lại input
+        $('#tenDapAn').val('');
+        $('#dapandung').prop('checked', false);
+      }else{
+        alert("Đã có đáp án đúng trong danh sách!");
+      }
 
-      // Chuyển giá trị checkbox thành chữ
-      var hienThiDapAnDung = isDapAnDung ? '✔️ Đúng' : '❌ Sai';
-      let btnXoa = "<div class='d-flex justify-content-center align-items-center'>" +
-              "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center xoa'>" +
-              "<i class='material-icons'>delete</i>" +
-              "</button></div>";
-      // Thêm dòng mới vào bảng
-      tableDapAn.row.add([
-        tenDapAn,
-        hienThiDapAnDung,
-        btnXoa
-      ]).draw();
-      // Reset lại input
-      $('#tenDapAn').val('');
-      $('#dapandung').prop('checked', false);
+
     });
     // Sự kiện xoá dòng
     $('#table-dapan tbody').on('click', '.btn-xoa', function () {
-      tableDapAn.row($(this).parents('tr')).remove().draw();
+      var table = $('#table-dapan').DataTable();
+      var row = $(this).closest('tr');
+      var rowData = table.row(row).data();
+      var id = rowData[0];
+      // Xác nhận trước khi xóa
+      if (confirm("Bạn có chắc muốn xóa đáp án này?")) {
+        table.row(row).remove().draw(); // Xóa khỏi DataTable (trên giao diện)
+        $.ajax({
+          url: '<%= request.getContextPath() %>/XoaDapAn?idCauHoi=' + id,
+          type: 'DELETE',
+          success: function () {
+            alert("Xóa thành công!");
+          },
+          error: function () {
+            alert("Lỗi khi xóa!");
+          }
+        });
+      }
     });
     $("#btn-luuCauHoi").click(function () {
       $.LoadingOverlay("show");
@@ -300,8 +358,8 @@
       tableDapAn.rows().every(function () {
         var data = this.data(); // [tên đáp án, đúng/sai, xóa]
         tableData.push({
-          tenDapAn: data[0],
-          dapAnDung: data[1]
+          tenDapAn: data[1],
+          dapAnDung: data[3]
         });
       });
       $.ajax({
@@ -313,7 +371,6 @@
           danhSachDapAn: JSON.stringify(tableData)
         },
         success: function (response) {
-          console.log(response);
           $("#modalThemCauHoi").modal("hide");
           table.ajax.reload(null, false);
           $.LoadingOverlay("hide");
@@ -324,5 +381,77 @@
         }
       });
     });
+    // cập nhật thông tin câu hỏi và đáp án
+    $("#btn-luuThongTin").on("click",function (){
+      $.LoadingOverlay("show");
+      var tenCauHoi = $("#tenCauHoi").val();
+      var tableData = [];
+
+      // Lấy dữ liệu trong DataTable
+      tableDapAn.rows().every(function () {
+        var data = this.data(); // [tên đáp án, đúng/sai, xóa]
+        tableData.push({
+          id: data[0],
+          tenDapAn: data[1],
+          dapAnDung: data[3],
+          idCauHoi:idCauHoi
+        });
+      });
+      $.ajax({
+        url: "<%= request.getContextPath() %>/SuaCauHoi",
+        type: "PUT",
+        data: JSON.stringify({
+          idCauHoi: idCauHoi,
+          tenCauHoi: tenCauHoi,
+          danhSachDapAn: tableData
+        }),
+        success: function (response) {
+          $("#modalThemCauHoi").modal("hide");
+          table.ajax.reload(null, false);
+          $.LoadingOverlay("hide");
+        },
+        error: function () {
+          console.log("them that bai");
+          $.LoadingOverlay("hide");
+        }
+      });
+    });
+
+    // sự kiện change đáp án đúng
+    $('#dapandung').on('change', function () {
+      if ($(this).is(':checked')) {
+        $(this).val('true');
+      } else {
+        $(this).val('false');
+      }
+    });
+    //function lấy danh sách đáp án theo id câu hỏi
+    function loadDapAnByCauHoi(idCauHoi) {
+      $.ajax({
+        url: '<%= request.getContextPath() %>/DanhSachDapAn?idCauHoi=' + idCauHoi,
+        method: 'GET',
+        success: function (data) {
+          var tableDapAn = $("#table-dapan").DataTable();
+          tableDapAn.clear();
+          let btnXoa = "<div class='d-flex justify-content-center align-items-center'>" +
+                  "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center btn-xoa'>" +
+                  "<i class='material-icons'>delete</i>" +
+                  "</button></div>";
+          data.forEach(function (item) {
+            tableDapAn.row.add([
+              item.id,
+              item.tenDapAn,
+              item.dapAnDung ? '✔️ Đúng' : '❌ Sai',
+              item.dapAnDung,
+              btnXoa
+            ]);
+          });
+          tableDapAn.draw();
+        },
+        error: function (err) {
+          console.error("Lỗi khi load đáp án:", err);
+        }
+      });
+    }
   });
 </script>

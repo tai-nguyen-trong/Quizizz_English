@@ -17,9 +17,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
-@WebServlet({"/ThemCauHoi","/XoaCauHoi","/SuaCauHoi"})
+@WebServlet({"/ChiTietCauHoi","/ThemCauHoi","/XoaCauHoi","/SuaCauHoi"})
 public class ThemXoaSuaCauHoiServlet extends HttpServlet {
 
     private IBaiTapService baiTapService;
@@ -91,10 +93,10 @@ public class ThemXoaSuaCauHoiServlet extends HttpServlet {
     }
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String idParam = request.getParameter("id");
+        String idCauHoi = request.getParameter("idCauHoi");
         try {
-            int id = Integer.parseInt(idParam);
-            boolean isDeleted = baiTapService.deleteBaiTap(id);
+            int id = Integer.parseInt(idCauHoi);
+            boolean isDeleted = cauHoiService.deleteCauHoi(id);
 
             if (isDeleted) {
                 response.setStatus(HttpServletResponse.SC_OK);
@@ -122,16 +124,46 @@ public class ThemXoaSuaCauHoiServlet extends HttpServlet {
         }
         reader.close();
         try {
-            // Chuyển đổi JSON thành đối tượng Java
-            BaiTap baiTap = gson.fromJson(requestBody.toString(), BaiTap.class);
+            Gson gson = new Gson();
 
-            // Gọi Service để cập nhật dữ liệu
-            boolean isUpdated = baiTapService.updateBaiTap(baiTap);
+            // Tạo kiểu cho map
+            Type type = new TypeToken<Map<String, Object>>() {}.getType();
+            Map<String, Object> jsonMap = gson.fromJson(requestBody.toString(), type);
 
+            // Lấy trường "tenCauHoi"
+            String tenCauHoi = (String) jsonMap.get("tenCauHoi");
+            Integer idCauHoi = ((Double) jsonMap.get("idCauHoi")).intValue();
+
+
+            // Bắt buộc phải convert về JSON string rồi parse lại list vì Gson không auto convert nested list kiểu đó
+            String danhSachJson = gson.toJson(jsonMap.get("danhSachDapAn"));
+            Type listType = new TypeToken<List<DapAn>>() {}.getType();
+            List<DapAn> danhSachDapAn = gson.fromJson(danhSachJson, listType);
+            CauHoi cauHoi = new CauHoi(tenCauHoi, idCauHoi);
+            boolean isSuccess = cauHoiService.updateCauHoi(cauHoi);
             // Trả về kết quả
-            if (isUpdated) {
+            if (isSuccess) {
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().write(gson.toJson("Cập nhật thành công!"));
+                for (DapAn dapAn : danhSachDapAn) {
+                    try {
+                        dapAn.setIdCauHoi(idCauHoi);
+                        boolean isCapNhat = dapAnService.updateDapAn(dapAn);
+                        if (isCapNhat) {
+                            response.setStatus(HttpServletResponse.SC_OK); // 200
+                            response.getWriter().write("cập nhật đáp aán thành công!");
+                        }else {
+                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            response.getWriter().write(gson.toJson("Cập nhật đáp án thất bại!"));
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500
+                        response.getWriter().write("Đã xảy ra lỗi máy chủ.");
+                    }
+                }
+
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().write(gson.toJson("Cập nhật thất bại!"));

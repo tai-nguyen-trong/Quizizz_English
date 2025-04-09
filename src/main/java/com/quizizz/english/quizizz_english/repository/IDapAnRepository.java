@@ -5,6 +5,9 @@ import com.quizizz.english.quizizz_english.model.DapAn;
 
 import java.util.List;
 
-public interface IDapAnRepository extends IRepository<DapAn> {
-    List<DapAn> getAllByIdBaiTap(Integer idCauHoi);
+public interface IDapAnRepository{
+    boolean insert(DapAn item);
+    boolean delete(int idDapAn);
+    boolean update(DapAn item);
+    List<DapAn> getAllCauHoiByIdBaiTap(Integer idCauHoi);
 }

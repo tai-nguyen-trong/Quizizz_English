@@ -1,4 +1,17 @@
+<%@ page import="com.quizizz.english.quizizz_english.model.ChuDe" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.google.gson.Gson" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%
+    List<ChuDe> chuDes = (List<ChuDe>) request.getAttribute("chuDes");
+    Gson gson = new Gson();
+    String chuDesJson = gson.toJson(chuDes);
+%>
+
+<script>
+    // Gán chuDes từ server sang biến JavaScript
+    const topics = <%= chuDesJson %>;
+</script>
 <style>
   .topic-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -66,18 +79,10 @@
 
 <script>
   $(document).ready(function () {
-    $.ajax({
-      url: "<%= request.getContextPath() %>/ChuDe", // API lấy danh sách chủ đề
-      type: "POST",
-      dataType: "json",
-      success: function (topics) {
-        if (!topics || topics.length === 0) {
-          console.warn("Không có dữ liệu topics.");
-          return;
-        }
-
-        $('#topic-container').empty(); // Xóa nội dung cũ
-
+    //load dữ liệu danh sách chủ đề
+      danhSachChuDe();
+      function danhSachChuDe() {
+          $('#topic-container').empty(); // Xóa nội dung cũ
           topics.forEach(topic => {
               let card = $('<div>').addClass('col-md-3 col-sm-6 mb-4');
 
@@ -88,7 +93,7 @@
                       'transition': 'all 0.3s ease-in-out'
                   })
                   .click(function () {
-                      alert("Bạn đã chọn chủ đề: " + topic.title);
+                      alert("Bạn đã chọn chủ đề: " + topic.tenChuDe);
                   });
 
               // Nút Sửa & Xóa (Luôn hiển thị)
@@ -132,8 +137,8 @@
 
               let img = $('<img>')
                   .addClass('card-img-top')
-                  .attr('src', topic.image)
-                  .attr('alt', topic.title)
+                  .attr('src', 'data:image/jpeg;base64,' + topic.hinhAnh) // ✅ chèn base64
+                  .attr('alt', topic.tenChuDe)
                   .css({
                       'border-top-left-radius': '12px',
                       'border-top-right-radius': '12px'
@@ -149,7 +154,7 @@
                       'padding': '15px'
                   });
 
-              let title = $('<h5>').addClass('card-title').text(topic.title)
+              let title = $('<h5>').addClass('card-title').text(topic.tenChuDe)
                   .css({ 'font-weight': 'bold', 'margin-bottom': '5px' });
 
               let description = $('<p>').addClass('text-muted')
@@ -165,17 +170,45 @@
 
               $('#topic-container').append(card);
           });
-
-
-      },
-      error: function () {
-        alert("Lỗi khi tải danh sách chủ đề!");
       }
-    });
 
     // Xử lý sự kiện khi nhấn nút "Thêm chủ đề"
     $("#btnThemChuDe").click(function () {
       $("#modalThemChuDe").modal("show");
     });
+     $("#btnLuuChuDe").click(function () {
+         const tenChuDe = $('#tenChuDe').val().trim();
+         const moTa = $('#moTaChuDe').val().trim();
+         const fileInput = $('#anhChuDe')[0];
+         const file = fileInput.files[0];
+         let base64Image = "";
+         if (file) {
+             const reader = new FileReader();
+             reader.onload = function (e) {
+                  base64Image = e.target.result; // chỉ lấy phần base64
+             };
+             reader.readAsDataURL(file); // ✅ Chuyển ảnh thành base64
+         }
+         $.ajax({
+             url: "<%= request.getContextPath() %>/ThemChuDe",
+             type: "POST",
+             data: {
+                 tenChuDe: tenChuDe,
+                 moTa: moTa,
+                 hinhAnh: base64Image
+             },
+             success: function (response) {
+                 console.log(response);
+                 $("#modalThemChuDe").modal("hide");
+                 $.LoadingOverlay("hide");
+                 location.reload(true);
+             },
+             error: function () {
+                 console.log("them that bai");
+                 $.LoadingOverlay("hide");
+             }
+         });
+     });
+
   });
 </script>

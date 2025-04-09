@@ -14,18 +14,19 @@ public class ChuDeServiceImpl implements IChuDeService {
     }
 
     @Override
-    public void addChuDe(ChuDe item) {
-        chuDeRepository.insert(item);
+    public boolean addChuDe(ChuDe item) {
+
+        return chuDeRepository.insert(item);
     }
 
     @Override
-    public void updateChuDe(ChuDe item) {
-        chuDeRepository.update(item);
+    public boolean updateChuDe(ChuDe item) {
+        return chuDeRepository.update(item);
     }
 
     @Override
-    public void deleteChuDe(ChuDe item) {
-        chuDeRepository.delete(item);
+    public boolean deleteChuDe(int idChuDe) {
+        return chuDeRepository.delete(idChuDe);
     }
 
     @Override

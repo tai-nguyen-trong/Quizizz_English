@@ -20,6 +20,12 @@ public class ChuDe {
         this.hinhAnh = hinhAnh;
     }
 
+    public ChuDe(String tenChuDe, String moTa, String hinhAnh) {
+        this.tenChuDe = tenChuDe;
+        this.moTa = moTa;
+        this.hinhAnh = hinhAnh;
+    }
+
     public int getId() {
         return id;
     }

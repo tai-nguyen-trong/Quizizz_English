@@ -4,10 +4,8 @@ import com.quizizz.english.quizizz_english.dto.CauHoiDTO;
 import com.quizizz.english.quizizz_english.model.CauHoi;
 import com.quizizz.english.quizizz_english.repository.ICauHoiRepository;
 import com.quizizz.english.quizizz_english.util.DBConnection;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +14,7 @@ public class CauHoiRepositoryImpl implements ICauHoiRepository {
     public int insert(CauHoi item) {
         String sql = "INSERT INTO CauHoi(maCauHoi, tenCauHoi, idBaiTap)" + "VALUES(?, ?, ?)";
         int id = -1;
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, item.getMaCauHoi());
             stmt.setString(2, item.getTenCauHoi());
             stmt.setInt(3, item.getIdBaiTap());
@@ -32,27 +30,31 @@ public class CauHoiRepositoryImpl implements ICauHoiRepository {
     }
 
     @Override
-    public void update(CauHoi item) {
-        String sql = "UPDATE CauHoi SET  tenCauHoi = ?, idBaiTap = ? WHERE id = ?";
+    public boolean update(CauHoi item) {
+        String sql = "UPDATE CauHoi SET  tenCauHoi = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, item.getMaCauHoi());
-            stmt.setString(2, item.getTenCauHoi());
-            stmt.setInt(3, item.getIdBaiTap());
+
+            stmt.setString(1, item.getTenCauHoi());
+            stmt.setInt(2,item.getId());
             stmt.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override
-    public void delete(CauHoi item) {
+    public boolean delete(int idCauHoi) {
         String sql = "DELETE FROM CauHoi WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, item.getId());
+            stmt.setInt(1,idCauHoi);
             stmt.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override

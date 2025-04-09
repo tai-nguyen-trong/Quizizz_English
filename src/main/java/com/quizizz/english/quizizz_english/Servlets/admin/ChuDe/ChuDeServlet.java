@@ -1,8 +1,13 @@
 package com.quizizz.english.quizizz_english.Servlets.admin.ChuDe;
 
 import com.google.gson.Gson;
+import com.quizizz.english.quizizz_english.model.BaiTap;
 import com.quizizz.english.quizizz_english.model.ChuDe;
+import com.quizizz.english.quizizz_english.repositoryImpl.ChuDeRepositoryImpl;
+import com.quizizz.english.quizizz_english.service.IChuDeService;
+import com.quizizz.english.quizizz_english.serviceImpl.ChuDeServiceImpl;
 import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,11 +21,21 @@ import java.util.List;
 import java.util.Map;
 
 
-@WebServlet("/QuanLyDanhSachChuDe")
+@WebServlet({"/QuanLyDanhSachChuDe","/ThemChuDe"})
 public class ChuDeServlet extends HttpServlet {
+    private IChuDeService chuDeService;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        chuDeService = new ChuDeServiceImpl(new ChuDeRepositoryImpl());
+    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            // Tạo danh sách chủ đề dưới dạng List<Map>
+            List<ChuDe> chuDes = new ArrayList<>();
+            chuDes = chuDeService.getAllChuDe();
+            request.setAttribute("chuDes", chuDes);
             request.setAttribute("currentPage", "QuanLyDanhSachChuDe");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/layouts/layout.jsp");
             dispatcher.forward(request, response);
@@ -30,26 +45,25 @@ public class ChuDeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
-        // Set kiểu dữ liệu trả về là JSON và mã hóa UTF-8
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
-        // Tạo danh sách chủ đề dưới dạng List<Map>
-        List<Map<String, String>> topics = new ArrayList<>();
-
-        topics.add(createTopic("Động vật", "https://media.wired.com/photos/593261cab8eb31692072f129/master/w_1920,c_limit/85120553.jpg"));
-        topics.add(createTopic("Thực vật", "https://www.cactusoutlet.com/cdn/shop/files/20231020_CactiProduct2ndShoot_KathleenDreierPhotography_KMDP0583-Edit_2048x.jpg"));
-        topics.add(createTopic("Thể thao", "https://ieltsxuanphi.edu.vn/wp-content/uploads/2021/06/sports-New-Brunswick.jpg"));
-        topics.add(createTopic("Công nghệ", "https://sgs.upm.edu.my/summer-uploads/20230608140907blobid0.jpg"));
-        topics.add(createTopic("Chính trị", "https://m.media-amazon.com/images/I/81wZUou4F7L._AC_UF894,1000_QL80_.jpg"));
-        topics.add(createTopic("Du lịch", "https://smartcom.vn/blog/wp-content/uploads/2024/03/2_1.jpg"));
-
-        // Convert danh sách thành JSON
-        String json = new Gson().toJson(topics);
-
-        // Gửi JSON về client
-        response.getWriter().write(json);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            request.setCharacterEncoding("UTF-8");
+            response.setContentType("text/plain;charset=UTF-8");
+            // Nhận dữ liệu từ AJAX
+            String tenChuDe = request.getParameter("tenChuDe");
+            String moTa = request.getParameter("moTa");
+            String hinhAnh = request.getParameter("hinhAnh");
+            ChuDe chuDe = new ChuDe(tenChuDe,moTa,hinhAnh);
+            boolean isSuccess = chuDeService.addChuDe(chuDe);
+            // Trả về phản hồi
+            if (isSuccess) {
+                response.getWriter().write("Thêm bài tập thành công!");
+            } else {
+                response.getWriter().write("Thêm bài tập thất bại!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

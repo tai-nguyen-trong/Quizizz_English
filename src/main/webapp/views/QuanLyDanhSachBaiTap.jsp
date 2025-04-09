@@ -57,7 +57,7 @@
   <div class="row clearfix mb-3">
     <div class="col-md-3">
       <select id="timkiem-chuDe" class="form-select" data-live-search="true">
-        <option value="">Chọn chủ đề</option>
+        <option value="0">Chọn chủ đề</option>
         <% for (ChuDe item : chudes) { %>
         <option value="<%= item.getId() %>">
           <%= item.getTenChuDe() %>
@@ -68,13 +68,18 @@
 
     <div class="col-md-3">
       <select id="timkiem-capDo" class="form-select" data-live-search="true">
-        <option value="">Chọn cấp độ</option>
+        <option value="0">Chọn cấp độ</option>
         <% for (CapDo item : capDos) { %>
         <option value="<%= item.getId() %>">
           <%= item.getTenCapDo() %>
         </option>
         <% } %>
       </select>
+    </div>
+    <div class="col-md-2">
+      <button id="btnTimKiem" class="btn btn-primary w-100">
+        <i class="material-icons">search</i> Tìm kiếm
+      </button>
     </div>
 
   </div>
@@ -186,6 +191,10 @@
                 "url": "<%= request.getContextPath() %>/DanhSachBaiTap",
                 "type": "GET",
                 "dataType": "JSON",
+                "data": function (d) {
+                  d.idCapDo = $('#timkiem-capDo').val();
+                  d.idChuDe = $('#timkiem-chuDe').val();
+                },
                 "dataSrc":  function (json) {
                   return json.data;
                 }
@@ -228,6 +237,9 @@
         },
 
       ]
+    });
+    $("#btnTimKiem").on("click",function () {
+      table.ajax.reload();
     });
 
 

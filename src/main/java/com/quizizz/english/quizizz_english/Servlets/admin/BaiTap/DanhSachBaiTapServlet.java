@@ -41,7 +41,8 @@ public class DanhSachBaiTapServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-
+        int idCapDo = Integer.parseInt(request.getParameter("idCapDo"));
+        int idChuDe = Integer.parseInt(request.getParameter("idChuDe"));
         // 🔹 Nhận tham số từ DataTable
         int draw = Integer.parseInt(request.getParameter("draw"));
         int start = Integer.parseInt(request.getParameter("start"));
@@ -54,7 +55,7 @@ public class DanhSachBaiTapServlet extends HttpServlet {
         String sortColumn = request.getParameter("columns[" + sortColumnIndex + "][data]");
 
         // Lấy danh sách có tìm kiếm, sắp xếp, phân trang
-        List<BaiTapDTO> baitaps = baiTapService.getAllBaiTap(start, length, searchValue, sortColumn, sortDirection);
+        List<BaiTapDTO> baitaps = baiTapService.getAllBaiTap(start, length, searchValue, sortColumn, sortDirection,idCapDo,idChuDe);
         int totalRecords = baiTapService.getTotalRecords();
 
         // Tạo đối tượng DataTableResponse để trả về
