@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,9 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 
-@WebServlet({"/QuanLyDanhSachChuDe","/ThemChuDe"})
+@WebServlet({"/QuanLyDanhSachChuDe","/ThemChuDe","/XoaChuDe","/CapNhatChuDe"})
 public class ChuDeServlet extends HttpServlet {
     private IChuDeService chuDeService;
+    private Gson gson = new Gson();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -67,13 +69,56 @@ public class ChuDeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Đọc JSON từ request body
+        BufferedReader reader = request.getReader();
+        StringBuilder requestBody = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            requestBody.append(line);
+        }
+        reader.close();
+        try {
+            // Chuyển đổi JSON thành đối tượng Java
+            ChuDe chuDe = gson.fromJson(requestBody.toString(), ChuDe.class);
+
+            // Gọi Service để cập nhật dữ liệu
+            boolean isUpdated = chuDeService.updateChuDe(chuDe);
+
+            // Trả về kết quả
+            if (isUpdated) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write(gson.toJson("Cập nhật thành công!"));
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write(gson.toJson("Cập nhật thất bại!"));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String idChuDe = request.getParameter("idChuDe");
+        try {
+            int id = Integer.parseInt(idChuDe);
+            boolean isDeleted = chuDeService.deleteChuDe(id);
+
+            if (isDeleted) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write("Xóa thành công!");
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Xóa thất bại!");
+            }
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("ID không hợp lệ!");
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Lỗi khi xóa bài tập: " + e.getMessage());
+        }
     }
     private Map<String, String> createTopic(String title, String imageUrl) {
         Map<String, String> topic = new HashMap<>();

@@ -74,6 +74,7 @@
         <th>Họ và tên</th>
         <th>Email</th>
         <th>Tuổi</th>
+        <th>Vai trò</th>
       </tr>
       </thead>
       <tbody>

@@ -74,7 +74,7 @@
         <th>Tên bài tập</th>
         <th>Mã câu hỏi</th>
         <th>Tên câu hỏi</th>
-        <th style="text-align: center;">Chỉnh sửa</th>
+        <th style="text-align: center;">Xem và chỉnh sửa</th>
         <th style="text-align: center;">Danh sách câu trả lời</th>
         <th style="text-align: center;">Xóa</th>
       </tr>
@@ -193,7 +193,7 @@
               },
       "order": [[0, "asc"]], // Sắp xếp mặc định theo ID
       "aoColumns": [
-        { "mDataProp": "id", orderable: true ,type: "num"},
+        { "mDataProp": "id", orderable: true ,type: "num" , visible: false},
         { "mDataProp": "maBaiTap", orderable: true },
         { "mDataProp": "tenBaiTap", orderable: true },
         { "mDataProp": "maCauHoi", orderable: true },
@@ -209,6 +209,7 @@
         },
         {
           "data": null,
+         "visible": false,
           "render": function (data, type, full, meta) {
             return "<div class='d-flex justify-content-center align-items-center'>" +
                     "<button class='btn bg-blue waves-effect d-flex justify-content-center align-items-center btnDetails'>" +
@@ -270,8 +271,9 @@
       let rowData = table.row($(this).parents('tr')).data();
       idCauHoi = rowData.id;
       $("#modalThemCauHoi").modal("show");
-      $("#tenCauHoi").val(rowData.tenCauHoi).prop("disabled", true);
-      $("#otp-BaiTap").val(rowData.idBaiTap).prop("disabled", true).change();
+      /*$("#tenCauHoi").val(rowData.tenCauHoi).prop("disabled", true);
+      $("#otp-BaiTap").val(rowData.idBaiTap).prop("disabled", true).change();*/
+      $("#tenCauHoi").val(rowData.tenCauHoi);
       $("#btn-luuThongTin").show();
       $("#btn-luuCauHoi").hide();
       loadDapAnByCauHoi(idCauHoi);

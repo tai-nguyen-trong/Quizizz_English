@@ -64,12 +64,14 @@
           <div class="form-group mt-3">
             <label for="anhChuDe">Hình ảnh</label>
             <input type="file" class="form-control-file" id="anhChuDe">
+              <img id="previewImage" src="" alt="Xem trước ảnh" class="mt-3" style="max-width: 300px; display: none; border-radius: 12px;">
           </div>
       </div>
 
       <!-- Footer có 2 nút: Lưu thông tin và Đóng -->
       <div class="modal-footer">
-        <button type="submit" class="btn btn-success" id="btnLuuChuDe">Lưu thông tin</button>
+        <button type="button" class="btn btn-success" id="btnLuuChuDe">Thêm Chủ Đề</button>
+        <button type="button" class="btn btn-success" id="btn-CapNhat">Cập nhật</button>
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
       </div>
     </div>
@@ -79,6 +81,9 @@
 
 <script>
   $(document).ready(function () {
+      // biê
+      let base64Image = "";
+      let idChuDe = "";
     //load dữ liệu danh sách chủ đề
       danhSachChuDe();
       function danhSachChuDe() {
@@ -115,8 +120,17 @@
                   .click(function (e) {
                       e.stopPropagation();
                       $("#modalThemChuDe").modal("show");
-                      $("#tenChuDe").val(topic.title);
-                      console.log(topic.image);
+                      $("#btn-CapNhat").show();
+                      $("#btnLuuChuDe").hide();
+                      lamMoiGiaTri();
+                      $("#tenChuDe").val(topic.tenChuDe);
+                      $("#moTaChuDe").val(topic.moTa);
+                      base64Image = topic.hinhAnh;
+                      $('#previewImage')
+                          .attr('src', topic.hinhAnh)
+                          .show();
+                      idChuDe = topic.id;
+
                   });
 
               let deleteBtn = $('<button>')
@@ -128,8 +142,9 @@
                   })
                   .click(function (e) {
                       e.stopPropagation();
-                      if (confirm("Bạn có chắc chắn muốn xóa " + topic.title + " không?")) {
+                      if (confirm("Bạn có chắc chắn muốn xóa " + topic.tenChuDe + " không?")) {
                           $(card).fadeOut(300, function() { $(this).remove(); });
+                          xoaChuDe(topic.id);
                       }
                   });
 
@@ -137,7 +152,7 @@
 
               let img = $('<img>')
                   .addClass('card-img-top')
-                  .attr('src', 'data:image/jpeg;base64,' + topic.hinhAnh) // ✅ chèn base64
+                  .attr('src',topic.hinhAnh) // ✅ chèn base64
                   .attr('alt', topic.tenChuDe)
                   .css({
                       'border-top-left-radius': '12px',
@@ -158,7 +173,7 @@
                   .css({ 'font-weight': 'bold', 'margin-bottom': '5px' });
 
               let description = $('<p>').addClass('text-muted')
-                  .text(topic.description)
+                  .text(topic.moTa)
                   .css({
                       'font-size': '14px',
                       'min-height': '40px'
@@ -175,20 +190,16 @@
     // Xử lý sự kiện khi nhấn nút "Thêm chủ đề"
     $("#btnThemChuDe").click(function () {
       $("#modalThemChuDe").modal("show");
+        $("#btn-CapNhat").hide();
+        $("#btnLuuChuDe").show();
     });
-     $("#btnLuuChuDe").click(function () {
+     $("#btnLuuChuDe").click(async function () {
          const tenChuDe = $('#tenChuDe').val().trim();
          const moTa = $('#moTaChuDe').val().trim();
          const fileInput = $('#anhChuDe')[0];
          const file = fileInput.files[0];
-         let base64Image = "";
-         if (file) {
-             const reader = new FileReader();
-             reader.onload = function (e) {
-                  base64Image = e.target.result; // chỉ lấy phần base64
-             };
-             reader.readAsDataURL(file); // ✅ Chuyển ảnh thành base64
-         }
+         if (!file) return alert("Vui lòng chọn ảnh!");
+          base64Image = await getBase64(file);
          $.ajax({
              url: "<%= request.getContextPath() %>/ThemChuDe",
              type: "POST",
@@ -209,6 +220,79 @@
              }
          });
      });
+     // hieenr thị khi chọn ảnh
+      $('#anhChuDe').on('change', function () {
+          const file = this.files[0];
+          if (file) {
+              const reader = new FileReader();
+              reader.onload = function (e) {
+                  $('#previewImage')
+                      .attr('src', e.target.result)
+                      .show(); // Hiện ảnh
+              };
+              reader.readAsDataURL(file);
+          }
+      });
+      // cập nật chủ đề
+      $("#btn-CapNhat").click(async function () {
+          const tenChuDe = $('#tenChuDe').val().trim();
+          const moTa = $('#moTaChuDe').val().trim();
+          const fileInput = $('#anhChuDe')[0];
+          const file = fileInput.files[0];
+          if (file) {
+              base64Image = await getBase64(file);
+          }
+
+          $.ajax({
+              url: "<%= request.getContextPath() %>/CapNhatChuDe",
+              type: "PUT",
+              data: JSON.stringify({
+                  id: idChuDe,
+                  tenChuDe: tenChuDe,
+                  moTa: moTa,
+                  hinhAnh: base64Image,
+              }),
+              success: function (response) {
+                  $("#modalThemChuDe").modal("hide");
+                  $.LoadingOverlay("hide");
+                  location.reload(true);
+              },
+              error: function () {
+                  console.log("them that bai");
+                  $.LoadingOverlay("hide");
+              }
+          });
+      });
+      // xóa chủ đề
+    function xoaChuDe(idChude) {
+        $.ajax({
+            url: "<%= request.getContextPath() %>/XoaChuDe?idChuDe=" + idChude,
+            type: "DELETE",
+            success: function (response) {
+                alert("Đã xóa thành công!");
+                table.ajax.reload(); // Tải lại bảng sau khi xóa
+            },
+            error: function () {
+                alert("Xóa thất bại!");
+            }
+        });
+    }
+    // base64 hình ảnh
+      function getBase64(file) {
+          return new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result); // base64 data:image/jpeg;base64,...
+              reader.onerror = reject;
+              reader.readAsDataURL(file);
+          });
+      }
+      // làm mới các giá trị input
+      function lamMoiGiaTri() {
+          $('#tenChuDe').val("");
+          $('#moTaChuDe').val("");
+          $('#anhChuDe').val("");
+          base64Image= "";
+      }
 
   });
 </script>

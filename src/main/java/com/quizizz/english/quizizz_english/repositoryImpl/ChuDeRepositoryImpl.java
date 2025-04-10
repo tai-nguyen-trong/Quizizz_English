@@ -32,6 +32,7 @@ public class ChuDeRepositoryImpl implements IChuDeRepository {
             stmt.setString(1, item.getTenChuDe());
             stmt.setString(2, item.getMoTa());
             stmt.setString(3, item.getHinhAnh());
+            stmt.setInt(4, item.getId());
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
