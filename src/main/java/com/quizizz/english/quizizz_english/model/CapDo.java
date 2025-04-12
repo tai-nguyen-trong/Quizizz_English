@@ -11,6 +11,10 @@ public class CapDo {
     public CapDo() {
     }
 
+    public CapDo(String tenCapDo) {
+        this.tenCapDo = tenCapDo;
+    }
+
     public CapDo(int id, String tenCapDo) {
         this.id = id;
         this.tenCapDo = tenCapDo;

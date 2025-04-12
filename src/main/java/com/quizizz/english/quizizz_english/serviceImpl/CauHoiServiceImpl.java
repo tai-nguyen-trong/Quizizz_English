@@ -27,12 +27,14 @@ public class CauHoiServiceImpl implements ICauHoiService {
         String prefix = "CH";  // Tiền tố "BT"
         String maBaiTap = prefix + String.format("%04d", cauHoiOld.getId() + 1);
         item.setMaCauHoi(maBaiTap);
-        int idCauHoi = cauHoiRepository.insert(item);
-        return idCauHoi;
+        return cauHoiRepository.insert(item);
     }
 
     @Override
     public boolean updateCauHoi(CauHoi item) {
+        if (item.getTenCauHoi() == null || item.getTenCauHoi().isEmpty() || item.getId() <= 0) {
+            return false;
+        }
         return cauHoiRepository.update(item);
     }
 

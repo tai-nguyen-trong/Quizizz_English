@@ -18,7 +18,13 @@
           <i class="material-icons">home</i> Trang chủ
         </a>
       </li>
-
+      <!-- Quản lý Chủ đề -->
+      <li class="nav-item">
+        <a class="nav-link ${currentPage == 'QuanLyDanhSachCapDo' ? 'active' : ''}"
+           href="<%= request.getContextPath() %>/QuanLyDanhSachCapDo">
+          <i class="material-icons">folder</i> Quản lý cấp độ
+        </a>
+      </li>
       <!-- Quản lý Chủ đề -->
       <li class="nav-item">
         <a class="nav-link ${currentPage == 'QuanLyDanhSachChuDe' ? 'active' : ''}"
@@ -44,12 +50,12 @@
       </li>--%>
 
       <!-- Quản lý Người dùng -->
-      <li class="nav-item">
+      <%--<li class="nav-item">
         <a class="nav-link ${currentPage == 'QuanLyDanhSachNguoiDung' ? 'active' : ''}"
            href="<%= request.getContextPath() %>/QuanLyDanhSachNguoiDung">
           <i class="material-icons">person</i> Quản lý Người dùng
         </a>
-      </li>
+      </li>--%>
     </ul>
   </div>
 </div>

@@ -139,7 +139,7 @@ public class ThemXoaSuaCauHoiServlet extends HttpServlet {
             String danhSachJson = gson.toJson(jsonMap.get("danhSachDapAn"));
             Type listType = new TypeToken<List<DapAn>>() {}.getType();
             List<DapAn> danhSachDapAn = gson.fromJson(danhSachJson, listType);
-            CauHoi cauHoi = new CauHoi(tenCauHoi, idCauHoi);
+            CauHoi cauHoi = new CauHoi(idCauHoi,tenCauHoi);
             boolean isSuccess = cauHoiService.updateCauHoi(cauHoi);
             // Trả về kết quả
             if (isSuccess) {

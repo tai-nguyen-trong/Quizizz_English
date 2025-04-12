@@ -100,12 +100,12 @@
         <div class="container">
           <div class="row clearfix">
             <!-- Tên Bài Tập -->
-            <div class="col-md-6">
+            <div class="col-md-9">
               <label class="fw-bold">Tên Câu Hỏi</label>
               <input id="tenCauHoi" type="text" class="form-control">
             </div>
             <!-- Chọn Nhà Sản Xuất -->
-            <div class="col-md-6 mt-3">
+            <div class="col-md-3">
               <label class="fw-bold">Mã Bài Tập</label>
               <select id="otp-BaiTap" class="form-select" data-live-search="true">
                 <option value="<%= baiTap.getId() %>"><%= baiTap.getMaBaiTap() %></option>
@@ -282,8 +282,8 @@
     $("#btn-ThemCauHoi").click(function () {
       tableDapAn.clear().draw();
       $("#modalThemCauHoi").modal("show");
-      $("#tenCauHoi").prop("disabled", false);
-      $("#otp-BaiTap").prop("disabled", false);
+      $("#tenCauHoi").val("");
+      $("#otp-BaiTap").prop("disabled", true);
       $("#btn-luuThongTin").hide();
       $("#btn-luuCauHoi").show();
 

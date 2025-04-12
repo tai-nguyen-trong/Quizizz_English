@@ -11,36 +11,42 @@ import java.util.List;
 
 public class CapDoRepositoryImpl implements ICapDoRepository {
     @Override
-    public void insert(CapDo item) {
+    public boolean insert(CapDo item) {
         String sql = "INSERT INTO CapDo(tenCapDo)" + "VALUES(?)";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, item.getTenCapDo());
             stmt.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override
-    public void update(CapDo item) {
+    public boolean update(CapDo item) {
         String sql = "UPDATE CapDo SET tenCapDo = ?  WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, item.getTenCapDo());
             stmt.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override
-    public void delete(CapDo item) {
+    public boolean delete(int idCapDo) {
         String sql = "DELETE FROM CapDo WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, item.getId());
+            stmt.setInt(1, idCapDo);
             stmt.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override

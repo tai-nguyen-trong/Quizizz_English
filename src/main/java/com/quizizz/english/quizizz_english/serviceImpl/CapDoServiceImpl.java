@@ -14,18 +14,18 @@ public class CapDoServiceImpl implements ICapDoService {
     }
 
     @Override
-    public void addCapDo(CapDo item) {
-        capDoRepository.insert(item);
+    public boolean addCapDo(CapDo item) {
+        return capDoRepository.insert(item);
     }
 
     @Override
-    public void updateCapDo(CapDo item) {
-        capDoRepository.update(item);
+    public boolean updateCapDo(CapDo item) {
+        return capDoRepository.update(item);
     }
 
     @Override
-    public void deleteCapDo(CapDo item) {
-        capDoRepository.delete(item);
+    public boolean deleteCapDo(int idCapDo) {
+        return capDoRepository.delete(idCapDo);
     }
 
     @Override
