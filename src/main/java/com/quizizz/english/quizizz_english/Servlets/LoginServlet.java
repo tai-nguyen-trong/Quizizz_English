@@ -42,7 +42,10 @@ private INguoiDungService nguoiDungService;
         if (nguoiDung != null) {
             HttpSession session = req.getSession();
             session.setAttribute("user", nguoiDung);
-            resp.sendRedirect(req.getContextPath() + "/layouts/layout.jsp");
+            System.out.println(nguoiDung.getHoVaTen() + "Trong session LoginServlet");
+            session.setAttribute("isLoggedIn", true);
+            resp.sendRedirect(req.getContextPath() + "/layouts/layoutUser.jsp");
+
         } else {
             req.setAttribute("error", "Sai email hoặc mật khẩu.");
             req.getRequestDispatcher("/views/login.jsp").forward(req, resp);

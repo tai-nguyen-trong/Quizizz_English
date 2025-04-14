@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class NguoiDungRepositoryImpl implements INguoiDungRepository {
-    @Override
+//    @Override
     public void insert(NguoiDung item) {
         String checkEmailSQL = "SELECT COUNT(*) FROM NguoiDung WHERE email = ?";
         String insertSQL = "INSERT INTO NguoiDung (hoVaTen, tuoi, email, matKhau, soDienThoai, vaiTro) VALUES (?, ?, ?, ?, ?, ?)";
@@ -50,23 +50,39 @@ public class NguoiDungRepositoryImpl implements INguoiDungRepository {
         }
     }
 
-    @Override
-    public void update(NguoiDung item) {
-        String sql = "UPDATE NguoiDung SET hoVaTen = ?, tuoi = ?, email = ?, matKhau = ?, soDienThoai = ?, vaiTro = ? WHERE id = ?";
+
+    public void updateMatKhau(int id, String matKhauMoi) {
+        String sql = "UPDATE NguoiDung SET matKhau = ? WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, matKhauMoi);
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+            System.out.println("Cập nhật mật khẩu thành công!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Cập nhật người dùng thất bại!");
+        }
+    }
+
+//    @Override
+    public boolean update(NguoiDung item) {
+        String sql = "UPDATE NguoiDung SET hoVaTen = ?, tuoi = ?, email = ?, soDienThoai = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, item.getHoVaTen());
             stmt.setInt(2, item.getTuoi());
             stmt.setString(3, item.getEmail());
-            stmt.setString(4, item.getMatKhau());
-            stmt.setString(5, item.getSoDienThoai());
-            stmt.setString(6, item.getVaiTro());
+            stmt.setString(4, item.getSoDienThoai());
+            stmt.setInt(5, item.getId());
             stmt.executeUpdate();
+            System.out.println("Cập nhật người dùng thành công!");
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("Cập nhật người dùng thất bại!");
         }
+        return true;
     }
 
-    @Override
+//    @Override
     public void delete(NguoiDung item) {
         String sql = "DELETE FROM NguoiDung WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -77,7 +93,7 @@ public class NguoiDungRepositoryImpl implements INguoiDungRepository {
         }
     }
 
-    @Override
+//    @Override
     public List<NguoiDung> getAll() {
         List<NguoiDung> listNguoiDung = new ArrayList<>();
         String sql = "SELECT * FROM NguoiDung";
@@ -91,7 +107,7 @@ public class NguoiDungRepositoryImpl implements INguoiDungRepository {
         return listNguoiDung;
     }
 
-    @Override
+//    @Override
     public NguoiDung getById(int id) {
         String sql = "SELECT * FROM NguoiDung WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -148,7 +164,6 @@ public class NguoiDungRepositoryImpl implements INguoiDungRepository {
             } else {
                 System.out.println("Đăng ký thất bại!");
             }
-
         } catch (SQLException e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Lỗi đăng ký người dùng", e);
             System.out.println("Lỗi hệ thống!");
@@ -169,9 +184,11 @@ public class NguoiDungRepositoryImpl implements INguoiDungRepository {
 
                     if (BCrypt.checkpw(matKhau, hashedPasswordFromDB)) {
                         nguoiDung = new NguoiDung(
+                                rs.getInt("id"),
                                 rs.getString("hoVaTen"),
                                 rs.getInt("tuoi"),
                                 rs.getString("email"),
+                                hashedPasswordFromDB,
                                 rs.getString("soDienThoai")
                         );
                         System.out.println("Đăng nhập thành công: " + nguoiDung.getHoVaTen());

@@ -1,4 +1,4 @@
-package com.quizizz.english.quizizz_english.Servlets;
+package com.quizizz.english.quizizz_english.Servlets.user;
 
 import com.google.gson.Gson;
 import com.quizizz.english.quizizz_english.model.ChuDe;
@@ -7,7 +7,6 @@ import com.quizizz.english.quizizz_english.service.IChuDeService;
 import com.quizizz.english.quizizz_english.serviceImpl.ChuDeServiceImpl;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 
-@WebServlet({"/","/home"})
-public class HomeServlet extends HttpServlet {
+@WebServlet({"/home/user"})
+public class HomeUserServlet extends HttpServlet {
     private IChuDeService chuDeService;
 
     @Override
@@ -33,13 +32,14 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         try {
             // Tạo danh sách chủ đề dưới dạng List<Map>
-            List<ChuDe> chuDes = new ArrayList<>();
-            chuDes = chuDeService.getAllChuDe();
+            List<ChuDe> chuDes = chuDeService.getAllChuDe();
             request.setAttribute("chuDes", chuDes); // Gửi danh sách sang JSP
             request.setAttribute("currentPage", "home");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/layouts/layout.jsp");
+            System.out.println("chuDes: " + chuDes + "Ten dau tien");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/layouts/layoutUser.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +89,7 @@ public class HomeServlet extends HttpServlet {
             }
             // Chuyển trang đến pagelayout.jsp và truyền tham số "currentPage"
             req.setAttribute("currentPage", currentPage);
-            req.getRequestDispatcher("/layouts/layout.jsp").forward(req, resp);
+            req.getRequestDispatcher("/layouts/layoutUser.jsp").forward(req, resp);
         }catch (Exception e) {
             e.printStackTrace();
         }

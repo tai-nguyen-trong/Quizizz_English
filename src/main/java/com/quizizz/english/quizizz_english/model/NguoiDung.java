@@ -23,6 +23,23 @@ public class NguoiDung {
         this.soDienThoai = soDienThoai;
     }
 
+    public NguoiDung(String hoVaTen, int tuoi, String email, String matKhau, String soDienThoai) {
+        this.hoVaTen = hoVaTen;
+        this.tuoi = tuoi;
+        this.email = email;
+        this.matKhau = matKhau;
+        this.soDienThoai = soDienThoai;
+    }
+
+    public NguoiDung(int id, String hoVaTen, int tuoi, String email, String matKhau, String soDienThoai) {
+        this.id = id;
+        this.hoVaTen = hoVaTen;
+        this.tuoi = tuoi;
+        this.email = email;
+        this.matKhau = matKhau;
+        this.soDienThoai = soDienThoai;
+    }
+
     public NguoiDung(int id, String hoVaTen, int tuoi, String email, String matKhau, String soDienThoai, String vaiTro) {
         this.id = id;
         this.hoVaTen = hoVaTen;

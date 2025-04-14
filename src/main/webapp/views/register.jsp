@@ -13,6 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/fontawesome-free-6.7.2-web/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <style>
     body {
       display: flex;
@@ -37,33 +38,39 @@
     <div class="signup-container text-center">
       <h2>Đăng kí</h2>
       <p> Hoặc<a href="./login.jsp"> Đăng nhập</a></p>
-      <form>
+      <form method="post" action="register">
         <div class="mb-2">
-          <input type="text" class="form-control" placeholder="Họ tên">
+          <input type="text" class="form-control" placeholder="Họ tên" name="hoVaTen">
         </div>
         <div class="mb-2">
-          <input type="number" class="form-control" placeholder="Tuổi" id="age" min="0">
+          <input type="number" class="form-control" placeholder="Tuổi" id="age" min="0" name="tuoi">
         </div>
         <div class="mb-2">
-          <input type="text" class="form-control" placeholder="Số điện thoại">
-        </div>
-        <div class="mb-2">
-          <input type="email" class="form-control" placeholder="demo@gmail.com">
+          <input type="email" class="form-control" placeholder="Demo@gmail.com" name="email">
         </div>
         <div class="mb-2 position-relative">
-          <input type="password" class="form-control" id="password" placeholder="Mật khẩu">
+          <input type="password" class="form-control" id="password" placeholder="Mật khẩu" name="matKhau">
           <span class="position-absolute top-50 end-0 translate-middle-y me-2 eye-icon">
                     <i class="fa-solid fa-eye" id="eye-icon1"></i>
                 </span>
         </div>
         <div class="mb-2 position-relative">
-          <input type="password" class="form-control" id="confirm-password" placeholder="Nhập lại mật khẩu">
+          <input type="password" class="form-control" id="confirm-password" placeholder="Nhập lại mật khẩu" name="xacNhanMatKhau">
           <span class="position-absolute top-50 end-0 translate-middle-y me-2 eye-icon">
                     <i class="fa-solid fa-eye" id="eye-icon2"></i>
                 </span>
         </div>
+        <div class="mb-2">
+          <input type="text" class="form-control" placeholder="Số điện thoại" name="soDienThoai">
+        </div>
         <button type="submit" class="btn btn-primary w-100">Đăng kí</button>
       </form>
+
+      <% String error = (String) request.getAttribute("error");
+        if (error != null) { %>
+      <p style="color:red;"><%= error %></p>
+      <% } %>
+
     </div>
 
 </body>

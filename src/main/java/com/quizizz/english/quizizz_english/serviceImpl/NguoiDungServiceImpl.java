@@ -19,8 +19,14 @@ public class NguoiDungServiceImpl implements INguoiDungService {
     }
 
     @Override
-    public void updateNguoiDung(NguoiDung item) {
+    public void updateMatKhau(int id, String matKhauMoi) {
+        nguoiDungRepository.updateMatKhau(id, matKhauMoi);
+    }
+
+    @Override
+    public boolean updateNguoiDung(NguoiDung item) {
         nguoiDungRepository.update(item);
+        return false;
     }
 
     @Override
@@ -36,6 +42,11 @@ public class NguoiDungServiceImpl implements INguoiDungService {
     @Override
     public NguoiDung getNguoiDungById(int id) {
         return nguoiDungRepository.getById(id);
+    }
+
+    @Override
+    public void dangKy(NguoiDung item) {
+        nguoiDungRepository.dangKy(item);
     }
 
     @Override
