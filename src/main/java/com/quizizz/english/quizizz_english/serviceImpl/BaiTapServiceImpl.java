@@ -5,7 +5,10 @@ import com.quizizz.english.quizizz_english.model.BaiTap;
 import com.quizizz.english.quizizz_english.repository.IBaiTapRepository;
 import com.quizizz.english.quizizz_english.service.IBaiTapService;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BaiTapServiceImpl implements IBaiTapService {
     private final IBaiTapRepository baiTapRepository;
@@ -51,12 +54,73 @@ public class BaiTapServiceImpl implements IBaiTapService {
     }
 
     @Override
-    public List<BaiTapDTO> getAllBaiTap() {
-        return baiTapRepository.getAllBaiTap();
+    public List<BaiTapDTO> getAllBaiTap(int start, int length, String search, String sortColumn, String sortDirection,
+                                        int idCapDo, int idChuDe) {
+        List<BaiTapDTO> list = baiTapRepository.getAllBaiTap();
+        if (idCapDo != 0) {
+            list = list.stream()
+                    .filter(bt -> bt.getIdCapDo() == idCapDo)
+                    .collect(Collectors.toList());
+        }
+
+        if (idChuDe != 0) {
+            list = list.stream()
+                    .filter(bt -> bt.getIdChuDe() == idChuDe)
+                    .collect(Collectors.toList());
+        }
+        if (search != null && !search.isEmpty()) {
+            String lowerSearch = search.toLowerCase();
+            list = list.stream()
+                    .filter(bt -> bt.getTenBaiTap().toLowerCase().contains(lowerSearch) ||
+                            bt.getMaBaiTap().toLowerCase().contains(lowerSearch))
+                    .collect(Collectors.toList());
+        }
+        // 🔹 Xử lý sắp xếp
+        if (sortColumn != null && sortDirection != null) {
+            Comparator<BaiTapDTO> comparator = switch (sortColumn) {
+                case "id" -> Comparator.comparing(BaiTapDTO::getId);
+                case "maBaiTap" -> Comparator.comparing(BaiTapDTO::getMaBaiTap);
+                case "tenBaiTap" -> Comparator.comparing(BaiTapDTO::getTenBaiTap);
+                case "thoiGianLamBai" -> Comparator.comparing(BaiTapDTO::getThoiGianLamBai);
+                case "tenCapDo" -> Comparator.comparing(BaiTapDTO::getTenCapDo);
+                case "tenChuDe" -> Comparator.comparing(BaiTapDTO::getTenChuDe);
+                default -> Comparator.comparing(BaiTapDTO::getId);
+            };
+
+            if ("desc".equalsIgnoreCase(sortDirection)) {
+                comparator = comparator.reversed();
+            }
+
+            list = list.stream().sorted(comparator).collect(Collectors.toList());
+        }
+        // 🔹 Xử lý phân trang
+        int totalRecords = list.size();
+        int endIndex = Math.min(start + length, totalRecords);
+        list = list.subList(start, endIndex);
+
+        return list;
     }
 
     @Override
     public BaiTap getBaiTapById(int id) {
         return baiTapRepository.getBaiTapById(id);
+    }
+    public int getTotalRecords() {
+        return baiTapRepository.getAllBaiTap().size();
+    }
+
+    @Override
+    public List<BaiTap> DanhSachBaiTap() {
+        List<BaiTapDTO> list = baiTapRepository.getAllBaiTap();
+        List<BaiTap> baitaps = new ArrayList<>();
+        for (BaiTapDTO baitap : list) {
+            BaiTap baitap1 = new BaiTap(
+                    baitap.getId(),
+                    baitap.getMaBaiTap(),
+                    baitap.getTenBaiTap()
+            );
+            baitaps.add(baitap1);
+        }
+        return baitaps;
     }
 }

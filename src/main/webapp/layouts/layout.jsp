@@ -15,8 +15,8 @@
             case "QuanLyDanhSachCauHoi":
                 currentPage = "QuanLyDanhSachCauHoi";
                 break;
-            case "QuanLyDanhSachNguoiDung":
-                currentPage = "QuanLyDanhSachNguoiDung";
+            case "QuanLyDanhSachCapDo":
+                currentPage = "QuanLyDanhSachCapDo";
                 break;
             default:
                 currentPage = "home"; // Giá trị mặc định nếu không khớp case nào

@@ -9,6 +9,9 @@
   } else if (currentPage.equals("QuanLyDanhSachChuDe")) {
     currentPage = "QuanLyDanhSachChuDe";
   }
+  else if (currentPage.equals("QuanLyDanhSachCapDo")) {
+    currentPage = "QuanLyDanhSachCapDo";
+  }
 
   // Xây dựng đường dẫn tới trang cần include
   String pagePath = "/views/" + currentPage + ".jsp";

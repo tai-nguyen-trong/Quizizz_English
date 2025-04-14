@@ -57,7 +57,7 @@
   <div class="row clearfix mb-3">
     <div class="col-md-3">
       <select id="timkiem-chuDe" class="form-select" data-live-search="true">
-        <option value="">Chọn chủ đề</option>
+        <option value="0">Chọn chủ đề</option>
         <% for (ChuDe item : chudes) { %>
         <option value="<%= item.getId() %>">
           <%= item.getTenChuDe() %>
@@ -68,13 +68,18 @@
 
     <div class="col-md-3">
       <select id="timkiem-capDo" class="form-select" data-live-search="true">
-        <option value="">Chọn cấp độ</option>
+        <option value="0">Chọn cấp độ</option>
         <% for (CapDo item : capDos) { %>
         <option value="<%= item.getId() %>">
           <%= item.getTenCapDo() %>
         </option>
         <% } %>
       </select>
+    </div>
+    <div class="col-md-2">
+      <button id="btnTimKiem" class="btn btn-primary w-100">
+        <i class="material-icons">search</i> Tìm kiếm
+      </button>
     </div>
 
   </div>
@@ -186,15 +191,23 @@
                 "url": "<%= request.getContextPath() %>/DanhSachBaiTap",
                 "type": "GET",
                 "dataType": "JSON",
-                "dataSrc": ""
+                "data": function (d) {
+                  d.idCapDo = $('#timkiem-capDo').val();
+                  d.idChuDe = $('#timkiem-chuDe').val();
+                },
+                "dataSrc":  function (json) {
+                  return json.data;
+                }
               },
+
+      order: [[0, "asc"]], // Sắp xếp mặc định theo ID
       "aoColumns": [
-        { "mDataProp": "id" },
-        { "mDataProp": "maBaiTap" },
-        { "mDataProp": "tenBaiTap" },
-        { "mDataProp": "tenChuDe" },
-        { "mDataProp": "tenCapDo" },
-        { "mDataProp": "thoiGianLamBai" ,type: "num"},
+        { "mDataProp": "id", orderable: true ,type: "num"},
+        { "mDataProp": "maBaiTap", orderable: true },
+        { "mDataProp": "tenBaiTap", orderable: true },
+        { "mDataProp": "tenChuDe", orderable: true },
+        { "mDataProp": "tenCapDo", orderable: true },
+        { "mDataProp": "thoiGianLamBai", orderable: true ,type: "num"},
         {
           "data": null,
           "render": function (data, type, full, meta) {
@@ -225,6 +238,9 @@
 
       ]
     });
+    $("#btnTimKiem").on("click",function () {
+      table.ajax.reload();
+    });
 
 
     // Xử lý sự kiện khi nhấn nút "Thêm chủ đề"
@@ -250,9 +266,11 @@
     // Sự kiện Click vào Nút Xem Chi Tiết
     $('#exerciseTable tbody').on('click', '.btnDetails', function () {
       let rowData = table.row($(this).parents('tr')).data();
-      alert("Xem chi tiết bài tập:\n" +
-              "Mã bài tập: " + rowData.MaBaiTap + "\n" +
-              "Mô tả: " + rowData.ThoiGianLamBai);
+      let idBaiTap = rowData.id; // hoặc rowData.idBaiTap tùy vào JSON
+
+      // Chuyển sang trang quản lý câu hỏi, gửi id bài tập qua URL
+      window.location.href = "<%= request.getContextPath() %>/QuanLyDanhSachCauHoi?idBaiTap=" + encodeURIComponent(idBaiTap);
+
     });
 
     // Sự kiện Click vào Nút Xóa

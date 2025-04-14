@@ -14,27 +14,31 @@ public class DapAnServiceImpl implements IDapAnService {
     }
 
     @Override
-    public void addDapAn(DapAn item) {
-        dapAnRepository.insert(item);
+    public boolean addDapAn(DapAn item) {
+        boolean isSucess=dapAnRepository.insert(item);
+        if (isSucess) return true;
+        else return false;
     }
 
     @Override
-    public void updateDapAn(DapAn item) {
-        dapAnRepository.update(item);
+    public boolean updateDapAn(DapAn item) {
+        if (item.getId() != 0){
+            return dapAnRepository.update(item);
+        }else {
+            return dapAnRepository.insert(item);
+        }
     }
 
     @Override
-    public void deleteDapAn(DapAn item) {
-        dapAnRepository.delete(item);
+    public boolean deleteDapAn(int idDapAn) {
+        boolean isSucess=dapAnRepository.delete(idDapAn);
+        if (isSucess) return true;
+        else return false;
     }
 
-    @Override
-    public List<DapAn> getAllDapAn() {
-        return dapAnRepository.getAll();
-    }
 
     @Override
-    public DapAn getDapAnById(int id) {
-        return dapAnRepository.getById(id);
+    public List<DapAn> getAllCauHoiByIdBaiTap(Integer idCauHoi) {
+        return dapAnRepository.getAllCauHoiByIdBaiTap(idCauHoi);
     }
 }
