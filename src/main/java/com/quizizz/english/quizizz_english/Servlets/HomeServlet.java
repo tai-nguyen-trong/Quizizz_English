@@ -2,6 +2,7 @@ package com.quizizz.english.quizizz_english.Servlets;
 
 import com.google.gson.Gson;
 import com.quizizz.english.quizizz_english.model.ChuDe;
+import com.quizizz.english.quizizz_english.model.NguoiDung;
 import com.quizizz.english.quizizz_english.repositoryImpl.ChuDeRepositoryImpl;
 import com.quizizz.english.quizizz_english.service.IChuDeService;
 import com.quizizz.english.quizizz_english.serviceImpl.ChuDeServiceImpl;
@@ -13,13 +14,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @WebServlet({"/","/home"})
@@ -35,12 +34,37 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             // Tạo danh sách chủ đề dưới dạng List<Map>
+            RequestDispatcher dispatcher = null;
             List<ChuDe> chuDes = new ArrayList<>();
             chuDes = chuDeService.getAllChuDe();
             request.setAttribute("chuDes", chuDes); // Gửi danh sách sang JSP
-            request.setAttribute("currentPage", "home");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/layouts/layout.jsp");
-            dispatcher.forward(request, response);
+            HttpSession session = request.getSession(false); // không tạo mới
+            boolean isLoggedIn = false;
+
+            if (session != null && session.getAttribute("isLoggedIn") != null) {
+                isLoggedIn = (boolean) session.getAttribute("isLoggedIn");
+            }
+            if(isLoggedIn){
+                request.setAttribute("currentPage", "home");
+                NguoiDung nguoiDung = (NguoiDung) session.getAttribute("user");
+                if(nguoiDung != null) {
+                    if(Objects.equals(nguoiDung.getVaiTro(), "GiaoVien")){
+                        dispatcher = request.getRequestDispatcher("/layouts/layout.jsp");
+                    }else if (Objects.equals(nguoiDung.getVaiTro(), "NguoiDung")){
+                        dispatcher = request.getRequestDispatcher("/layouts/layoutUser.jsp");
+                    }
+                }
+                if (dispatcher != null) {
+                    dispatcher.forward(request, response);
+                } else {
+                    // Trường hợp vai trò không xác định → chuyển về login hoặc báo lỗi
+                    response.sendRedirect(request.getContextPath() + "/login");
+                }
+            }else {
+                dispatcher  = request.getRequestDispatcher("/layouts/layoutUser.jsp");
+                dispatcher.forward(request, response);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -13,10 +13,11 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Objects;
 
 import static java.lang.System.out;
 
-@WebServlet("/login")
+@WebServlet({"/login"})
 public class LoginServlet extends HttpServlet {
 private INguoiDungService nguoiDungService;
 
@@ -42,10 +43,8 @@ private INguoiDungService nguoiDungService;
         if (nguoiDung != null) {
             HttpSession session = req.getSession();
             session.setAttribute("user", nguoiDung);
-            System.out.println(nguoiDung.getHoVaTen() + "Trong session LoginServlet");
             session.setAttribute("isLoggedIn", true);
-            resp.sendRedirect(req.getContextPath() + "/layouts/layoutUser.jsp");
-
+            resp.sendRedirect(req.getContextPath() + "/home");
         } else {
             req.setAttribute("error", "Sai email hoặc mật khẩu.");
             req.getRequestDispatcher("/views/login.jsp").forward(req, resp);

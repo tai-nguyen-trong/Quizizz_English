@@ -189,9 +189,9 @@ public class NguoiDungRepositoryImpl implements INguoiDungRepository {
                                 rs.getInt("tuoi"),
                                 rs.getString("email"),
                                 hashedPasswordFromDB,
-                                rs.getString("soDienThoai")
+                                rs.getString("soDienThoai"),
+                                rs.getString("vaiTro")
                         );
-                        System.out.println("Đăng nhập thành công: " + nguoiDung.getHoVaTen());
                     } else {
                         System.out.println("Sai mật khẩu.");
                     }
