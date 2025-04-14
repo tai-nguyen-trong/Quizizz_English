@@ -83,7 +83,7 @@
   <div>
     ☑️ Câu hỏi:
     <div class="question-nav" id="question-status">
-      <c:forEach var="i" begin="1" end="40">
+      <c:forEach var="i" begin="1" end="4">
         <button type="button" class="q-btn" id="q-${i}" onclick="scrollToQuestion(${i})">${i}</button>
       </c:forEach>
     </div>
