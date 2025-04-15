@@ -50,6 +50,15 @@
                     <i class="material-icons">book</i> Lịch sử làm bài
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link ${currentPage == 'LamBaiTap' ? 'active' : ''}"
+                   href="<%= request.getContextPath() %>/LamBaiTap">
+                    <i class="material-icons">book</i> LamBaiTap
+                </a>
+            </li>
+
+
             <% } %>
         </ul>
     </div>

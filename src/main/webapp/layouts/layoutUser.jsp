@@ -22,6 +22,9 @@
             case "LichSuLamBai":
                 currentPage = "LichSuLamBai";
                 break;
+            case "LamBaiTap":
+                currentPage = "LamBaiTap";
+                break;
             default:
                 currentPage = "home"; // Giá trị mặc định nếu không khớp case nào
                 break;

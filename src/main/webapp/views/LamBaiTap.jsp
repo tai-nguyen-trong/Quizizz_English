@@ -70,20 +70,63 @@
     margin: 0 5px;
   }
 
-  .btn-submit {
-    background-color: #2196F3;
-    color: white;
+
+
+  .header-info {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 10px;
   }
+
+  /* Ghim nút ở giữa phần content (không tính sidebar) */
+  .btn-submit-fixed {
+    position: fixed;
+    bottom: 20px;
+    left: calc(260px + 50%); /* 260px là sidebar */
+    transform: translateX(-50%);
+    z-index: 999;
+  }
+
+  .btn-submit {
+    padding: 10px 20px;
+    background-color: #198754;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+
+
 </style>
 
 <!-- Header thông tin -->
+<%--<div class="header-info">--%>
+<%--  <div>📋 Chủ đề: <span id="exam-topic">Đọc hiểu từ vựng</span></div>--%>
+<%--  <div>🕒 Thời gian: <span id="exam-timer">30:00</span></div>--%>
+<%--  <div>--%>
+<%--    ☑️ Câu hỏi:--%>
+<%--    <div class="question-nav" id="question-status">--%>
+<%--      <c:forEach var="i" begin="1" end="4">--%>
+<%--        <button type="button" class="q-btn" id="q-${i}" onclick="scrollToQuestion(${i})">${i}</button>--%>
+<%--      </c:forEach>--%>
+<%--    </div>--%>
+<%--  </div>--%>
+<%--</div>--%>
 <div class="header-info">
-  <div>📋 Chủ đề: <span id="exam-topic">Đọc hiểu từ vựng</span></div>
-  <div>🕒 Thời gian: <span id="exam-timer">30:00</span></div>
-  <div>
-    ☑️ Câu hỏi:
-    <div class="question-nav" id="question-status">
-      <c:forEach var="i" begin="1" end="40">
+  <div class="row w-100">
+    <!-- Hàng 1 -->
+    <div class="col-md-6"><span>📋 Chủ đề:</span> <span id="exam-topic">Đọc hiểu từ vựng</span></div>
+    <div class="col-md-6"><span>🕒 Thời gian:</span> <span id="exam-timer">30:00</span></div>
+  </div>
+  <!-- Hàng 2 -->
+  <div class="mt-3">
+    <span>☑️ Câu hỏi:</span>
+    <div class="question-nav mt-2" id="question-status">
+      <c:forEach var="i" begin="1" end="4">
         <button type="button" class="q-btn" id="q-${i}" onclick="scrollToQuestion(${i})">${i}</button>
       </c:forEach>
     </div>
@@ -112,7 +155,10 @@
 </div>
 
 <!-- Nút chuyển câu hỏi -->
-<div class="btn-group">
+<%--<div class="btn-group">--%>
+<%--  <button class="btn-submit" onclick="submitExam()">✔ Nộp bài</button>--%>
+<%--</div>--%>
+<div class="btn-submit-fixed">
   <button class="btn-submit" onclick="submitExam()">✔ Nộp bài</button>
 </div>
 

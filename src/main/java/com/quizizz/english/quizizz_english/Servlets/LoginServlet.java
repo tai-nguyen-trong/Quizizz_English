@@ -4,6 +4,7 @@ import com.quizizz.english.quizizz_english.model.NguoiDung;
 import com.quizizz.english.quizizz_english.repositoryImpl.NguoiDungRepositoryImpl;
 import com.quizizz.english.quizizz_english.service.INguoiDungService;
 import com.quizizz.english.quizizz_english.serviceImpl.NguoiDungServiceImpl;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -44,7 +45,7 @@ private INguoiDungService nguoiDungService;
             HttpSession session = req.getSession();
             session.setAttribute("user", nguoiDung);
             session.setAttribute("isLoggedIn", true);
-            resp.sendRedirect(req.getContextPath() + "/home");
+            resp.sendRedirect(req.getContextPath() + "/home/user");
         } else {
             req.setAttribute("error", "Sai email hoặc mật khẩu.");
             req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
