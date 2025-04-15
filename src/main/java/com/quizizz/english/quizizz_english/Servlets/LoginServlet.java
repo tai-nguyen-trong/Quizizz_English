@@ -14,10 +14,11 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Objects;
 
 import static java.lang.System.out;
 
-@WebServlet("/login")
+@WebServlet({"/login"})
 public class LoginServlet extends HttpServlet {
 private INguoiDungService nguoiDungService;
 

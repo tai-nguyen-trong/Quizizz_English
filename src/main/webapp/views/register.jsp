@@ -37,7 +37,7 @@
   <body>
     <div class="signup-container text-center">
       <h2>Đăng kí</h2>
-      <p> Hoặc<a href="./login.jsp"> Đăng nhập</a></p>
+      <p> Hoặc<a href="${pageContext.request.contextPath}/login"> Đăng nhập</a></p>
       <form method="post" action="register">
         <div class="mb-2">
           <input type="text" class="form-control" placeholder="Họ tên" name="hoVaTen">

@@ -38,7 +38,7 @@
 <form method="post" action="login">
     <div class="signup-container text-center">
         <h2>Đăng nhập</h2>
-        <p> Hoặc<a href="./register.jsp"> Đăng kí</a></p>
+        <p> Hoặc<a href="${pageContext.request.contextPath}/register"> Đăng kí</a></p>
         <div class="mb-2">
             <input type="email" class="form-control" placeholder="Demo@gmail.com" name="email">
         </div>

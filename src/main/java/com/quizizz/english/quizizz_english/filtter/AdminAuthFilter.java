@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebFilter("/admin/*")
+@WebFilter(urlPatterns = {"/admin/*"})
 public class AdminAuthFilter implements Filter {
 
     @Override
@@ -24,13 +24,13 @@ public class AdminAuthFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession session = httpRequest.getSession(false);
 
-        boolean isLoggedIn = (session != null && session.getAttribute("user") != null);
+        boolean isLoggedIn = (session != null && session.getAttribute("HocSinh") != null);
         boolean isAdmin = false;
 
         if (isLoggedIn) {
             // Giả sử 'userRole' là một thuộc tính trong session lưu vai trò của người dùng
             String userRole = (String) session.getAttribute("userRole");
-            isAdmin = "admin".equals(userRole);
+            isAdmin = "GiaoVien".equals(userRole);
         }
 
         if (isLoggedIn && isAdmin) {

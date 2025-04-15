@@ -100,7 +100,15 @@
 <body>
 <!-- Header -->
 <div class="header">
-    <h2>Quizizz English</h2>
+    <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+        <div style="font-size: 24px; font-weight: bold;">Quizizz English</div>
+        <div>
+            <a href="<%= request.getContextPath() %>/logout"
+               style="color: white; text-decoration: none; font-weight: bold; font-size: 16px;">
+                Đăng xuất
+            </a>
+        </div>
+    </div>
 </div>
 <div class="sidebar">
     <jsp:include page="/layouts/sidebarAdmin.jsp"/>
