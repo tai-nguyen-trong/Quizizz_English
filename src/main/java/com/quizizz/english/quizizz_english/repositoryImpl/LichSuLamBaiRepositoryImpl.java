@@ -11,7 +11,7 @@ import java.util.List;
 
 public class LichSuLamBaiRepositoryImpl implements ILichSuLamBaiRepository {
     @Override
-    public void insert(LichSuLamBai item) {
+    public int insert(LichSuLamBai item) {
         String sql = "INSERT INTO LichSuLamBai(diem, idNguoiDung, idBaiTap, idChuDe)" + "VALUES(?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setDouble(1, item.getDiem());
@@ -19,13 +19,18 @@ public class LichSuLamBaiRepositoryImpl implements ILichSuLamBaiRepository {
             stmt.setInt(3, item.getIdBaiTap());
             stmt.setInt(4, item.getIdChuDe());
             stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
     @Override
-    public void update(LichSuLamBai item) {
+    public boolean update(LichSuLamBai item) {
         String sql = "UPDATE LichSuLamBai SET tenDapAn = ?, dapAnDung = ?, idCauHoi = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setDouble(1, item.getDiem());
@@ -36,17 +41,19 @@ public class LichSuLamBaiRepositoryImpl implements ILichSuLamBaiRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override
-    public void delete(LichSuLamBai item) {
+    public boolean delete(int idLichSuLamBai) {
         String sql = "DELETE FROM LichSuLamBai WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, item.getId());
+            stmt.setInt(1, idLichSuLamBai);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override

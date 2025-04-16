@@ -72,6 +72,23 @@ public class DapAnRepositoryImpl implements IDapAnRepository {
         return dapAnList;
     }
 
+    @Override
+    public int getDapAnDungIdByCauHoi(int idCauHoi) {
+        String sql = "SELECT id FROM dap_an WHERE id_cau_hoi = ? AND dap_an_dung = true";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idCauHoi);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     private DapAn mapResultSetToDapAn(ResultSet rs) throws SQLException {
         return new DapAn(
                 //Theo thứ tự param trong contructor 4 tham số
