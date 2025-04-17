@@ -1,6 +1,7 @@
 package com.quizizz.english.quizizz_english.serviceImpl;
 
 import com.quizizz.english.quizizz_english.model.DapAnNguoiDung;
+import com.quizizz.english.quizizz_english.dto.LichSuLamBaiDTO;
 import com.quizizz.english.quizizz_english.model.LichSuLamBai;
 import com.quizizz.english.quizizz_english.repository.IDapAnNguoiDungRepository;
 import com.quizizz.english.quizizz_english.repository.IDapAnRepository;
@@ -75,4 +76,9 @@ public class LichSuLamBaiServiceImpl implements ILichSuLamBaiService {
     public LichSuLamBai getLichSuLamBaiById(int id) {
         return lichSuLamBaiRepository.getById(id);
     }
+//
+//    @Override
+//    public LichSuLamBai getLichSuLamBaiById(int id) {
+//        return lichSuLamBaiRepository.getById(id);
+//    }
 }

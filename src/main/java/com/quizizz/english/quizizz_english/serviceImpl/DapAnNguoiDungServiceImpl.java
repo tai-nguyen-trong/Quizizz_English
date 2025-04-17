@@ -25,7 +25,7 @@ public class DapAnNguoiDungServiceImpl implements IDapAnNguoiDungService {
 
     @Override
     public void deleteDapAnNguoiDung(DapAnNguoiDung item) {
-        dapAnNguoiDungRepository.delete(item);
+        dapAnNguoiDungRepository.delete(item.getId());
     }
 
     @Override

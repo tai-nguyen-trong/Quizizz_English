@@ -1,4 +1,5 @@
 package com.quizizz.english.quizizz_english.repositoryImpl;
+import com.quizizz.english.quizizz_english.dto.LichSuLamBaiDTO;
 import com.quizizz.english.quizizz_english.model.LichSuLamBai;
 import com.quizizz.english.quizizz_english.repository.ILichSuLamBaiRepository;
 import com.quizizz.english.quizizz_english.util.DBConnection;
@@ -62,7 +63,17 @@ public class LichSuLamBaiRepositoryImpl implements ILichSuLamBaiRepository {
         String sql = "SELECT * FROM LichSuLamBai";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                listLichSuLamBai.add(mapResultSetToLichSuLamBai(rs));
+                LichSuLamBaiDTO lichSuLamBai = new LichSuLamBaiDTO(
+                        rs.getInt("id"),
+                        rs.getDouble("diem"),
+                        rs.getDouble("thoiGianLamBai"),
+                        rs.getString("tenBaiTap"),
+                        rs.getString("tenChuDe"),
+                        rs.getString("tenCapDo"),
+                        rs.getInt("idNguoiDung"),
+                        rs.getInt("idBaiTap"),
+                        rs.getInt("idChuDe")
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,6 +94,11 @@ public class LichSuLamBaiRepositoryImpl implements ILichSuLamBaiRepository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<LichSuLamBaiDTO> getAllLichSuLamBai() {
+        return List.of();
     }
 
     private LichSuLamBai mapResultSetToLichSuLamBai(ResultSet rs) throws SQLException {

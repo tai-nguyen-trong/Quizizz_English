@@ -86,4 +86,9 @@ public class CauHoiServiceImpl implements ICauHoiService {
     public CauHoi getCauHoiById(int id) {
         return cauHoiRepository.getById(id);
     }
+
+    @Override
+    public List<CauHoi> getCauHoiVaDapAnTheoBaiTap(int idBaiTap) {
+        return cauHoiRepository.getCauHoiVaDapAnTheoBaiTap(idBaiTap);
+    }
 }

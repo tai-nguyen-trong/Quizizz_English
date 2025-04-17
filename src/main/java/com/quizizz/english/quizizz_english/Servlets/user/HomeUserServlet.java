@@ -38,7 +38,6 @@ public class HomeUserServlet extends HttpServlet {
             List<ChuDe> chuDes = chuDeService.getAllChuDe();
             request.setAttribute("chuDes", chuDes); // Gửi danh sách sang JSP
             request.setAttribute("currentPage", "home");
-            System.out.println("chuDes: " + chuDes + "Ten dau tien");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/layouts/layoutUser.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {

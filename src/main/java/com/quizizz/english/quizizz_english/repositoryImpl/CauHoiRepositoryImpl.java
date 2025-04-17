@@ -2,6 +2,7 @@ package com.quizizz.english.quizizz_english.repositoryImpl;
 import com.quizizz.english.quizizz_english.dto.BaiTapDTO;
 import com.quizizz.english.quizizz_english.dto.CauHoiDTO;
 import com.quizizz.english.quizizz_english.model.CauHoi;
+import com.quizizz.english.quizizz_english.model.DapAn;
 import com.quizizz.english.quizizz_english.repository.ICauHoiRepository;
 import com.quizizz.english.quizizz_english.util.DBConnection;
 
@@ -138,6 +139,32 @@ public class CauHoiRepositoryImpl implements ICauHoiRepository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<CauHoi> getCauHoiVaDapAnTheoBaiTap(int idBaiTap) {
+        List<CauHoi> cauHois = new ArrayList<>();
+        String sql = "SELECT * FROM CauHoi WHERE idBaiTap = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idBaiTap);
+            ResultSet rs = stmt.executeQuery();
+
+            DapAnRepositoryImpl dapAnRepository = new DapAnRepositoryImpl();
+
+            while (rs.next()) {
+                CauHoi cauHoi = new CauHoi();
+                cauHoi.setId(rs.getInt("id"));
+                cauHoi.setMaCauHoi(rs.getString("maCauHoi"));
+                cauHoi.setTenCauHoi(rs.getString("tenCauHoi"));
+                cauHoi.setIdBaiTap(rs.getInt("idBaiTap"));
+                List<DapAn> dapAns = dapAnRepository.getAllDapAnByIdCauHoi(cauHoi.getId());
+                cauHoi.setDapAn(dapAns);
+                cauHois.add(cauHoi);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cauHois;
     }
 
     private CauHoi mapResultSetToCauHoi(ResultSet rs) throws SQLException {
