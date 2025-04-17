@@ -4,6 +4,7 @@
 
 <%
   List<ChuDe> chuDes = (List<ChuDe>) request.getAttribute("chuDes");
+//  int idChuDe = (int) request.getAttribute("idChuDe");
 %>
 
 <style>
@@ -98,7 +99,7 @@
     <div class="col-md-3 col-sm-6 mb-4 d-flex justify-content-center">
       <div class="card text-center p-3 topic-card shadow-sm"
            style="width: 18rem; border-radius: 20px; cursor: pointer;"
-           onclick="window.location.href='home?action=denDanhSachBaiTap&title=<%= cd.getTenChuDe() %>'">
+           onclick="window.location.href='BaiTap?idChuDe=<%= cd.getId() %>'">  <!-- 'home?action=denDanhSachBaiTap&title=<%= cd.getTenChuDe() %>' -->
 
         <img src="<%= cd.getHinhAnh() != null ? cd.getHinhAnh() : request.getContextPath() + "/images/default.jpg" %>"
              class="rounded-circle mx-auto d-block mt-2"
@@ -121,16 +122,26 @@
           <p class="topic-desc"><%= cd.getMoTa() != null ? cd.getMoTa() : "Oxford University" %></p>
 
           <!-- Nút làm bài ở cuối -->
-          <button class="btn btn-dark w-100 mt-auto">Làm bài</button>
+<%--          <button class="btn btn-dark w-100 mt-auto" value="<%= cd.getId() %>" <%= cd.getId() == idChuDe %>>Chi tiết</button>--%>
+<%--            <button class="btn btn-dark w-100 mt-auto"--%>
+<%--                    onclick="window.location.href='<%= request.getContextPath() %>/BaiTap?idChuDe=<%= cd.getId() %>'">--%>
+<%--                Chi tiết--%>
+<%--            </button>--%>
+<%--            <a href="<%= request.getContextPath() %>/BaiTap?idChuDe=<%= cd.getId() %>">Chi tiết</a>--%>
+            <a href="<%= request.getContextPath() %>/BaiTap?idChuDe=<%= cd.getId() %>&idCapDo=1">Chi tiết</a>
+
         </div>
 
       </div>
     </div>
+
+
     <% }
     } else { %>
     <p>Không có chủ đề nào!</p>
     <% } %>
   </div>
+    
 
 </div>
 

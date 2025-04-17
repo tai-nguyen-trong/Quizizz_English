@@ -93,4 +93,44 @@ public class BaiTap {
     public void setIdCapDo(int idCapDo) {
         this.idCapDo = idCapDo;
     }
+
+    public ChuDe getChuDe() {
+        return chuDe;
+    }
+
+    public void setChuDe(ChuDe chuDe) {
+        this.chuDe = chuDe;
+    }
+
+    public List<LichSuLamBai> getLichSuLamBai() {
+        return lichSuLamBai;
+    }
+
+    public void setLichSuLamBai(List<LichSuLamBai> lichSuLamBai) {
+        this.lichSuLamBai = lichSuLamBai;
+    }
+
+    public CapDo getCapDo() {
+        return capDo;
+    }
+
+    public void setCapDo(CapDo capDo) {
+        this.capDo = capDo;
+    }
+
+    public List<CauHoi> getCauHoi() {
+        return cauHoi;
+    }
+
+    public void setCauHoi(List<CauHoi> cauHoi) {
+        this.cauHoi = cauHoi;
+    }
+
+    public DapAnNguoiDung getDapAnNguoiDung() {
+        return dapAnNguoiDung;
+    }
+
+    public void setDapAnNguoiDung(DapAnNguoiDung dapAnNguoiDung) {
+        this.dapAnNguoiDung = dapAnNguoiDung;
+    }
 }

@@ -63,4 +63,12 @@ public class CauHoi {
     public void setIdBaiTap(int idBaiTap) {
         this.idBaiTap = idBaiTap;
     }
+
+    public List<DapAn> getDapAn() {
+        return dapAn;
+    }
+
+    public void setDapAn(List<DapAn> dapAn) {
+        this.dapAn = dapAn;
+    }
 }

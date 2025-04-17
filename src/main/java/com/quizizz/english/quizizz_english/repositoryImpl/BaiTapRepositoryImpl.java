@@ -79,6 +79,102 @@ public class BaiTapRepositoryImpl implements IBaiTapRepository {
     }
 
     @Override
+    public List<BaiTap> tatCaBaiTap() {
+        List<BaiTap> baiTaps = new ArrayList<>();
+        String sql = "SELECT * FROM BaiTap";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                BaiTap bt = new BaiTap();
+                bt.setId(rs.getInt("id"));
+                bt.setMaBaiTap(rs.getString("maBaiTap"));
+                bt.setTenBaiTap(rs.getString("tenBaiTap"));
+                bt.setThoiGianLamBai(rs.getDouble("thoiGianLamBai"));
+                bt.setIdChuDe(rs.getInt("idChuDe"));
+                bt.setIdCapDo(rs.getInt("idCapDo"));
+                baiTaps.add(bt);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return baiTaps;
+    }
+
+    @Override
+    public List<BaiTap> getBaiTapTheoCapDo(int idCapDo) {
+        List<BaiTap> baiTaps = new ArrayList<>();
+        String sql = "SELECT * FROM BaiTap WHERE idCapDo = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idCapDo);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                BaiTap bt = new BaiTap();
+                bt.setId(rs.getInt("id"));
+                bt.setMaBaiTap(rs.getString("maBaiTap"));
+                bt.setTenBaiTap(rs.getString("tenBaiTap"));
+                bt.setThoiGianLamBai(rs.getDouble("thoiGianLamBai"));
+                bt.setIdChuDe(rs.getInt("idChuDe"));
+                bt.setIdCapDo(rs.getInt("idCapDo"));
+                baiTaps.add(bt); // Thêm vào danh sách
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return baiTaps;
+    }
+
+    @Override
+    public List<BaiTap> getBaiTapTheoChuDe(int idChuDe) {
+        List<BaiTap> baiTaps = new ArrayList<>();
+        String sql = "SELECT * FROM BaiTap WHERE idChuDe = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idChuDe);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                BaiTap bt = new BaiTap();
+                bt.setId(rs.getInt("id"));
+                bt.setMaBaiTap(rs.getString("maBaiTap"));
+                bt.setTenBaiTap(rs.getString("tenBaiTap"));
+                bt.setThoiGianLamBai(rs.getDouble("thoiGianLamBai"));
+                bt.setIdChuDe(rs.getInt("idChuDe"));
+                bt.setIdCapDo(rs.getInt("idCapDo"));
+                baiTaps.add(bt); // Thêm vào danh sách
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return baiTaps;
+    }
+
+    public List<BaiTap> getBaiTapTheoChuDeVaCapDo(int idChuDe, int idCapDo) {
+        List<BaiTap> baiTaps = new ArrayList<>();
+        String sql = "SELECT * FROM BaiTap WHERE idChuDe = ? AND idCapDo = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idChuDe);
+            stmt.setInt(2, idCapDo);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                BaiTap bt = new BaiTap();
+                bt.setId(rs.getInt("id"));
+                bt.setMaBaiTap(rs.getString("maBaiTap"));
+                bt.setTenBaiTap(rs.getString("tenBaiTap"));
+                bt.setThoiGianLamBai(rs.getDouble("thoiGianLamBai"));
+                bt.setIdChuDe(rs.getInt("idChuDe"));
+                bt.setIdCapDo(rs.getInt("idCapDo"));
+                baiTaps.add(bt);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return baiTaps;
+    }
+
+
+    @Override
     public List<BaiTapDTO> getAllBaiTap() {
         List<BaiTapDTO> danhSachBaiTap = new ArrayList<>();
         String sql = "SELECT bt.id, bt.maBaiTap, bt.tenBaiTap, bt.thoiGianLamBai, \n" +

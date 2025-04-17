@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ILichSuLamBaiService {
+
     void addLichSuLamBai(int idNguoiDung, int idBaiTap, int idChuDe, Map<Integer, Integer> cauHoiVaDapAn);
     void updateLichSuLamBai(LichSuLamBai item);
     void deleteLichSuLamBai(LichSuLamBai item);

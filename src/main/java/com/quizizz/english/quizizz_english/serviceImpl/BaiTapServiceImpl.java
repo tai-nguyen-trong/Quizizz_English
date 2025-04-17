@@ -123,4 +123,24 @@ public class BaiTapServiceImpl implements IBaiTapService {
         }
         return baitaps;
     }
+
+    @Override
+    public List<BaiTap> tatCaBaiTap() {
+        return baiTapRepository.tatCaBaiTap();
+    }
+
+    @Override
+    public List<BaiTap> getBaiTapTheoCapDo(int idCapDo) {
+        return baiTapRepository.getBaiTapTheoCapDo(idCapDo);
+    }
+
+    @Override
+    public List<BaiTap> getBaiTapTheoChuDe(int idChuDe) {
+        return baiTapRepository.getBaiTapTheoChuDe(idChuDe);
+    }
+
+    @Override
+    public List<BaiTap> getBaiTapTheoChuDeVaCapDo(int idChuDe, int idCapDo) {
+        return baiTapRepository.getBaiTapTheoChuDeVaCapDo(idChuDe, idCapDo);
+    }
 }

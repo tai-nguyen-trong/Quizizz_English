@@ -73,6 +73,28 @@ public class DapAnRepositoryImpl implements IDapAnRepository {
     }
 
     @Override
+    public List<DapAn> getAllDapAnByIdCauHoi(int idCauHoi) {
+        List<DapAn> dapAns = new ArrayList<>();
+        String sql = "SELECT * FROM DapAn WHERE idCauHoi = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idCauHoi);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                DapAn dapAn = new DapAn();
+                dapAn.setId(rs.getInt("id"));
+                dapAn.setTenDapAn(rs.getString("tenDapAn"));
+                dapAn.setDapAnDung(rs.getBoolean("dapAnDung"));
+                dapAn.setIdCauHoi(rs.getInt("idCauHoi"));
+                dapAns.add(dapAn);
+            }
+            return dapAns;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dapAns;
+    }
+
+//    @Override
     public int getDapAnDungIdByCauHoi(int idCauHoi) {
         String sql = "SELECT id FROM dap_an WHERE id_cau_hoi = ? AND dap_an_dung = true";
         try (Connection conn = DBConnection.getConnection();

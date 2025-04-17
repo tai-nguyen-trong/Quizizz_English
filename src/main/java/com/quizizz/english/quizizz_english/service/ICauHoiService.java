@@ -9,4 +9,5 @@ public interface ICauHoiService {
     boolean deleteCauHoi(int idCauHoi);
     List<CauHoiDTO> getAllCauHoi(int start, int length, String search, String sortColumn, String sortDirection,String idBaiTap);
     CauHoi getCauHoiById(int id);
+    List<CauHoi> getCauHoiVaDapAnTheoBaiTap(int idBaiTap);
 }

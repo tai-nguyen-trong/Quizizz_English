@@ -1,4 +1,5 @@
 package com.quizizz.english.quizizz_english.repositoryImpl;
+import com.quizizz.english.quizizz_english.dto.LichSuLamBaiDTO;
 import com.quizizz.english.quizizz_english.model.LichSuLamBai;
 import com.quizizz.english.quizizz_english.repository.ILichSuLamBaiRepository;
 import com.quizizz.english.quizizz_english.util.DBConnection;
@@ -10,6 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LichSuLamBaiRepositoryImpl implements ILichSuLamBaiRepository {
+    @Override
+    public List<LichSuLamBaiDTO> getAllLichSuLamBai() {
+        return List.of();
+    }
+
     @Override
     public int insert(LichSuLamBai item) {
         String sql = "INSERT INTO LichSuLamBai(diem, idNguoiDung, idBaiTap, idChuDe)" + "VALUES(?, ?, ?, ?)";

@@ -12,4 +12,8 @@ public interface IBaiTapService {
     boolean deleteBaiTap(int id);  // Xóa bài tập
     int getTotalRecords();
     List<BaiTap> DanhSachBaiTap();
+    List<BaiTap> getBaiTapTheoCapDo(int idCapDo);
+    List<BaiTap> getBaiTapTheoChuDe(int idChuDe);
+    List<BaiTap> tatCaBaiTap();
+    List<BaiTap> getBaiTapTheoChuDeVaCapDo(int idChuDe, int idCapDo);
 }

@@ -12,4 +12,8 @@ public interface IBaiTapRepository {
     boolean updateBaiTap(BaiTap baiTap); // Cập nhật bài tập
     boolean deleteBaiTap(int id);  // Xóa bài tập
     BaiTap getBaiTapMoiNhat();
+    List<BaiTap> getBaiTapTheoCapDo(int idCapDo);
+    List<BaiTap> getBaiTapTheoChuDe(int idChuDe);
+    List<BaiTap> tatCaBaiTap();
+    List<BaiTap> getBaiTapTheoChuDeVaCapDo(int idChuDe, int idCapDo);
 }
