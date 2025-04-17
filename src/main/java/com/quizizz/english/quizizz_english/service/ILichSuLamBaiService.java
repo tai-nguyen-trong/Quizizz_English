@@ -1,12 +1,12 @@
 package com.quizizz.english.quizizz_english.service;
-import com.quizizz.english.quizizz_english.dto.LichSuLamBaiDTO;
 import com.quizizz.english.quizizz_english.model.LichSuLamBai;
 import java.util.List;
 
 public interface ILichSuLamBaiService {
-//    void addLichSuLamBai(LichSuLamBai item);
-//    void updateLichSuLamBai(LichSuLamBai item);
-//    void deleteLichSuLamBai(LichSuLamBai item);
-    List<LichSuLamBaiDTO> getAllLichSuLamBai();
-//    LichSuLamBai getLichSuLamBaiById(int id);
+
+    void addLichSuLamBai(int idNguoiDung, int idBaiTap, int idChuDe, Map<Integer, Integer> cauHoiVaDapAn);
+    void updateLichSuLamBai(LichSuLamBai item);
+    void deleteLichSuLamBai(LichSuLamBai item);
+    List<LichSuLamBai> getAllLichSuLamBai();
+    LichSuLamBai getLichSuLamBaiById(int id);
 }

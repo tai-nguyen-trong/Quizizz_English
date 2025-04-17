@@ -11,21 +11,23 @@ import java.util.List;
 
 public class DapAnNguoiDungRepositoryImpl implements IDapAnNguoiDungRepository {
     @Override
-    public void insert(DapAnNguoiDung item) {
-        String sql = "INSERT INTO DapAnNguoiDung(cauDung, idBaiTap, idCauHoi, idDapAn)" + "VALUES(?, ?, ?, ?)";
+    public boolean insert(DapAnNguoiDung item) {
+        String sql = "INSERT INTO DapAnNguoiDung(cauDung, idBaiTap, idCauHoi, idDapAn,idLichSuLamBai)" + "VALUES(?, ?, ?, ?,?)";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setBoolean(1, item.getCauDung());
             stmt.setInt(2, item.getIdBaiTap());
             stmt.setInt(3, item.getIdCauHoi());
             stmt.setInt(4, item.getIdDapAn());
+            stmt.setInt(5, item.getIdLichSuLamBai());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return true;
     }
 
     @Override
-    public void update(DapAnNguoiDung item) {
+    public boolean update(DapAnNguoiDung item) {
         String sql = "UPDATE DapAnNguoiDung SET cauDung = ?, idBaiTap = ?, idCauHoi = ?, idDapAn = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setBoolean(1, item.getCauDung());
@@ -36,17 +38,19 @@ public class DapAnNguoiDungRepositoryImpl implements IDapAnNguoiDungRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return true;
     }
 
     @Override
-    public void delete(DapAnNguoiDung item) {
+    public boolean delete(int idDapAnNguoiDung) {
         String sql = "DELETE FROM DapAnNguoiDung WHERE id = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, item.getId());
+            stmt.setInt(1, idDapAnNguoiDung);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override

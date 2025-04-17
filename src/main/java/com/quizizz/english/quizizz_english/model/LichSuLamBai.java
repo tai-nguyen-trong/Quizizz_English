@@ -22,6 +22,13 @@ public class LichSuLamBai {
         this.idChuDe = idChuDe;
     }
 
+    public LichSuLamBai(int idNguoiDung, int idBaiTap, int idChuDe, Double diem) {
+        this.idNguoiDung = idNguoiDung;
+        this.idBaiTap = idBaiTap;
+        this.idChuDe = idChuDe;
+        this.diem = diem;
+    }
+
     public int getId() {
         return id;
     }

@@ -1,5 +1,4 @@
 package com.quizizz.english.quizizz_english.repositoryImpl;
-import com.quizizz.english.quizizz_english.model.CauHoi;
 import com.quizizz.english.quizizz_english.model.DapAn;
 import com.quizizz.english.quizizz_english.repository.IDapAnRepository;
 import com.quizizz.english.quizizz_english.util.DBConnection;
@@ -93,6 +92,23 @@ public class DapAnRepositoryImpl implements IDapAnRepository {
             e.printStackTrace();
         }
         return dapAns;
+    }
+
+//    @Override
+    public int getDapAnDungIdByCauHoi(int idCauHoi) {
+        String sql = "SELECT id FROM dap_an WHERE id_cau_hoi = ? AND dap_an_dung = true";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idCauHoi);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     private DapAn mapResultSetToDapAn(ResultSet rs) throws SQLException {
