@@ -95,7 +95,7 @@ public class DapAnRepositoryImpl implements IDapAnRepository {
         return dapAns;
     }
     public int getDapAnDungIdByCauHoi(int idCauHoi) {
-        String sql = "SELECT id FROM dap_an WHERE id_cau_hoi = ? AND dap_an_dung = true";
+        String sql = "SELECT id FROM dapan WHERE idCauHoi = ? AND dapAnDung = true";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 

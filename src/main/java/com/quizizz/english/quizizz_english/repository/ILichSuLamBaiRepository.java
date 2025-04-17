@@ -1,6 +1,7 @@
 package com.quizizz.english.quizizz_english.repository;
 
 import com.quizizz.english.quizizz_english.dto.BaiTapDTO;
+import com.quizizz.english.quizizz_english.dto.KetQuaDTO;
 import com.quizizz.english.quizizz_english.dto.LichSuLamBaiDTO;
 import com.quizizz.english.quizizz_english.model.LichSuLamBai;
 
@@ -14,4 +15,5 @@ public interface ILichSuLamBaiRepository{
     List<LichSuLamBai> getAll();
     LichSuLamBai getById(int id);
     List<LichSuLamBaiDTO> getAllLichSuLamBai();
+    List<KetQuaDTO> getKetQuaLamBai(int idLichSu);
 }

@@ -41,4 +41,9 @@ public class DapAnServiceImpl implements IDapAnService {
     public List<DapAn> getAllCauHoiByIdBaiTap(Integer idCauHoi) {
         return dapAnRepository.getAllCauHoiByIdBaiTap(idCauHoi);
     }
+
+    @Override
+    public int getDapAnDungIdByCauHoi(int idCauHoi) {
+        return dapAnRepository.getDapAnDungIdByCauHoi(idCauHoi);
+    }
 }

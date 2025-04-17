@@ -25,7 +25,7 @@ public class DapAnNguoiDung {
         this.idLichSuLamBai = idLichSuLamBai;
     }
 
-    public DapAnNguoiDung(int idLichSuLamBai, boolean cauDung, int idBaiTap, int idCauHoi, int idDapAn) {
+    public DapAnNguoiDung(int idLichSuLamBai, boolean cauDung, int idCauHoi, int idDapAn, int idBaiTap) {
         this.idLichSuLamBai = idLichSuLamBai;
         this.cauDung = cauDung;
         this.idBaiTap = idBaiTap;

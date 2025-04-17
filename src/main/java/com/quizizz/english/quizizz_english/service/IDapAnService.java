@@ -7,4 +7,5 @@ public interface IDapAnService {
     boolean updateDapAn(DapAn item);
     boolean deleteDapAn(int idDapAn);
     List<DapAn> getAllCauHoiByIdBaiTap(Integer idCauHoi);
+    int getDapAnDungIdByCauHoi(int idCauHoi);
 }

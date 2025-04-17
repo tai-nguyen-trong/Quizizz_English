@@ -87,6 +87,9 @@
 
 <div class="header-info">
   <div class="row w-100">
+<%--      <input type="hidden" id="idNguoiDung" value="${idNguoiDung}">--%>
+      <input type="hidden" id="idBaiTap" value="<%= baiTap.getId() %>">
+      <input type="hidden" id="idChuDe" value="<%= baiTap.getChuDe().getId() %>">
     <div class="col-md-6"><span>📋 Chủ đề:</span> <%= baiTap.getChuDe().getTenChuDe() %></div>
     <div class="col-md-6"><span>🕒 Thời gian:</span> <%= baiTap.getThoiGianLamBai() %></div>
   </div>
@@ -124,7 +127,7 @@
 </div>
 
 <div class="btn-submit-fixed">
-  <button class="btn-submit" onclick="submitExam()">✔ Nộp bài</button>
+  <button class="btn-submit" id="btn-nopBai">✔ Nộp bài</button>
 </div>
 
 
@@ -148,4 +151,33 @@
             btn.classList.remove("answered");
         }
     }
+    $(document).ready(function() {
+        $("#btn-nopBai").on("click",function () {
+            const danhSachDapAn = {};
+            $('input[type="radio"]:checked').each(function () {
+                const questionId = $(this).attr('name').replace('q', '');
+                const answerId = $(this).val();
+                danhSachDapAn[questionId] = parseInt(answerId);
+            });
+            const postData = {
+                idBaiTap: $('#idBaiTap').val(),
+                idChuDe: $('#idChuDe').val(),
+                danhSachDapAn: JSON.stringify(danhSachDapAn)
+            };
+            debugger;
+            $.ajax({
+                url: '<%= request.getContextPath() %>/NopBaiTap',
+                method: 'POST',
+                data: postData,
+                success: function (res, status, xhr) {
+
+                },
+                error: function (xhr, status, err) {
+                    console.error('Lỗi khi nộp bài:', err);
+                    alert('Đã có lỗi xảy ra khi nộp bài!');
+                }
+            });
+        });
+
+    });
 </script>

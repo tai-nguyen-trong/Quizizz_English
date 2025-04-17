@@ -1,12 +1,17 @@
 package com.quizizz.english.quizizz_english.serviceImpl;
 
+import com.quizizz.english.quizizz_english.dto.KetQuaDTO;
 import com.quizizz.english.quizizz_english.model.DapAnNguoiDung;
 import com.quizizz.english.quizizz_english.dto.LichSuLamBaiDTO;
 import com.quizizz.english.quizizz_english.model.LichSuLamBai;
 import com.quizizz.english.quizizz_english.repository.IDapAnNguoiDungRepository;
 import com.quizizz.english.quizizz_english.repository.IDapAnRepository;
 import com.quizizz.english.quizizz_english.repository.ILichSuLamBaiRepository;
+import com.quizizz.english.quizizz_english.repositoryImpl.DapAnNguoiDungRepositoryImpl;
+import com.quizizz.english.quizizz_english.repositoryImpl.DapAnRepositoryImpl;
 import com.quizizz.english.quizizz_english.repositoryImpl.LichSuLamBaiRepositoryImpl;
+import com.quizizz.english.quizizz_english.service.IDapAnNguoiDungService;
+import com.quizizz.english.quizizz_english.service.IDapAnService;
 import com.quizizz.english.quizizz_english.service.ILichSuLamBaiService;
 
 import java.util.List;
@@ -14,8 +19,8 @@ import java.util.Map;
 
 public class LichSuLamBaiServiceImpl implements ILichSuLamBaiService {
     private ILichSuLamBaiRepository lichSuLamBaiRepository;
-    private IDapAnNguoiDungRepository dapAnNguoiDungRepository;
-    private  IDapAnRepository dapAnRepository;
+    private IDapAnNguoiDungRepository dapAnNguoiDungRepository = new DapAnNguoiDungRepositoryImpl();
+    private  IDapAnRepository dapAnRepository = new DapAnRepositoryImpl()   ;
 
     public LichSuLamBaiServiceImpl(ILichSuLamBaiRepository lichSuLamBaiRepository, IDapAnNguoiDungRepository dapAnNguoiDungRepository, IDapAnRepository dapAnRepository) {
         this.lichSuLamBaiRepository = lichSuLamBaiRepository;
@@ -28,7 +33,7 @@ public class LichSuLamBaiServiceImpl implements ILichSuLamBaiService {
     }
 
     @Override
-    public void addLichSuLamBai(int idNguoiDung, int idBaiTap, int idChuDe, Map<Integer, Integer> cauHoiVaDapAn) {
+    public int addLichSuLamBai(int idNguoiDung, int idBaiTap, int idChuDe, Map<Integer, Integer> cauHoiVaDapAn) {
         int tongCau = cauHoiVaDapAn.size();
         int soCauDung = 0;
         for (Map.Entry<Integer, Integer> entry : cauHoiVaDapAn.entrySet()) {
@@ -55,6 +60,7 @@ public class LichSuLamBaiServiceImpl implements ILichSuLamBaiService {
 
             dapAnNguoiDungRepository.insert(dapAnNguoiDung);
         }
+        return idLichSu;
     }
 
     @Override
@@ -75,6 +81,11 @@ public class LichSuLamBaiServiceImpl implements ILichSuLamBaiService {
     @Override
     public LichSuLamBai getLichSuLamBaiById(int id) {
         return lichSuLamBaiRepository.getById(id);
+    }
+
+    @Override
+    public List<KetQuaDTO> getKetQuaLamBai(int idLichSu) {
+        return lichSuLamBaiRepository.getKetQuaLamBai(idLichSu);
     }
 //
 //    @Override

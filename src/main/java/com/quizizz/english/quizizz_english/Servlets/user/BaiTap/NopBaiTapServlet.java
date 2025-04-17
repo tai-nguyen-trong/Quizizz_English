@@ -2,7 +2,9 @@ package com.quizizz.english.quizizz_english.Servlets.user.BaiTap;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.quizizz.english.quizizz_english.dto.KetQuaDTO;
 import com.quizizz.english.quizizz_english.model.DapAn;
+import com.quizizz.english.quizizz_english.model.NguoiDung;
 import com.quizizz.english.quizizz_english.repositoryImpl.BaiTapRepositoryImpl;
 import com.quizizz.english.quizizz_english.repositoryImpl.CapDoRepositoryImpl;
 import com.quizizz.english.quizizz_english.repositoryImpl.ChuDeRepositoryImpl;
@@ -21,6 +23,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -43,7 +46,8 @@ public class NopBaiTapServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int idNguoiDung = Integer.parseInt(req.getParameter("idNguoiDung"));
+
+        NguoiDung nguoiDung = (NguoiDung) req.getSession().getAttribute("user");
         int idBaiTap = Integer.parseInt(req.getParameter("idBaiTap"));
         int idChuDe = Integer.parseInt(req.getParameter("idChuDe"));
         String danhSachDapAnJson = req.getParameter("danhSachDapAn");
@@ -53,8 +57,11 @@ public class NopBaiTapServlet extends HttpServlet {
         Map<Integer, Integer> cauHoiVaDapAn = gson.fromJson(danhSachDapAnJson, type);
 
         // Gọi xử lý
-        lichSuLamBaiService.addLichSuLamBai(idNguoiDung, idBaiTap, idChuDe, cauHoiVaDapAn);
+        int idLichSu = lichSuLamBaiService.addLichSuLamBai(nguoiDung.getId(), idBaiTap, idChuDe, cauHoiVaDapAn);
+        List<KetQuaDTO> ketquas = lichSuLamBaiService.getKetQuaLamBai(idLichSu);
         // Redirect đến trang kết quả hoặc thông báo
-        resp.sendRedirect("ket-qua.jsp");
+        HttpSession session = req.getSession();
+        session.setAttribute("ketQuas", ketquas);
+        resp.sendRedirect(req.getContextPath() + "/KetQua");
     }
 }
