@@ -45,7 +45,7 @@ private INguoiDungService nguoiDungService;
             HttpSession session = req.getSession();
             session.setAttribute("user", nguoiDung);
             session.setAttribute("isLoggedIn", true);
-            resp.sendRedirect(req.getContextPath() + "/home/user");
+            resp.sendRedirect(req.getContextPath() + "/home");
         } else {
             req.setAttribute("error", "Sai email hoặc mật khẩu.");
             req.getRequestDispatcher("/views/login.jsp").forward(req, resp);

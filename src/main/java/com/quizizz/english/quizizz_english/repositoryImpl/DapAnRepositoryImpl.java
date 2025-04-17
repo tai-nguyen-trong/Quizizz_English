@@ -93,6 +93,7 @@ public class DapAnRepositoryImpl implements IDapAnRepository {
             e.printStackTrace();
         }
         return dapAns;
+    }
     public int getDapAnDungIdByCauHoi(int idCauHoi) {
         String sql = "SELECT id FROM dap_an WHERE id_cau_hoi = ? AND dap_an_dung = true";
         try (Connection conn = DBConnection.getConnection();
