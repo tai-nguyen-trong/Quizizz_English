@@ -1,5 +1,6 @@
 package com.quizizz.english.quizizz_english.serviceImpl;
 
+import com.quizizz.english.quizizz_english.dto.LichSuLamBaiDTO;
 import com.quizizz.english.quizizz_english.model.LichSuLamBai;
 import com.quizizz.english.quizizz_english.repository.ILichSuLamBaiRepository;
 import com.quizizz.english.quizizz_english.service.ILichSuLamBaiService;
@@ -13,28 +14,28 @@ public class LichSuLamBaiServiceImpl implements ILichSuLamBaiService {
         this.lichSuLamBaiRepository = lichSuLamBaiRepository;
     }
 
-    @Override
-    public void addLichSuLamBai(LichSuLamBai item) {
-        lichSuLamBaiRepository.insert(item);
-    }
+//    @Override
+//    public void addLichSuLamBai(LichSuLamBai item) {
+//        lichSuLamBaiRepository.insert(item);
+//    }
+//
+//    @Override
+//    public void updateLichSuLamBai(LichSuLamBai item) {
+//        lichSuLamBaiRepository.update(item);
+//    }
+//
+//    @Override
+//    public void deleteLichSuLamBai(LichSuLamBai item) {
+//        lichSuLamBaiRepository.delete(item);
+//    }
 
     @Override
-    public void updateLichSuLamBai(LichSuLamBai item) {
-        lichSuLamBaiRepository.update(item);
+    public List<LichSuLamBaiDTO> getAllLichSuLamBai() {
+        return lichSuLamBaiRepository.getAllLichSuLamBai();
     }
-
-    @Override
-    public void deleteLichSuLamBai(LichSuLamBai item) {
-        lichSuLamBaiRepository.delete(item);
-    }
-
-    @Override
-    public List<LichSuLamBai> getAllLichSuLamBai() {
-        return lichSuLamBaiRepository.getAll();
-    }
-
-    @Override
-    public LichSuLamBai getLichSuLamBaiById(int id) {
-        return lichSuLamBaiRepository.getById(id);
-    }
+//
+//    @Override
+//    public LichSuLamBai getLichSuLamBaiById(int id) {
+//        return lichSuLamBaiRepository.getById(id);
+//    }
 }

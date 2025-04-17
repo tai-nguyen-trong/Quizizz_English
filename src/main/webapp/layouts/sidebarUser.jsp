@@ -57,6 +57,12 @@
                     <i class="material-icons">book</i> LamBaiTap
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link ${currentPage == 'BaiTap' ? 'active' : ''}"
+                   href="<%= request.getContextPath() %>/BaiTap">
+                    <i class="material-icons">book</i> BaiTap
+                </a>
+            </li>
 
 
             <% } %>

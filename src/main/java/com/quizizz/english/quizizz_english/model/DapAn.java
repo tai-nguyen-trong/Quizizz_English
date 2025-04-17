@@ -1,13 +1,13 @@
 package com.quizizz.english.quizizz_english.model;
 
-public class DapAn {
-    private int id;
-    private String tenDapAn;
-    private boolean dapAnDung;
-    private int idCauHoi;
-
-    private CauHoi cauHoi;
-    private DapAnNguoiDung dapAnNguoiDung;
+    public class DapAn {
+        private int id;
+        private String tenDapAn;
+        private boolean dapAnDung;
+        private int idCauHoi;
+    
+        private CauHoi cauHoi;
+        private DapAnNguoiDung dapAnNguoiDung;
 
     public DapAn() {
     }

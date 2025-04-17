@@ -10,4 +10,6 @@ public interface IDapAnRepository{
     boolean delete(int idDapAn);
     boolean update(DapAn item);
     List<DapAn> getAllCauHoiByIdBaiTap(Integer idCauHoi);
+
+    List<DapAn> getAllDapAnByIdCauHoi(int idCauHoi);
 }
