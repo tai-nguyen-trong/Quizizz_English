@@ -8,8 +8,6 @@
     List<CauHoi> cauHois = (List<CauHoi>) request.getAttribute("cauHois");
     BaiTap baiTap = (BaiTap) request.getAttribute("baiTap");
 %>
-
-
 <style>
   .question-box {
     padding: 20px;
@@ -53,7 +51,7 @@
     background-color: #e0e0e0;
     padding: 10px 0;
     display: flex;
-    justify-content: center; /* ✅ Canh giữa ngang phần content */
+    justify-content: center;
     align-items: center;
     z-index: 10;
   }
@@ -69,8 +67,6 @@
   .btn-submit:hover {
     background-color: #0056b3;
   }
-
-/*  Nút đổi màu khi câu hỏi được chọn*/
   .q-btn {
       background-color: lightgray;
       border: none;
@@ -85,9 +81,9 @@
   }
 </style>
 
+<%--<form method="post" action="NopBaiTap">--%>
 <div class="header-info">
   <div class="row w-100">
-<%--      <input type="hidden" id="idNguoiDung" value="${idNguoiDung}">--%>
       <input type="hidden" id="idBaiTap" value="<%= baiTap.getId() %>">
       <input type="hidden" id="idChuDe" value="<%= baiTap.getChuDe().getId() %>">
     <div class="col-md-6"><span>📋 Chủ đề:</span> <%= baiTap.getChuDe().getTenChuDe() %></div>
@@ -129,9 +125,8 @@
 <div class="btn-submit-fixed">
   <button class="btn-submit" id="btn-nopBai">✔ Nộp bài</button>
 </div>
+<%--</form>--%>
 
-
-<%--Xử lí đổi màu nút câu hỏi--%>
 <script>
     function markDone(questionId) {
         const radios = document.getElementsByName("q" + questionId);

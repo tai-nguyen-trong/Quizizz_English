@@ -62,6 +62,9 @@ public class NopBaiTapServlet extends HttpServlet {
         // Redirect đến trang kết quả hoặc thông báo
         HttpSession session = req.getSession();
         session.setAttribute("ketQuas", ketquas);
+        for (KetQuaDTO ketQua : ketquas) {
+            System.out.println("ID CauHoi: " + ketQua.getIdCauHoi() + ", DapAnChinhXac: " + ketQua.getDapAnDung() + ", Đáp án NguoiDungChon: " + ketQua.getDapAnNguoiDungChon());
+        }
         resp.sendRedirect(req.getContextPath() + "/KetQua");
     }
 }

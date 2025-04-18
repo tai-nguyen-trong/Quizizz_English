@@ -16,16 +16,16 @@ import java.util.List;
 public class KetQuaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-
-        // Lấy dữ liệu từ session
-        List<KetQuaDTO> ketQuas = (List<KetQuaDTO>) session.getAttribute("ketQuas");
-
-        // Xóa khỏi session nếu muốn không lưu nữa
-        session.removeAttribute("ketQuas");
-
-        // Gửi tới trang JSP hiển thị kết quả
-        request.setAttribute("ketQuas", ketQuas);
+//        HttpSession session = request.getSession();
+//
+//        // Lấy dữ liệu từ session
+//        List<KetQuaDTO> ketQuas = (List<KetQuaDTO>) session.getAttribute("ketQuas");
+//
+//        // Xóa khỏi session nếu muốn không lưu nữa
+//        session.removeAttribute("ketQuas");
+//
+//        // Gửi tới trang JSP hiển thị kết quả
+//        request.setAttribute("ketQuas", ketQuas);
         request.setAttribute("currentPage", "KetQua");
         RequestDispatcher dispatcher = request.getRequestDispatcher("/layouts/layoutUser.jsp");
         dispatcher.forward(request, response);
