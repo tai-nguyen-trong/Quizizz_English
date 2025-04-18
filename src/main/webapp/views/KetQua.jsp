@@ -1,31 +1,5 @@
 
-<%--  <style>--%>
-<%--    .correct { color: green; font-weight: bold; }--%>
-<%--    .wrong { color: red; font-weight: bold; }--%>
-<%--  </style>--%>
-
-<%--  <h2>Kết quả chi tiết</h2>--%>
-<%--  <table border="1" cellpadding="10">--%>
-<%--    <tr>--%>
-<%--      <th>#</th>--%>
-<%--      <th>ID Câu hỏi</th>--%>
-<%--      <th>Đáp án bạn chọn</th>--%>
-<%--      <th>Đáp án đúng</th>--%>
-<%--      <th>Đánh giá</th>--%>
-<%--    </tr>--%>
-<%--    <c:forEach var="r" items="${ketQuas}" varStatus="stt">--%>
-<%--      <tr>--%>
-<%--        <td>${stt.index + 1}</td>--%>
-<%--        <td>${r.idCauHoi}</td>--%>
-<%--        <td>${r.dapAnNguoiDungChon}</td>--%>
-<%--        <td>${r.dapAnDung}</td>--%>
-<%--        <td class="${r.cauDung ? 'correct' : 'wrong'}">--%>
-<%--            ${r.cauDung ? 'Đúng' : 'Sai'}--%>
-<%--        </td>--%>
-<%--      </tr>--%>
-<%--    </c:forEach>--%>
-<%--  </table>--%>
-
+<%@ page import="com.google.gson.Gson" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <style>
@@ -70,60 +44,102 @@
   .result-text.wrong {
     color: red;
   }
+  .question-box {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+  }
+
+  .correct {
+    border-left: 5px solid green;
+    color: green;
+  }
+
+  .wrong {
+    border-left: 5px solid red;
+    color: red;
+  }
+
+  .result-text {
+    margin-top: 10px;
+    font-weight: bold;
+  }
 </style>
 
 <div class="header-info">
   <div class="row w-100">
-    <div class="col-md-6"><span>📋 Chủ đề:</span> Ngữ pháp cơ bản</div>
-    <div class="col-md-6"><span>🕐 Thời gian làm bài:</span> 16:16</div>
+    <div class="col-md-6">
+      <span>📋 Chủ đề:</span> <span id="tenChuDe">Ngữ pháp cơ bản</span>
+    </div>
+    <div class="col-md-6">
+      <span>📘 Bài tập:</span> <span id="tenBaiTap">Bài tập 1</span>
+    </div>
   </div>
   <div class="mt-3">
-    <span>🔢 Điểm số:</span> 5/10
+    <span>🔢 Điểm số:</span> <span id="diemSo">5/10</span>
   </div>
 </div>
-
 <br>
-
 <div id="question-list">
 
-  <!-- Câu hỏi 1 - Người dùng chọn A (sai), đáp án đúng là B -->
-  <div class="question-box" id="question-1">
-    <div class="question-title">Câu 1: What is the past tense of "go"?</div>
-
-    <div class="answer-option">
-      <label><input type="radio" disabled checked /> <span>A. goes</span></label>
-    </div>
-    <div class="answer-option">
-      <label><input type="radio" disabled /> <span>B. went</span></label>
-    </div>
-    <div class="answer-option">
-      <label><input type="radio" disabled /> <span>C. going</span></label>
-    </div>
-    <div class="answer-option">
-      <label><input type="radio" disabled /> <span>D. go</span></label>
-    </div>
-
-    <div class="result-text wrong">SAI: Đáp án đúng là B</div>
-  </div>
-
-  <!-- Câu hỏi 2 - Người dùng chọn A (đúng) -->
-  <div class="question-box" id="question-2">
-    <div class="question-title">Câu 2: Which one is a fruit?</div>
-
-    <div class="answer-option">
-      <label><input type="radio" disabled checked /> <span>A. Apple</span></label>
-    </div>
-    <div class="answer-option">
-      <label><input type="radio" disabled /> <span>B. Table</span></label>
-    </div>
-    <div class="answer-option">
-      <label><input type="radio" disabled /> <span>C. Chair</span></label>
-    </div>
-    <div class="answer-option">
-      <label><input type="radio" disabled /> <span>D. Window</span></label>
-    </div>
-
-    <div class="result-text correct">ĐÚNG</div>
-  </div>
-
 </div>
+<script>
+  $(document).ready(function () {
+    var ketQuasData = <%= new Gson().toJson(request.getAttribute("ketQuas")) %>;
+    renderCauHoi(ketQuasData);
+    function renderCauHoi(data) {
+      $("#tenBaiTap").text(data[0].tenBaiTap);
+      $("#tenChuDe").text(data[0].tenChuDe);
+      $("#diemSo").text(data[0].soDiem + "/10");
+      const container = $("#question-list");
+      container.empty(); // Xóa nội dung cũ
+      data.forEach((item, index) => {
+        console.log(index);
+        const isCorrect = item.cauDung === true;
+        const cssClass = isCorrect ? "correct" : "wrong";
+
+        // Tạo phần tử container cho câu hỏi
+        let questionBox = $('<div>', {
+          class: `question-box ${cssClass}`,
+          id: `question-${item.idCauHoi}`
+        });
+
+        // Tạo phần tử tiêu đề câu hỏi
+        let questionTitle = $('<div>', {
+          class: 'question-title',
+          text: 'Câu ' + (index + 1) + ': ' + item.tenCauHoi
+        });
+
+        // Tạo phần tử đáp án người dùng chọn
+        let answerUser = $('<div>', {
+          class: 'answer-user'
+        }).append(
+                $('<strong>').text('Đáp án của bạn:'),
+                $('<span>').html(item.dapAnNguoiDungChon || '<i style="color: gray;">(Chưa chọn)</i>')
+        );
+
+        // Tạo phần tử đáp án đúng
+        let answerCorrect = $('<div>', {
+          class: 'answer-correct'
+        }).append(
+                $('<strong>').text('Đáp án đúng:'),
+                $('<span>').text(item.dapAnDung)
+        );
+
+        // Tạo phần tử kết quả
+        let resultText = $('<div>', {
+          class: `result-text ${cssClass}`,
+          text: isCorrect ? '✔ Bạn đã trả lời đúng!' : '✘ Bạn đã trả lời sai'
+        });
+
+        // Thêm các phần tử vào questionBox
+        questionBox.append(questionTitle, answerUser, answerCorrect, resultText);
+        // Thêm questionBox vào #question-list
+        $('#question-list').append(questionBox);
+      });
+    }
+    // Gọi hàm render khi trang đã sẵn sàng
+
+  });
+</script>

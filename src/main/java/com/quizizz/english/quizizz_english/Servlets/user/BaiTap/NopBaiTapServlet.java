@@ -17,6 +17,7 @@ import com.quizizz.english.quizizz_english.serviceImpl.BaiTapServiceImpl;
 import com.quizizz.english.quizizz_english.serviceImpl.CapDoServiceImpl;
 import com.quizizz.english.quizizz_english.serviceImpl.ChuDeServiceImpl;
 import com.quizizz.english.quizizz_english.serviceImpl.LichSuLamBaiServiceImpl;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,6 +27,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
@@ -56,15 +58,10 @@ public class NopBaiTapServlet extends HttpServlet {
         // danh sách người dùng chọn
         Map<Integer, Integer> cauHoiVaDapAn = gson.fromJson(danhSachDapAnJson, type);
 
-        // Gọi xử lý
+
         int idLichSu = lichSuLamBaiService.addLichSuLamBai(nguoiDung.getId(), idBaiTap, idChuDe, cauHoiVaDapAn);
-        List<KetQuaDTO> ketquas = lichSuLamBaiService.getKetQuaLamBai(idLichSu);
-        // Redirect đến trang kết quả hoặc thông báo
-        HttpSession session = req.getSession();
-        session.setAttribute("ketQuas", ketquas);
-        for (KetQuaDTO ketQua : ketquas) {
-            System.out.println("ID CauHoi: " + ketQua.getIdCauHoi() + ", DapAnChinhXac: " + ketQua.getDapAnDung() + ", Đáp án NguoiDungChon: " + ketQua.getDapAnNguoiDungChon());
-        }
-        resp.sendRedirect(req.getContextPath() + "/KetQua");
+        PrintWriter out = resp.getWriter();
+        out.print("{\"idLichSuLamBaiTap\": " + idLichSu + ", \"idBaiTap\": " + idBaiTap + "}");
+        out.flush();
     }
 }
