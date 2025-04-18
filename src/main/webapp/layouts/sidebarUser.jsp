@@ -51,24 +51,24 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link ${currentPage == 'LamBaiTap' ? 'active' : ''}"
-                   href="<%= request.getContextPath() %>/LamBaiTap">
-                    <i class="material-icons">book</i> LamBaiTap
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link ${currentPage == 'BaiTap' ? 'active' : ''}"
-                   href="<%= request.getContextPath() %>/BaiTap">
-                    <i class="material-icons">book</i> BaiTap
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link ${currentPage == 'KetQua' ? 'active' : ''}"
-                   href="<%= request.getContextPath() %>/KetQua">
-                    <i class="material-icons">book</i> KetQua
-                </a>
-            </li>
+<%--            <li class="nav-item">--%>
+<%--                <a class="nav-link ${currentPage == 'LamBaiTap' ? 'active' : ''}"--%>
+<%--                   href="<%= request.getContextPath() %>/LamBaiTap">--%>
+<%--                    <i class="material-icons">book</i> LamBaiTap--%>
+<%--                </a>--%>
+<%--            </li>--%>
+<%--            <li class="nav-item">--%>
+<%--                <a class="nav-link ${currentPage == 'BaiTap' ? 'active' : ''}"--%>
+<%--                   href="<%= request.getContextPath() %>/BaiTap">--%>
+<%--                    <i class="material-icons">book</i> BaiTap--%>
+<%--                </a>--%>
+<%--            </li>--%>
+<%--            <li class="nav-item">--%>
+<%--                <a class="nav-link ${currentPage == 'KetQua' ? 'active' : ''}"--%>
+<%--                   href="<%= request.getContextPath() %>/KetQua">--%>
+<%--                    <i class="material-icons">book</i> KetQua--%>
+<%--                </a>--%>
+<%--            </li>--%>
 
 
             <% } %>
