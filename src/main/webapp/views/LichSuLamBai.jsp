@@ -33,7 +33,6 @@
         display: flex;
         align-items: center;
     }
-
     .header-section button {
         background-color: white;
         color: #007bff;

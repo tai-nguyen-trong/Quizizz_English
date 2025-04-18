@@ -112,7 +112,6 @@
       <%   }
          } %>
     ];
-    debugger;
     // Kích hoạt DataTables
     var exerciseTable = $("#exerciseTable").DataTable(
             {

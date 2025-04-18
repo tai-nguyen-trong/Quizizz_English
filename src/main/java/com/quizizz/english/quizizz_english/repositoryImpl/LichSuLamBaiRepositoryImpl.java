@@ -102,27 +102,45 @@ public class LichSuLamBaiRepositoryImpl implements ILichSuLamBaiRepository {
     }
 
     @Override
-    public List<KetQuaDTO> getKetQuaLamBai(int idLichSu) {
+    public List<KetQuaDTO> getKetQuaLamBai(int idLichSu,int idBaiTap) {
         List<KetQuaDTO> list = new ArrayList<>();
-        String sql = "SELECT dan.idCauHoi, da1.tenDapAn AS dapAnNguoiDungDaChon, " +
-                "dan.cauDung, da2.tenDapAn AS dapAnDung " +
-                "FROM dapannguoidung dan " +
-                "JOIN dapan da1 ON dan.idDapAn = da1.id " +
-                "JOIN dapan da2 ON da2.idCauHoi = dan.idCauHoi AND da2.dapAnDung = true " +
-                "WHERE dan.idLichSuLamBai = ?";
+        String sql = "SELECT \n" +
+                "    ch.id AS idCauHoi,\n" +
+                "    ch.tenCauHoi AS tenCauHoi,\n" +
+                "    da1.tenDapAn AS dapAnNguoiDungDaChon,\n" +
+                "    da2.tenDapAn AS dapAnDung,\n" +
+                "    CASE \n" +
+                "        WHEN da1.id = da2.id THEN true \n" +
+                "        ELSE false \n" +
+                "    END AS cauDung,\n" +
+                "    ls.diem AS soDiem,\n" +
+                "    bt.tenBaiTap AS tenBaiTap,\n" +
+                "    t.tenChuDe AS tenChuDe\n" +
+                "FROM cauhoi ch\n" +
+                "JOIN dapan da2 ON da2.idCauHoi = ch.id AND da2.dapAnDung = true\n" +
+                "LEFT JOIN dapannguoidung dan ON dan.idCauHoi = ch.id AND dan.idLichSuLamBai = ?\n" +
+                "LEFT JOIN dapan da1 ON dan.idDapAn = da1.id\n" +
+                "JOIN baitap bt ON bt.id = ch.idBaiTap  -- Thêm bảng baidap để lấy tên bài tập\n" +
+                "JOIN chuDe t ON t.id = bt.idChuDe      -- Thêm bảng chuDe để lấy tên chủ đề\n" +
+                "LEFT JOIN lichsulambai ls ON ls.id = dan.idLichSuLamBai -- Giữ lại phần liên kết lịch sử làm bài\n" +
+                "WHERE ch.idBaiTap = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idLichSu);
+            stmt.setInt(2, idBaiTap);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
                 while (rs.next()) {
                     KetQuaDTO kq = new KetQuaDTO();
                     kq.setIdCauHoi(rs.getInt("idCauHoi"));
+                    kq.setTenCauHoi(rs.getString("tenCauHoi"));
                     kq.setDapAnNguoiDungChon(rs.getString("dapAnNguoiDungDaChon"));
                     kq.setCauDung(rs.getBoolean("cauDung"));
                     kq.setDapAnDung(rs.getString("dapAnDung"));
+                    kq.setTenBaiTap(rs.getString("tenBaiTap"));
+                    kq.setTenChuDe(rs.getString("tenChuDe"));
+                    kq.setSoDiem(rs.getDouble("soDiem"));
                     list.add(kq);
                 }
-            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

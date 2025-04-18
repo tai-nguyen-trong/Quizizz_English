@@ -165,7 +165,10 @@
                 method: 'POST',
                 data: postData,
                 success: function (res, status, xhr) {
-
+                    let data = typeof res === 'string' ? JSON.parse(res) : res;
+                    window.location.href = "<%= request.getContextPath() %>/KetQua?idLichSuLamBaiTap="
+                        + encodeURIComponent(data.idLichSuLamBaiTap)
+                        + "&idBaiTap=" + encodeURIComponent(data.idBaiTap);
                 },
                 error: function (xhr, status, err) {
                     console.error('Lỗi khi nộp bài:', err);

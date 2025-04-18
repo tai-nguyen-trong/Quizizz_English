@@ -2,7 +2,7 @@
 <%
     // Lấy tham số "currentPage" từ Servlet
     String currentPage = (String) request.getAttribute("currentPage");
-
+    System.out.println(currentPage);
     if (currentPage == null || currentPage.isEmpty()) {
         currentPage = "home";
     } else {

@@ -11,5 +11,5 @@ public interface ILichSuLamBaiService {
     void deleteLichSuLamBai(LichSuLamBai item);
     List<LichSuLamBai> getAllLichSuLamBai();
     LichSuLamBai getLichSuLamBaiById(int id);
-    List<KetQuaDTO> getKetQuaLamBai(int idLichSu);
+    List<KetQuaDTO> getKetQuaLamBai(int idLichSu,int idBaiTap);
 }
