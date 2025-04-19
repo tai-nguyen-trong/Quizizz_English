@@ -72,6 +72,8 @@ public class BaiTapServiceImpl implements IBaiTapService {
             String lowerSearch = search.toLowerCase();
             list = list.stream()
                     .filter(bt -> bt.getTenBaiTap().toLowerCase().contains(lowerSearch) ||
+                            bt.getTenChuDe().toLowerCase().contains(lowerSearch) ||
+                            bt.getTenCapDo().toLowerCase().contains(lowerSearch) ||
                             bt.getMaBaiTap().toLowerCase().contains(lowerSearch))
                     .collect(Collectors.toList());
         }

@@ -87,7 +87,7 @@
       <input type="hidden" id="idBaiTap" value="<%= baiTap.getId() %>">
       <input type="hidden" id="idChuDe" value="<%= baiTap.getChuDe().getId() %>">
     <div class="col-md-6"><span>📋 Chủ đề:</span> <%= baiTap.getChuDe().getTenChuDe() %></div>
-    <div class="col-md-6"><span>🕒 Thời gian:</span> <%= baiTap.getThoiGianLamBai() %></div>
+<%--    <div class="col-md-6"><span>🕒 Thời gian:</span> <%= baiTap.getThoiGianLamBai() %></div>--%>
   </div>
   <div class="mt-3">
     <span>☑️ Câu hỏi:</span>
@@ -159,6 +159,14 @@
                 danhSachDapAn: JSON.stringify(danhSachDapAn)
             };
             debugger;
+            let total = $('.q-btn').length;
+            let done = $('.q-btn.answered').length;
+
+            if (done < total) {
+                alert(`Bạn cần làm tất cả các câu hỏi trước khi nộp bài!`);
+                return;
+            }
+
             $.ajax({
                 url: '<%= request.getContextPath() %>/NopBaiTap',
                 method: 'POST',
