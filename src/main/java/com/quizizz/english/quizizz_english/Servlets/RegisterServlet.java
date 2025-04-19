@@ -37,7 +37,7 @@ public class RegisterServlet extends HttpServlet {
 
         if (!matKhau.equals(xacNhanMatKhau)) {
             req.setAttribute("error", "Mật khẩu và xác nhận mật khẩu không khớp!");
-            req.getRequestDispatcher("register.jsp").forward(req, resp);
+            req.getRequestDispatcher("/views/register.jsp").forward(req, resp);
             return;
         }
 

@@ -36,7 +36,7 @@
                 <th>Chủ đề</th>
                 <th>Cấp độ</th>
                 <th>Điểm</th>
-                <th>Thời gian làm bài</th>
+<%--                <th>Thời gian làm bài</th>--%>
                 <th style="text-align: center;">Chi tiết</th>
             </tr>
             </thead>
@@ -50,7 +50,7 @@
                 <td><%= item.getTenChuDe() %></td>
                 <td><%= item.getTenCapDo() %></td>
                 <td><%= item.getDiem() %></td>
-                <td><%= item.getThoiGianLamBai() %> phút</td>
+<%--                <td><%= item.getThoiGianLamBai() %> phút</td>--%>
                 <td style="text-align: center;">
                     <a href="<%= request.getContextPath() %>/KetQua?idLichSuLamBaiTap=<%= item.getId() %>&idBaiTap=<%=item.getIdBaiTap()%>">Chi tiết</a>
                 </td>
@@ -60,7 +60,7 @@
             } else {
             %>
             <tr>
-                <td colspan="6" style="text-align: center;">Chưa có lịch sử làm bài</td>
+                <td colspan="5" style="text-align: center;">Chưa có lịch sử làm bài</td>
             </tr>
             <%
                 }
@@ -72,10 +72,21 @@
 
 <script>
     $(document).ready(function () {
+        <% if (lichSuLamBaiDTOs != null && !lichSuLamBaiDTOs.isEmpty()) { %>
         $('#exerciseTable').DataTable({
             paging: true,
             ordering: true,
             searching: true
         });
+        <% } %>
     });
 </script>
+<%--<script>--%>
+<%--    $(document).ready(function () {--%>
+<%--        $('#exerciseTable').DataTable({--%>
+<%--            paging: true,--%>
+<%--            ordering: true,--%>
+<%--            searching: true--%>
+<%--        });--%>
+<%--    });--%>
+<%--</script>--%>

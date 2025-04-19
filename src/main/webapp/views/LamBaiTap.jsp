@@ -123,10 +123,9 @@
 </div>
 
 <div class="btn-submit-fixed">
-  <button class="btn-submit" id="btn-nopBai">✔ Nộp bài</button>
+    <button class="btn-submit" id="btn-nopBai">✔ Nộp bài</button>
 </div>
 <%--</form>--%>
-
 <script>
     function markDone(questionId) {
         const radios = document.getElementsByName("q" + questionId);
@@ -176,6 +175,5 @@
                 }
             });
         });
-
     });
 </script>

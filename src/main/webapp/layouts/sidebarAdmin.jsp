@@ -22,14 +22,14 @@
       <li class="nav-item">
         <a class="nav-link ${currentPage == 'QuanLyDanhSachCapDo' ? 'active' : ''}"
            href="<%= request.getContextPath() %>/QuanLyDanhSachCapDo">
-          <i class="material-icons">folder</i> Quản lý cấp độ
+          <i class="material-icons">equalizer</i> Quản lý cấp độ
         </a>
       </li>
       <!-- Quản lý Chủ đề -->
       <li class="nav-item">
         <a class="nav-link ${currentPage == 'QuanLyDanhSachChuDe' ? 'active' : ''}"
            href="<%= request.getContextPath() %>/QuanLyDanhSachChuDe">
-          <i class="material-icons">folder</i> Quản lý Chủ đề
+          <i class="material-icons">menu</i> Quản lý Chủ đề
         </a>
       </li>
 
@@ -40,22 +40,6 @@
           <i class="material-icons">book</i> Quản lý Bài tập
         </a>
       </li>
-
-      <!-- Quản lý Câu hỏi -->
-      <%--<li class="nav-item">
-        <a class="nav-link  ${currentPage == 'QuanLyDanhSachCauHoi' ? 'active' : ''}"
-           href="<%= request.getContextPath() %>/QuanLyDanhSachCauHoi">
-          <i class="material-icons">help</i> Quản lý Câu hỏi
-        </a>
-      </li>--%>
-
-      <!-- Quản lý Người dùng -->
-      <%--<li class="nav-item">
-        <a class="nav-link ${currentPage == 'QuanLyDanhSachNguoiDung' ? 'active' : ''}"
-           href="<%= request.getContextPath() %>/QuanLyDanhSachNguoiDung">
-          <i class="material-icons">person</i> Quản lý Người dùng
-        </a>
-      </li>--%>
     </ul>
   </div>
 </div>
