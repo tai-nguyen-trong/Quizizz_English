@@ -1,10 +1,10 @@
 <Context>
     <Resource
-            name="jdbc/quizizz_english_DB"
+            name="jdbc/quizizz_english_v2_DB"
             auth="Container"
             type="javax.sql.DataSource"
             driverClassName="com.mysql.cj.jdbc.Driver"
-            url="jdbc:mysql://localhost:3306/quizizz_english?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true"
+            url="jdbc:mysql://localhost:3306/quizizz_english_v2?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true"
             username="root"
             password="12345678"
             maxTotal="50"

@@ -11,6 +11,7 @@ public class LichSuLamBaiDTO {
     private int id;
     private Double diem;
     private Double thoiGianLamBai;
+//    private String maBaiTap;
     private String tenBaiTap;
     private String tenChuDe;
     private String tenCapDo;

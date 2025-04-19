@@ -87,6 +87,11 @@ public class LichSuLamBaiServiceImpl implements ILichSuLamBaiService {
     public List<KetQuaDTO> getKetQuaLamBai(int idLichSu,int idBaiTap) {
         return lichSuLamBaiRepository.getKetQuaLamBai(idLichSu, idBaiTap);
     }
+
+    @Override
+    public List<LichSuLamBaiDTO> getLichSuLamBaiByIdUser(int idUser) {
+        return lichSuLamBaiRepository.getLichSuLamBaiByIdUser(idUser);
+    }
 //
 //    @Override
 //    public LichSuLamBai getLichSuLamBaiById(int id) {
