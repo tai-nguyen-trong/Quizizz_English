@@ -51,13 +51,9 @@
             </div>
         </div>
 
-<%--        <ul class="text-muted mb-4">--%>
-<%--            <li>✔ Mật khẩu trong khoảng 8–50 ký tự</li>--%>
-<%--            <li>✔ Mật khẩu không được trùng số điện thoại/username</li>--%>
-<%--            <li>✔ Mật khẩu phải có ít nhất 1 chữ thường, 1 chữ hoa và 1 số</li>--%>
-<%--        </ul>--%>
-
         <button type="button" class="btn btn-primary w-100" onclick="openConfirmDialog()">Lưu</button>
+        <p style="color: red;"><%= request.getAttribute("error") != null ? request.getAttribute("error") : "" %></p>
+        <p style="color: green;"><%= request.getAttribute("success") != null ? request.getAttribute("success") : "" %></p>
     </form>
 </div>
 

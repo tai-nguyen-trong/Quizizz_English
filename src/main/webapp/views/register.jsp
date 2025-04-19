@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: HaiDaiPC
-  Date: 3/22/2025
-  Time: 9:56 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -64,12 +57,15 @@
           <input type="text" class="form-control" placeholder="Số điện thoại" name="soDienThoai">
         </div>
         <button type="submit" class="btn btn-primary w-100">Đăng kí</button>
+
+        <p style="color: red;"><%= request.getAttribute("error") != null ? request.getAttribute("error") : "" %></p>
+        <p style="color: green;"><%= request.getAttribute("success") != null ? request.getAttribute("success") : "" %></p>
       </form>
 
-      <% String error = (String) request.getAttribute("error");
-        if (error != null) { %>
-      <p style="color:red;"><%= error %></p>
-      <% } %>
+<%--      <% String error = (String) request.getAttribute("error");--%>
+<%--        if (error != null) { %>--%>
+<%--      <p style="color:red;"><%= error %></p>--%>
+<%--      <% } %>--%>
 
     </div>
 

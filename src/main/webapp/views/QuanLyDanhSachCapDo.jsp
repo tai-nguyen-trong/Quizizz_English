@@ -167,7 +167,7 @@
       var rowData = table.row(row).data();
       var id = rowData[0];
       // Xác nhận trước khi xóa
-      if (confirm("Bạn có chắc muốn xóa đáp án này?")) {
+      if (confirm("Bạn muốn xóa Cấp độ này?")) {
         table.row(row).remove().draw(); // Xóa khỏi DataTable (trên giao diện)
         $.ajax({
           url: '<%= request.getContextPath() %>/XoaCapDo?idCapDo=' + id,

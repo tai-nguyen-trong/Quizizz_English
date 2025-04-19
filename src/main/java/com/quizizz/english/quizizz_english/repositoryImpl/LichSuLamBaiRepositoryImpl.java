@@ -1,6 +1,7 @@
 package com.quizizz.english.quizizz_english.repositoryImpl;
 import com.quizizz.english.quizizz_english.dto.KetQuaDTO;
 import com.quizizz.english.quizizz_english.dto.LichSuLamBaiDTO;
+import com.quizizz.english.quizizz_english.model.BaiTap;
 import com.quizizz.english.quizizz_english.model.LichSuLamBai;
 import com.quizizz.english.quizizz_english.repository.ILichSuLamBaiRepository;
 import com.quizizz.english.quizizz_english.util.DBConnection;
@@ -145,6 +146,39 @@ public class LichSuLamBaiRepositoryImpl implements ILichSuLamBaiRepository {
             e.printStackTrace();
         }
         return list;
+    }
+
+    @Override
+    public List<LichSuLamBaiDTO> getLichSuLamBaiByIdUser(int idUser) {
+        List<LichSuLamBaiDTO> lichSuLamBais = new ArrayList<>();
+        String sql = "SELECT ls.id, ls.diem, bt.thoiGianLamBai, bt.tenBaiTap, cd.tenChuDe, c.tenCapDo, ls.idNguoiDung, ls.idBaiTap, ls.idChuDe\n" +
+                "FROM LichSuLamBai ls\n" +
+                "JOIN BaiTap bt ON ls.idBaiTap = bt.id\n" +
+                "JOIN ChuDe cd ON ls.idChuDe = cd.id\n" +
+                "JOIN CapDo c ON bt.idCapDo = c.id\n" +
+                "WHERE ls.idNguoiDung = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idUser);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                LichSuLamBaiDTO lichSuLamBaiDTO = new LichSuLamBaiDTO();
+                lichSuLamBaiDTO.setId(rs.getInt("id"));
+                lichSuLamBaiDTO.setDiem(rs.getDouble("diem"));
+                lichSuLamBaiDTO.setThoiGianLamBai(rs.getDouble("thoiGianLamBai"));
+//                lichSuLamBaiDTO.setMaBaiTap(rs.getString("maBaiTap"));
+                lichSuLamBaiDTO.setTenBaiTap(rs.getString("tenBaiTap"));
+                lichSuLamBaiDTO.setTenChuDe(rs.getString("tenChuDe"));
+                lichSuLamBaiDTO.setTenCapDo(rs.getString("tenCapDo"));
+                lichSuLamBaiDTO.setIdNguoiDung(rs.getInt("idNguoiDung"));
+                lichSuLamBaiDTO.setIdBaiTap(rs.getInt("idBaiTap"));
+                lichSuLamBaiDTO.setIdChuDe(rs.getInt("idChuDe"));
+                lichSuLamBais.add(lichSuLamBaiDTO); // Thêm vào danh sách
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lichSuLamBais;
     }
 
     private LichSuLamBai mapResultSetToLichSuLamBai(ResultSet rs) throws SQLException {

@@ -142,7 +142,7 @@
                   })
                   .click(function (e) {
                       e.stopPropagation();
-                      if (confirm("Bạn có chắc chắn muốn xóa " + topic.tenChuDe + " không?")) {
+                      if (confirm("Bạn có chắc chắn muốn xóa chủ đề " + topic.tenChuDe + " không?")) {
                           $(card).fadeOut(300, function() { $(this).remove(); });
                           xoaChuDe(topic.id);
                       }

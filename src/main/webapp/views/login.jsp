@@ -50,9 +50,10 @@
         </div>
         <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
     </div>
+    <p style="color: red;"><%= request.getAttribute("error") != null ? request.getAttribute("error") : "" %></p>
 </form>
 
-<p style="color: red;"><%= request.getAttribute("error") != null ? request.getAttribute("error") : "" %></p>
+
 
 </body>
 </html>

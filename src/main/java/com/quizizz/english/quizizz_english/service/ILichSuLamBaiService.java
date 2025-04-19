@@ -12,4 +12,6 @@ public interface ILichSuLamBaiService {
     List<LichSuLamBai> getAllLichSuLamBai();
     LichSuLamBai getLichSuLamBaiById(int id);
     List<KetQuaDTO> getKetQuaLamBai(int idLichSu,int idBaiTap);
+
+    List<LichSuLamBaiDTO> getLichSuLamBaiByIdUser(int idUser);
 }

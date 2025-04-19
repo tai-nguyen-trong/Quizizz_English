@@ -9,14 +9,11 @@
     List<CapDo> capDos = (List<CapDo>) request.getAttribute("capDos");
     List<BaiTap> baiTaps = (List<BaiTap>) request.getAttribute("baiTaps");
     List<ChuDe> chuDes = (List<ChuDe>) request.getAttribute("chuDes");
-//    int idCapDo = (int) request.getAttribute("idCapDo");
-//    int idChuDe = (int) request.getAttribute("idChuDe");
     int idChuDe = request.getAttribute("idChuDe") != null ? (int) request.getAttribute("idChuDe") : 0;
     int idCapDo = request.getAttribute("idCapDo") != null ? (int) request.getAttribute("idCapDo") : 0;
 %>
 
 <div class="container mt-4">
-    <!-- Phần đầu trang với combobox cấp độ -->
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="d-flex align-items-center">
@@ -63,7 +60,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="row g-0">
                     <!-- Phần hình ảnh bên trái -->
-                    <div class="col-md-3 bg-light" style="border-radius: 15px 0 0 15px; position: relative;">
+                    <div class="col-md-5 bg-light" style="border-radius: 15px 0 0 15px; position: relative;">
                         <div class="d-flex flex-column justify-content-center align-items-center h-100 p-3">
                             <h5 class="text-center mb-3">Mã bài tập: <%= baiTap.getMaBaiTap() %></h5>
                             <div class="py-1 px-3 bg-warning bg-opacity-25 rounded-pill">
@@ -73,11 +70,16 @@
                     </div>
 
                     <!-- Phần nội dung bên phải -->
-                    <div class="col-md-9">
-                        <div class="card-body">
+                    <div class="col-md-7">
+                        <div class="card-body position-relative" style="min-height: 100px;">
                             <h5 class="card-title fw-bold">Tên bài tập: <%= baiTap.getTenBaiTap() %></h5>
-                            <a href="<%= request.getContextPath() %>/LamBaiTap?idBaiTap=<%= baiTap.getId() %>" class="btn btn-outline-success btn-sm px-3">Làm bài</a>
+                            <a href="<%= request.getContextPath() %>/LamBaiTap?idBaiTap=<%= baiTap.getId() %>"
+                               class="btn btn-outline-success btn-sm px-3"
+                               style="position: absolute; bottom: 10px; right: 10px;">
+                                Làm bài
+                            </a>
                         </div>
+
                     </div>
                 </div>
             </div>

@@ -1,3 +1,4 @@
+<%@ page import="com.quizizz.english.quizizz_english.model.NguoiDung" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page pageEncoding="UTF-8" %>
 
@@ -6,6 +7,8 @@
     if (currentPage == null || currentPage.isEmpty()) {
         currentPage = "home";
     }
+
+    NguoiDung nguoiDung = (NguoiDung) session.getAttribute("user");
 %>
 
 <!-- checkLogin -->
@@ -19,7 +22,6 @@
 <div class="sidebar">
     <div class="list-group">
         <ul class="nav flex-column">
-            <!-- Trang chủ -->
             <li class="nav-item">
                 <a class="nav-link  ${currentPage == 'home' ? 'active' : ''}"
                    href="<%= request.getContextPath() %>/home/user">
@@ -28,49 +30,24 @@
             </li>
 
             <% if (isLoggedIn) { %>
-            <!-- Thông tin cá nhân -->
             <li class="nav-item">
                 <a class="nav-link ${currentPage == 'ThongTinCaNhan' ? 'active' : ''}"
                    href="<%= request.getContextPath() %>/ThongTinCaNhan">
-                    <i class="material-icons">folder</i> Thông tin cá nhân
+                    <i class="material-icons">info</i> Thông tin cá nhân
                 </a>
             </li>
-
             <li class="nav-item">
                 <a class="nav-link ${currentPage == 'QuanLyMatKhau' ? 'active' : ''}"
                    href="<%= request.getContextPath() %>/QuanLyMatKhau">
-                    <i class="material-icons">folder</i> Quản lý mật khẩu
+                    <i class="material-icons">password</i> Quản lý mật khẩu
                 </a>
             </li>
-
-            <!-- Lịch sử làm bài -->
             <li class="nav-item">
                 <a class="nav-link ${currentPage == 'LichSuLamBai' ? 'active' : ''}"
-                   href="<%= request.getContextPath() %>/LichSuLamBai">
-                    <i class="material-icons">book</i> Lịch sử làm bài
+                   href="<%= request.getContextPath() %>/LichSuLamBai?idUser=<%= nguoiDung.getId() %>">
+                    <i class="material-icons">history</i> Lịch sử làm bài
                 </a>
             </li>
-
-<%--            <li class="nav-item">--%>
-<%--                <a class="nav-link ${currentPage == 'LamBaiTap' ? 'active' : ''}"--%>
-<%--                   href="<%= request.getContextPath() %>/LamBaiTap">--%>
-<%--                    <i class="material-icons">book</i> LamBaiTap--%>
-<%--                </a>--%>
-<%--            </li>--%>
-<%--            <li class="nav-item">--%>
-<%--                <a class="nav-link ${currentPage == 'BaiTap' ? 'active' : ''}"--%>
-<%--                   href="<%= request.getContextPath() %>/BaiTap">--%>
-<%--                    <i class="material-icons">book</i> BaiTap--%>
-<%--                </a>--%>
-<%--            </li>--%>
-<%--            <li class="nav-item">--%>
-<%--                <a class="nav-link ${currentPage == 'KetQua' ? 'active' : ''}"--%>
-<%--                   href="<%= request.getContextPath() %>/KetQua">--%>
-<%--                    <i class="material-icons">book</i> KetQua--%>
-<%--                </a>--%>
-<%--            </li>--%>
-
-
             <% } %>
         </ul>
     </div>

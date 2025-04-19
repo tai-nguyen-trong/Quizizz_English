@@ -16,4 +16,6 @@ public interface ILichSuLamBaiRepository{
     LichSuLamBai getById(int id);
     List<LichSuLamBaiDTO> getAllLichSuLamBai();
     List<KetQuaDTO> getKetQuaLamBai(int idLichSu,int idBaiTap);
+
+    List<LichSuLamBaiDTO> getLichSuLamBaiByIdUser(int idUser);
 }

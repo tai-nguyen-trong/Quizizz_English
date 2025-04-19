@@ -38,9 +38,6 @@ public class QuanLyMatKhauServlet extends HttpServlet {
         String matKhauMoi = req.getParameter("matKhauMoi");
         String xacNhanMatKhauMoi = req.getParameter("xacNhanMatKhauMoi");
 
-//        String hashedmatKhauCu = BCrypt.hashpw(matKhauCu, BCrypt.gensalt());
-//        String hashedmatKhauMoi = BCrypt.hashpw(matKhauMoi, BCrypt.gensalt());
-//        String hashedxacNhanMatKhauMoi = BCrypt.hashpw(xacNhanMatKhauMoi, BCrypt.gensalt());
         NguoiDung nguoiDung = nguoiDungService.getNguoiDungById(id);
 
         if (!BCrypt.checkpw(matKhauCu, nguoiDung.getMatKhau())) {
